@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { decodeB3, decodeB3Weekly, smartSearch, EXAMPLES } from '@/data/decoder';
 import { Tag } from '@/components/atoms/Tag';
 
