@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { AppHeader } from '@/components/molecules/AppHeader';
 import { TabBar } from '@/components/molecules/TabBar';
+import SearchDialog from '@/components/molecules/SearchDialog';
 import type { Tab } from '@/components/molecules/TabBar';
 import { IntroTab } from '@/components/organisms/IntroTab';
 import { CallTab } from '@/components/organisms/CallTab';
@@ -11,11 +12,13 @@ import { AssimetriaTab } from '@/components/organisms/AssimetriaTab';
 import { RiscosTab } from '@/components/organisms/RiscosTab';
 import { GlossarioTab } from '@/components/organisms/GlossarioTab';
 import EstrategiasTab from '@/components/organisms/EstrategiasTab';
+import MontadorTab from '@/components/organisms/MontadorTab';
 import GlobalTab from '@/components/organisms/GlobalTab';
 
 const TABS: Tab[] = [
   { id: 'intro', label: 'Intro', icon: '📖' },
   { id: 'estrategias', label: 'Estratégias', icon: '🧩' },
+  { id: 'montador', label: 'Montador', icon: '🔧' },
   { id: 'call', label: 'CALL', icon: '📈' },
   { id: 'put', label: 'PUT', icon: '📉' },
   { id: 'gregas', label: 'Gregas', icon: '🔬' },
@@ -28,6 +31,7 @@ const TABS: Tab[] = [
 
 export function MainLayout() {
   const [activeTab, setActiveTab] = useState('intro');
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const handleSwitch = useCallback((id: string) => {
     setActiveTab(id);
@@ -35,6 +39,7 @@ export function MainLayout() {
 
   const handleSearchNavigate = useCallback((tabId: string) => {
     setActiveTab(tabId);
+    setSearchOpen(false);
   }, []);
 
   const renderTab = () => {
@@ -43,6 +48,8 @@ export function MainLayout() {
         return <IntroTab />;
       case 'estrategias':
         return <EstrategiasTab />;
+      case 'montador':
+        return <MontadorTab />;
       case 'call':
         return <CallTab />;
       case 'put':
@@ -65,19 +72,28 @@ export function MainLayout() {
   };
 
   return (
-    <>
-      <AppHeader onSearchNavigate={handleSearchNavigate} />
-      <TabBar
-        tabs={TABS}
-        activeTab={activeTab}
-        onSwitch={handleSwitch}
-      />
+    <div className="app-wrapper">
       <div className="app-container">
+        <TabBar
+          tabs={TABS}
+          activeTab={activeTab}
+          onSwitch={handleSwitch}
+        />
+        <AppHeader
+          onSearchClick={() => setSearchOpen(true)}
+        />
         <div className="tab-pane active">{renderTab()}</div>
         <div className="footer">
-          <strong style={{ color: 'var(--accent)' }}>Prisma</strong> — Guia educacional · Não é recomendação de investimento · B3 · Mercado de Opções
+          <strong style={{ color: 'var(--accent)' }}>Prima</strong> — Guia educacional · Não é recomendação de investimento · B3 · Mercado de Opções
         </div>
       </div>
-    </>
+
+      {searchOpen && (
+        <SearchDialog
+          onClose={() => setSearchOpen(false)}
+          onNavigate={handleSearchNavigate}
+        />
+      )}
+    </div>
   );
 }
