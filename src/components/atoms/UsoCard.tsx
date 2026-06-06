@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { cn } from '@/lib/utils';
 
 interface UsoCardProps {
   icon: string;
@@ -13,48 +14,33 @@ export function UsoCard({ icon, name, desc, details }: UsoCardProps) {
 
   return (
     <div
-      className="uso-card"
-      style={{
-        cursor: details ? 'pointer' : undefined,
-        borderColor: open ? 'var(--accent)44' : 'var(--border)',
-        transition: 'border-color 0.2s',
-      }}
+      className={cn(
+        'bg-card-custom border rounded-lg p-3.5 max-sm:p-3 mb-2.5 transition-colors duration-200',
+        open ? 'border-accent/30' : 'border-border-custom',
+        details && 'cursor-pointer',
+      )}
       onClick={details ? toggle : undefined}
       onKeyDown={details ? (e) => { if (e.key === 'Enter' || e.key === ' ') toggle(); } : undefined}
       role={details ? 'button' : undefined}
       tabIndex={details ? 0 : undefined}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-        {icon && <div className="uso-icon">{icon}</div>}
-        <div style={{ flex: 1 }}>
-          <div className="uso-name">{name}</div>
-          <div className="uso-desc">{desc}</div>
+      <div className="flex items-start gap-2.5">
+        {icon && <div className="text-xl mb-1.5">{icon}</div>}
+        <div className="flex-1">
+          <div className="text-[13px] font-bold mb-1.5">{name}</div>
+          <div className="text-xs leading-relaxed text-[#94a3b8]">{desc}</div>
           {details && (
             <>
               <div
-                style={{
-                  fontSize: 10,
-                  color: open ? 'var(--accent)' : 'var(--muted)',
-                  marginTop: 8,
-                  fontFamily: '"JetBrains Mono", monospace',
-                  transition: 'color 0.2s',
-                }}
+                className={cn(
+                  'text-[10px] font-mono mt-2 transition-colors duration-200',
+                  open ? 'text-accent' : 'text-muted',
+                )}
               >
                 {open ? '▲ recolher' : '▼ detalhes'}
               </div>
               {open && (
-                <div
-                  style={{
-                    marginTop: 10,
-                    padding: 12,
-                    background: 'var(--surface)',
-                    borderRadius: 8,
-                    border: '1px solid var(--border)',
-                    fontSize: 12,
-                    lineHeight: 1.7,
-                    color: '#94a3b8',
-                  }}
-                >
+                <div className="mt-2.5 p-3 bg-surface border border-border-custom rounded-lg text-xs leading-relaxed text-[#94a3b8]">
                   {details}
                 </div>
               )}

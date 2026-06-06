@@ -17,13 +17,15 @@ export function OtmBlock({
 }: OtmBlockProps) {
   return (
     <div
-      className="otm-block"
+      className="rounded-[10px] p-3 mb-1.5"
       style={{ background: bgColor, border: `1px solid ${borderColor}` }}
     >
-      <div className="otm-label" style={{ color: labelColor }}>
+      <div className="text-[11px] font-bold tracking-wide mb-1" style={{ color: labelColor }}>
         {label}
       </div>
-      <div className="otm-desc">{children}</div>
+      <div className="text-xs leading-relaxed text-[#94a3b8]">
+        {children}
+      </div>
     </div>
   );
 }
