@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 interface ResultBoxProps {
   isProfit: boolean;
@@ -6,10 +7,13 @@ interface ResultBoxProps {
 }
 
 export function ResultBox({ isProfit, children }: ResultBoxProps) {
-  const bg = isProfit ? '#00e67611' : '#ff3d5711';
-  const border = isProfit ? '1px solid #00e67633' : '1px solid #ff3d5733';
   return (
-    <div className="result-box" style={{ background: bg, border }}>
+    <div
+      className={cn(
+        'rounded-lg p-4 mt-3 border',
+        isProfit ? 'bg-[#00e67611] border-[#00e67633]' : 'bg-[#ff3d5711] border-[#ff3d5733]',
+      )}
+    >
       {children}
     </div>
   );

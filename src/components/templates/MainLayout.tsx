@@ -72,8 +72,8 @@ export function MainLayout() {
   };
 
   return (
-    <div className="app-wrapper">
-      <div className="app-container">
+    <div className="bg-bg min-h-screen">
+      <div className="max-w-[1100px] mx-auto w-full px-4 lg:px-5 max-sm:px-0">
         <TabBar
           tabs={TABS}
           activeTab={activeTab}
@@ -82,10 +82,10 @@ export function MainLayout() {
         <AppHeader
           onSearchClick={() => setSearchOpen(true)}
         />
-        <div className="tab-pane active">{renderTab()}</div>
-        <div className="footer">
-          <strong style={{ color: 'var(--accent)' }}>Prima</strong> — Guia educacional · Não é recomendação de investimento · B3 · Mercado de Opções
-        </div>
+        <div className="block max-sm:px-2.5">{renderTab()}</div>
+        <footer className="text-center py-5 text-[10px] text-soft border-t border-border-custom mt-3 max-md:px-3.5 max-md:py-4 max-sm:px-2.5 max-sm:py-3.5 max-sm:text-[9px]">
+          <strong className="text-accent">Prima</strong> — Guia educacional · Não é recomendação de investimento · B3 · Mercado de Opções
+        </footer>
       </div>
 
       {searchOpen && (

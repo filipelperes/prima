@@ -21,65 +21,31 @@ export function CodeDecoder() {
 
   const statusColor =
     result?.type === 'CALL'
-      ? 'var(--green)'
-      : 'var(--red)';
+      ? 'var(--color-green)'
+      : 'var(--color-red)';
 
   const isWeekly = result?.week !== undefined;
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          gap: 8,
-          marginBottom: 12,
-        }}
-      >
+      <div className="flex gap-2 mb-3">
         <input
           type="text"
           value={input}
           onChange={(e) => handleDecode(e.target.value)}
           placeholder="Digite um código... ex: PETRH21"
-          style={{
-            flex: 1,
-            background: 'var(--surface)',
-            border: `1px solid ${result ? statusColor : 'var(--border)'}`,
-            borderRadius: 8,
-            padding: '10px 12px',
-            color: 'var(--text)',
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 15,
-            fontWeight: 700,
-            outline: 'none',
-            letterSpacing: 1,
-            transition: 'border 0.2s',
-          }}
+          className="flex-1 bg-surface border rounded-lg px-4 py-2.5 text-text font-mono text-[15px] font-bold outline-none tracking-wider transition-colors duration-200
+            placeholder:text-soft"
+          style={{ borderColor: result ? statusColor : 'var(--color-border-custom)' }}
         />
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          gap: 6,
-          flexWrap: 'wrap',
-          marginBottom: 14,
-        }}
-      >
+      <div className="flex gap-1.5 flex-wrap mb-3.5">
         {EXAMPLES.map((ex) => (
           <button
             key={ex.code}
             onClick={() => handleDecode(ex.code)}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 6,
-              padding: '4px 10px',
-              cursor: 'pointer',
-              color: 'var(--accent)',
-              fontFamily: '"JetBrains Mono", monospace',
-              fontSize: 12,
-              transition: 'all 0.2s',
-            }}
+            className="bg-surface border border-border-custom rounded-md px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200"
           >
             {ex.code}
           </button>
@@ -88,99 +54,52 @@ export function CodeDecoder() {
 
       {result && (
         <div
-          style={{
-            background: 'var(--surface)',
-            border: `1px solid ${statusColor}44`,
-            borderRadius: 12,
-            padding: 16,
-          }}
+          className="bg-surface rounded-xl p-4"
+          style={{ border: `1px solid ${statusColor}44` }}
         >
-          <div className="grid-2" style={{ gap: 10 }}>
-            <DecodeField label="Ativo" value={result.asset} color="var(--accent)" />
+          <div className="grid grid-cols-2 gap-2.5 max-sm:grid-cols-1">
+            <DecodeField label="Ativo" value={result.asset} color="var(--color-accent)" />
             <DecodeField
               label="Tipo"
               value={result.type}
               color={statusColor}
               badge={result.type === 'CALL' ? 'green' : 'red'}
             />
-            <DecodeField label="Strike" value={`R$ ${result.strike.toFixed(1)}`} color="var(--yellow)" />
+            <DecodeField label="Strike" value={`R$ ${result.strike.toFixed(1)}`} color="var(--color-yellow)" />
             <DecodeField
               label="Vencimento"
               value={`${result.month}${isWeekly ? ` — Semana ${result.week}` : ` (mês ${result.monthNum})`}`}
-              color="var(--purple)"
+              color="var(--color-purple)"
             />
           </div>
         </div>
       )}
 
       {suggestions.length > 0 && !result && (
-        <div
-          style={{
-            marginTop: 8,
-            padding: 12,
-            background: 'var(--surface)',
-            borderRadius: 10,
-            border: '1px solid var(--border)',
-          }}
-        >
-          <div
-            style={{
-              fontSize: 9,
-              color: 'var(--muted)',
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              fontFamily: '"JetBrains Mono", monospace',
-              marginBottom: 8,
-            }}
-          >
+        <div className="mt-2 p-3 bg-surface border border-border-custom rounded-xl">
+          <div className="text-[9px] text-muted tracking-[1px] uppercase font-mono mb-2">
             Sugestões
           </div>
           {suggestions.map((s) => (
             <button
               key={s.raw}
               onClick={() => handleDecode(s.raw)}
-              style={{
-                display: 'block',
-                width: '100%',
-                textAlign: 'left',
-                background: 'transparent',
-                border: 'none',
-                borderBottom: '1px solid var(--border)',
-                padding: '8px 4px',
-                cursor: 'pointer',
-                color: 'var(--text)',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 12,
-                transition: 'background 0.15s',
-              }}
+              className="block w-full text-left bg-transparent border-none border-b border-border-custom px-1 py-2 cursor-pointer text-text font-mono text-xs transition-colors duration-150 last:border-b-0"
             >
-              <span style={{ color: 'var(--accent)' }}>{s.raw}</span>
-              <span style={{ color: 'var(--muted)', marginLeft: 8, fontFamily: '"Space Grotesk", sans-serif' }}>
+              <span className="text-accent">{s.raw}</span>
+              <span className="text-muted ml-2 font-sans">
                 {s.type} · {s.month}
               </span>
             </button>
           ))}
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--muted)',
-              marginTop: 6,
-              textAlign: 'center',
-            }}
-          >
+          <div className="text-[10px] text-muted mt-1.5 text-center">
             O número no código NÃO é necessariamente o strike real — consulte sua plataforma
           </div>
         </div>
       )}
 
       {!result && suggestions.length === 0 && input.length >= 6 && (
-        <div
-          style={{
-            fontSize: 12,
-            color: 'var(--red)',
-            padding: '8px 0',
-          }}
-        >
+        <div className="text-xs text-red mt-2">
           Código inválido. Use o formato: 4 letras ativo + 1 letra série + strike (ex: PETRH21) ou opções semanais (ex: B3SAB11W1)
         </div>
       )}
@@ -201,29 +120,10 @@ function DecodeField({
 }) {
   return (
     <div>
-      <div
-        style={{
-          fontSize: 9,
-          color: 'var(--muted)',
-          letterSpacing: 1,
-          textTransform: 'uppercase',
-          fontFamily: '"JetBrains Mono", monospace',
-          marginBottom: 4,
-        }}
-      >
+      <div className="text-[9px] text-muted tracking-[1px] uppercase font-mono mb-1">
         {label}
       </div>
-      <div
-        style={{
-          fontSize: 14,
-          fontWeight: 700,
-          color,
-          fontFamily: '"JetBrains Mono", monospace',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-        }}
-      >
+      <div className="text-sm font-bold font-mono flex items-center gap-1.5" style={{ color }}>
         {badge && <Tag variant={badge}>{value}</Tag>}
         {!badge && value}
       </div>

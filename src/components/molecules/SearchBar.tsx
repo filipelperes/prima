@@ -42,7 +42,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
   return (
     <>
       {text.slice(0, idx)}
-      <span style={{ color: 'var(--accent)', fontWeight: 700 }}>
+      <span className="text-accent font-bold">
         {text.slice(idx, idx + query.length)}
       </span>
       {text.slice(idx + query.length)}
@@ -89,7 +89,6 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
 
     const items: SearchResult[] = [];
 
-    /* ── Glossary ── */
     for (const item of GLOSSARY) {
       if (item.term.toLowerCase().includes(q)) {
         items.push({
@@ -120,7 +119,6 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
       }
     }
 
-    /* ── Analogies ── */
     for (const item of ANALOGIES) {
       if (item.title.toLowerCase().includes(q)) {
         items.push({
@@ -191,22 +189,14 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
   const showDropdown = isOpen && debouncedQuery.trim().length > 0;
 
   return (
-    <div ref={containerRef} style={{ position: 'relative' }}>
+    <div ref={containerRef} className="relative">
       {/* ── Input wrapper ── */}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'var(--surface)',
-          border: isFocused
-            ? '1px solid var(--accent)'
-            : '1px solid var(--border)',
-          borderRadius: 10,
-          padding: '0 12px',
-          transition: 'border-color 0.2s',
-        }}
+        className={`flex items-center rounded-xl px-3 transition-colors duration-200 bg-surface ${
+          isFocused ? 'border-accent' : 'border-border-custom'
+        }`}
       >
-        <Search size={16} color="var(--muted)" style={{ flexShrink: 0 }} />
+        <Search size={16} className="text-muted shrink-0" />
         <input
           ref={inputRef}
           value={query}
@@ -218,32 +208,15 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
           onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           placeholder="Buscar no guia..."
-          style={{
-            flex: 1,
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: 'var(--text)',
-            padding: '10px 8px',
-            fontSize: 13,
-            fontFamily: "'Space Grotesk', sans-serif",
-          }}
+          className="flex-1 bg-transparent border-none outline-none text-text py-2.5 px-2 text-[13px] font-sans placeholder:text-soft"
         />
         {query && (
           <button
             onClick={handleClear}
             aria-label="Limpar busca"
-            style={{
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 4,
-              display: 'flex',
-              alignItems: 'center',
-              flexShrink: 0,
-            }}
+            className="bg-transparent border-none cursor-pointer p-1 flex items-center shrink-0"
           >
-            <X size={14} color="var(--muted)" />
+            <X size={14} className="text-muted" />
           </button>
         )}
       </div>
@@ -251,29 +224,10 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
       {/* ── Dropdown ── */}
       {showDropdown && (
         <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            marginTop: 4,
-            background: 'var(--card)',
-            border: '1px solid var(--border)',
-            borderRadius: 10,
-            overflow: 'hidden',
-            zIndex: 1000,
-            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-          }}
+          className="absolute top-full left-0 right-0 mt-1 bg-card-custom border border-border-custom rounded-xl overflow-hidden z-[1000] shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
         >
           {results.length === 0 ? (
-            <div
-              style={{
-                padding: '14px 12px',
-                fontSize: 12,
-                color: 'var(--muted)',
-                textAlign: 'center',
-              }}
-            >
+            <div className="py-3.5 px-3 text-xs text-muted text-center">
               Nenhum resultado encontrado
             </div>
           ) : (
@@ -281,64 +235,24 @@ export function SearchBar({ onNavigate }: SearchBarProps) {
               <button
                 key={result.id}
                 onClick={() => handleSelect(result)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 10,
-                  width: '100%',
-                  padding: '10px 12px',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '1px solid var(--border)',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#00d4ff11';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
+                className="flex items-start gap-2.5 w-full px-3 py-2.5 bg-transparent border-none border-b border-border-custom cursor-pointer text-left font-sans transition-colors duration-150 last:border-b-0 hover:bg-accent/5"
               >
-                {/* Section indicator */}
                 <span
+                  className="text-[10px] font-bold shrink-0 mt-0.5"
                   style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    color:
-                      result.type === 'glossário'
-                        ? 'var(--accent)'
-                        : 'var(--yellow)',
-                    flexShrink: 0,
-                    marginTop: 1,
+                    color: result.type === 'glossário'
+                      ? 'var(--color-accent)'
+                      : 'var(--color-yellow)',
                   }}
                 >
                   {result.type === 'glossário' ? '📚' : '💡'}
                 </span>
 
-                {/* Content */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: 'var(--text)',
-                      marginBottom: 3,
-                    }}
-                  >
+                <div className="flex-1 min-w-0">
+                  <div className="text-[13px] font-bold text-text mb-[3px]">
                     {result.label}
                   </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: 'var(--muted)',
-                      lineHeight: 1.5,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
+                  <div className="text-[11px] text-muted leading-relaxed overflow-hidden text-ellipsis">
                     {highlightMatch(result.snippet, debouncedQuery)}
                   </div>
                 </div>

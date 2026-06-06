@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils';
+
 interface OpData {
   win: boolean;
   profit: number;
@@ -17,19 +19,18 @@ function absoluteDisplay(val: number): string {
 
 export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
   return (
-    <div className="ops-grid">
+    <div className="flex flex-wrap gap-1.5 my-3">
       {ops.map((op, i) => (
         <div
           key={i}
-          className={`op-cell ${op.win ? 'op-win' : 'op-loss'}`}
+          className={cn(
+            'w-[52px] h-[52px] rounded-[10px] flex flex-col items-center justify-center text-lg border-2 border-transparent',
+            op.win ? 'bg-[#00e67611] border-[#00e67644]' : 'bg-[#ff3d5709] border-[#ff3d5730]',
+            'max-sm:w-[38px] max-sm:h-[38px] max-sm:text-[13px] max-sm:rounded-lg',
+          )}
         >
           <div>{op.win ? '🚀' : '💀'}</div>
-          <div
-            className="op-label"
-            style={{
-              color: op.win ? 'var(--green)' : 'var(--red)',
-            }}
-          >
+          <div className={cn('text-[9px] font-bold mt-0.5', op.win ? 'text-green' : 'text-red')}>
             {op.win ? '+' : '-'}
             {absoluteDisplay(op.profit)}
           </div>

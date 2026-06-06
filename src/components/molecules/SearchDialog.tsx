@@ -42,7 +42,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
   return (
     <>
       {text.slice(0, idx)}
-      <span className="search-hl">{text.slice(idx, idx + query.length)}</span>
+      <span className="text-accent font-bold">{text.slice(idx, idx + query.length)}</span>
       {text.slice(idx + query.length)}
     </>
   );
@@ -160,77 +160,82 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
   };
 
   return (
-    <div className="search-overlay" onClick={handleOverlayClick}>
-      <div className="search-dialog">
+    <div
+      className="fixed inset-0 z-[1000] bg-bg/85 backdrop-blur-2xl flex items-start justify-center px-4 pt-[10vh] animate-[fade-in_0.2s_ease-out] max-sm:px-2.5 max-sm:pt-[6vh]"
+      onClick={handleOverlayClick}
+    >
+      <div
+        className="w-full max-w-[620px] bg-card-custom border border-border-custom rounded-2xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.6)] animate-[slide-down_0.25s_ease-out] max-sm:rounded-2xl"
+      >
         {/* Header row */}
-        <div className="search-dialog-header">
-          <div className="search-dialog-input-wrap">
-            <span className="search-dialog-icon">🔍</span>
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border-custom max-sm:px-2.5 max-sm:py-2.5">
+          <div className="flex-1 flex items-center gap-2.5 bg-surface border border-border-custom rounded-lg px-3 transition-colors duration-200 focus-within:border-accent max-sm:px-2">
+            <span className="text-base shrink-0">🔍</span>
             <input
               ref={inputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar no guia…"
-              className="search-dialog-input"
+              className="flex-1 bg-transparent border-none outline-none text-text font-sans text-[15px] py-2.5 placeholder:text-soft max-sm:text-sm"
             />
             {query && (
               <button
-                className="search-dialog-clear"
                 onClick={() => setQuery('')}
                 aria-label="Limpar busca"
+                className="bg-transparent border-none cursor-pointer text-muted text-sm p-1 rounded-md transition-colors hover:text-text flex items-center justify-center"
               >
                 ✕
               </button>
             )}
           </div>
           <button
-            className="search-dialog-close"
             onClick={onClose}
             aria-label="Fechar busca"
+            className="w-9 h-9 flex items-center justify-center bg-surface border border-border-custom rounded-[10px] text-sm text-muted transition-colors hover:bg-white/5 hover:text-text shrink-0 max-sm:w-8 max-sm:h-8"
           >
             ✕
           </button>
         </div>
 
         {/* Results */}
-        <div className="search-dialog-body">
+        <div className="max-h-[55vh] overflow-y-auto p-2 max-sm:max-h-[50vh]">
           {debouncedQuery.trim().length === 0 && (
-            <div className="search-dialog-empty">
-              <div className="search-dialog-empty-icon">🔍</div>
-              <div className="search-dialog-empty-text">
+            <div className="text-center py-10 px-5">
+              <div className="text-[32px] mb-3 opacity-50">🔍</div>
+              <div className="text-[13px] text-muted leading-relaxed">
                 Digite para buscar termos, definições e analogias
               </div>
             </div>
           )}
 
           {debouncedQuery.trim().length > 0 && results.length === 0 && (
-            <div className="search-dialog-empty">
-              <div className="search-dialog-empty-text">
-                Nenhum resultado encontrado para "<strong>{debouncedQuery}</strong>"
+            <div className="text-center py-10 px-5">
+              <div className="text-[13px] text-muted leading-relaxed">
+                Nenhum resultado encontrado para "<strong className="text-text">{debouncedQuery}</strong>"
               </div>
             </div>
           )}
 
           {results.length > 0 && (
-            <div className="search-dialog-results">
+            <div className="flex flex-col gap-0.5">
               {results.map((result) => (
                 <button
                   key={result.id}
-                  className="search-dialog-result"
                   onClick={() => handleSelect(result)}
+                  className="flex items-start gap-3 w-full p-2.5 bg-transparent border-none rounded-[10px] cursor-pointer text-left font-sans transition-colors duration-150 hover:bg-accent/5"
                 >
-                  <span className="search-result-icon">
+                  <span className="text-lg shrink-0 mt-0.5">
                     {result.type === 'glossário' ? '📚' : '💡'}
                   </span>
-                  <div className="search-result-content">
-                    <div className="search-result-label">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-text mb-0.5">
                       {highlightMatch(result.label, debouncedQuery)}
                     </div>
-                    <div className="search-result-snippet">
+                    <div className="text-xs text-muted leading-relaxed overflow-hidden text-ellipsis line-clamp-2">
                       {highlightMatch(result.snippet, debouncedQuery)}
                     </div>
                   </div>
-                  <span className="search-result-type">
+                  <span className="text-[9px] font-bold text-soft tracking-wide uppercase shrink-0 px-2 py-0.5 bg-surface rounded-md mt-0.5">
                     {result.type === 'glossário' ? 'Glossário' : 'Analogia'}
                   </span>
                 </button>
@@ -240,8 +245,9 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
         </div>
 
         {/* Footer hint */}
-        <div className="search-dialog-footer">
-          <span>ESC</span> fechar · <span>↑↓</span> navegar
+        <div className="px-4 py-2 border-t border-border-custom text-[10px] text-soft text-center tracking-wide max-sm:text-[9px]">
+          <span className="bg-surface border border-border-custom rounded-[4px] px-1.5 py-0.5 font-mono text-[9px]">ESC</span> fechar ·{' '}
+          <span className="bg-surface border border-border-custom rounded-[4px] px-1.5 py-0.5 font-mono text-[9px]">↑↓</span> navegar
         </div>
       </div>
     </div>

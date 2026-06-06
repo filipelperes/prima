@@ -12,7 +12,7 @@ interface ScenarioGridProps {
 
 export function ScenarioGrid({ scenarios, activeIndex }: ScenarioGridProps) {
   return (
-    <div className="scenario-grid">
+    <div className="grid grid-cols-2 gap-1.5 mb-3 max-sm:grid-cols-1">
       {scenarios.map((s, i) => (
         <ScenarioButton key={i} label={s.label} onClick={s.onClick} isActive={i === activeIndex} />
       ))}
