@@ -49,8 +49,8 @@ export function GregasTab() {
 
   return (
     <>
-      <div className="card" style={{ marginBottom: 12 }}>
-        <div className="card-header">⏱ Controles</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">⏱ Controles</div>
         <SliderControl
           label="Dias até o vencimento"
           value={state.dias}
@@ -136,115 +136,54 @@ export function GregasTab() {
         ]}
       />
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           ⏳ Theta decay — como o prêmio derrete
         </div>
         <ThetaBarsChart bars={thetaBars} currentDias={state.dias} />
-        <div
-          style={{
-            fontSize: 12,
-            color: '#94a3b8',
-            marginTop: 12,
-            padding: 10,
-            background: 'var(--surface)',
-            borderRadius: 8,
-            lineHeight: 1.6,
-            textAlign: 'center',
-          }}
-        >
+        <div className="text-xs text-[#94a3b8] mt-3 p-2.5 bg-surface rounded-lg leading-relaxed text-center">
           {thetaStatus}
         </div>
-        <p
-          style={{
-            fontSize: 11,
-            color: 'var(--muted)',
-            marginTop: 10,
-            lineHeight: 1.6,
-          }}
-        >
+        <p className="text-[11px] text-muted mt-2.5 leading-relaxed">
           O prêmio não derrete linearmente — derrete em forma de raiz quadrada.
           Os{' '}
-          <strong style={{ color: 'var(--red)' }}>últimos 7 dias</strong> são os
+          <strong className="text-red">últimos 7 dias</strong> são os
           mais devastadores. Comprador de opção está sempre correndo contra o
           relógio.
         </p>
       </div>
 
-      <div className="card">
-        <div className="card-header">O que é volatilidade?</div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 12,
-          }}
-        >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">O que é volatilidade?</div>
+        <p className="text-[13px] leading-relaxed text-[#94a3b8] mb-3">
           Volatilidade não é direção — é{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             intensidade esperada do movimento
           </strong>
           .
         </p>
-        <div className="grid-2">
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--green)',
-                fontWeight: 700,
-                marginBottom: 6,
-                letterSpacing: 0.5,
-              }}
-            >
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-surface rounded-lg p-3">
+            <div className="text-[10px] text-green font-bold mb-1.5 tracking-[0.5px]">
               BAIXA VOLATILIDADE
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               Mercado espera PETR4 entre R$ 29 e R$ 31. Opções baratas. Pouca
               oportunidade para compradores.
             </div>
           </div>
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--red)',
-                fontWeight: 700,
-                marginBottom: 6,
-                letterSpacing: 0.5,
-              }}
-            >
+          <div className="bg-surface rounded-lg p-3">
+            <div className="text-[10px] text-red font-bold mb-1.5 tracking-[0.5px]">
               ALTA VOLATILIDADE
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               Mercado espera PETR4 entre R$ 20 e R$ 40. Opções caras. Antes de
               balanço, eleição, COPOM.
             </div>
           </div>
         </div>
-        <div
-          style={{
-            background: '#ffd54f11',
-            border: '1px solid #ffd54f33',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 8,
-          }}
-        >
-          <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+        <div className="bg-yellow/10 border border-yellow/30 rounded-lg p-3 mt-2">
+          <div className="text-[11px] text-[#94a3b8] leading-relaxed">
             Comprar opções com alta volatilidade implícita é caro — você paga
             pela expectativa de movimento. Compradores experientes tentam comprar
             com volatilidade baixa e vender quando ela sobe.
@@ -252,17 +191,10 @@ export function GregasTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">Os 3 inimigos do comprador de opção</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Os 3 inimigos do comprador de opção</div>
         <InimigosProgress inimigos={inimigos} />
-        <p
-          style={{
-            fontSize: 12,
-            color: 'var(--muted)',
-            lineHeight: 1.6,
-            marginTop: 10,
-          }}
-        >
+        <p className="text-xs text-muted leading-relaxed mt-2.5">
           Para ganhar como comprador, você precisa acertar direção, vencer o
           tempo E comprar com volatilidade favorável. É por isso que a maioria
           das opções compradas vira pó.

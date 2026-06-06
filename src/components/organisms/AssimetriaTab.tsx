@@ -10,16 +10,10 @@ export function AssimetriaTab() {
 
   return (
     <>
-      <div
-        className="card"
-        style={{
-          background: '#00e67609',
-          borderColor: '#00e67622',
-        }}
-      >
-        <div style={{ fontSize: 13, lineHeight: 1.8, color: '#94a3b8' }}>
+      <div className="bg-[#00e67609] border border-[#00e67622] rounded-xl p-4 mb-3">
+        <div className="text-[13px] leading-[1.8] text-[#94a3b8]">
           O modelo do Tio Huli:{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             não precisa acertar sempre
           </strong>{' '}
           — basta que os acertos sejam grandes o suficiente para pagar as perdas
@@ -28,8 +22,10 @@ export function AssimetriaTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">⚙ Monte sua estratégia</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          ⚙ Monte sua estratégia
+        </div>
         <SliderControl
           label="Prêmio por operação (R$)"
           value={state.premio}
@@ -78,74 +74,47 @@ export function AssimetriaTab() {
         />
       </div>
 
-      <div className="card">
-        <div className="card-header">📊 Resultado</div>
-        <div className="grid-2" style={{ marginBottom: 12 }}>
-          <div
-            style={{
-              background: '#ff3d5711',
-              border: '1px solid #ff3d5733',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-            }}
-          >
-            <div className="stat-label">Total perdido</div>
-            <div className="stat-val" style={{ color: 'var(--red)' }}>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          📊 Resultado
+        </div>
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          <div className="bg-[#ff3d5711] border border-[#ff3d5733] rounded-[10px] p-3 text-center">
+            <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">
+              Total perdido
+            </div>
+            <div className="text-lg font-black text-red">
               -{fmtInt(result.perdas)}
             </div>
-            <div className="stat-sub">
+            <div className="text-[10px] text-muted mt-0.5">
               {state.ops - state.acertos} viraram pó
             </div>
           </div>
-          <div
-            style={{
-              background: '#00e67611',
-              border: '1px solid #00e67633',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-            }}
-          >
-            <div className="stat-label">Total ganho</div>
-            <div className="stat-val" style={{ color: 'var(--green)' }}>
+          <div className="bg-[#00e67611] border border-[#00e67633] rounded-[10px] p-3 text-center">
+            <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">
+              Total ganho
+            </div>
+            <div className="text-lg font-black text-green">
               +{fmtInt(result.ganhos)}
             </div>
-            <div className="stat-sub">
+            <div className="text-[10px] text-muted mt-0.5">
               {state.acertos} explodiram ({state.mult}x)
             </div>
           </div>
         </div>
         <div
-          className="total-result"
-          style={{
-            background: result.isProfit ? '#00e67611' : '#ff3d5711',
-            border: result.isProfit
-              ? '1px solid #00e67633'
-              : '1px solid #ff3d5733',
-          }}
+          className={`rounded-lg p-[18px] text-center mt-3 ${result.isProfit ? 'bg-[#00e67611] border border-[#00e67633]' : 'bg-[#ff3d5711] border border-[#ff3d5733]'}`}
         >
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--muted)',
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              fontFamily: "'JetBrains Mono', monospace",
-            }}
-          >
+          <div className="text-[11px] tracking-[1px] text-muted uppercase font-mono">
             Resultado final
           </div>
           <div
-            className="total-val"
-            style={{
-              color: result.isProfit ? 'var(--green)' : 'var(--red)',
-            }}
+            className={`text-[32px] font-black my-1.5 ${result.isProfit ? 'text-green' : 'text-red'}`}
           >
             {result.isProfit ? '+' : '-'}
             {fmtInt(Math.abs(result.resultado))}
           </div>
-          <div className="total-sub" style={{ color: '#94a3b8' }}>
+          <div className="text-xs text-[#94a3b8]">
             {result.isProfit
               ? `Lucrativo com apenas ${Math.round((state.acertos / state.ops) * 100)}% de acerto`
               : 'Aumente o multiplicador ou o número de acertos'}
@@ -153,74 +122,64 @@ export function AssimetriaTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">Visualização das operações</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          Visualização das operações
+        </div>
         <OpsGridDisplay ops={result.opsArray} />
-        <div className="result-text" style={{ marginTop: 0 }}>
+        <div className="bg-black/35 rounded-lg p-3 text-xs leading-relaxed text-[#94a3b8] mt-0">
           {result.descricao}
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Por que funciona matematicamente
         </div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 12,
-          }}
-        >
+        <p className="text-[13px] leading-[1.8] text-[#94a3b8] mb-3">
           Imagine um cassino onde:
         </p>
         <Formula>
           <div>
-            <span className="comment">// O cassino assimétrico</span>
+            <span className="text-muted text-[11px]">// O cassino assimétrico</span>
           </div>
           <div>
-            Você aposta: <span className="val">R$ 100</span>
+            Você aposta: <span className="text-yellow">R$ 100</span>
           </div>
           <div>
-            Se perder: perde <span style={{ color: 'var(--red)' }}>R$ 100</span>
+            Se perder: perde <span className="text-red">R$ 100</span>
           </div>
           <div>
             Se ganhar: ganha{' '}
-            <span style={{ color: 'var(--green)' }}>R$ 1.000</span>
+            <span className="text-green">R$ 1.000</span>
           </div>
-          <div style={{ marginTop: 6 }}>
-            <span className="comment">// Mesmo ganhando 2 de 10:</span>
+          <div className="mt-1.5">
+            <span className="text-muted text-[11px]">// Mesmo ganhando 2 de 10:</span>
           </div>
           <div>
             10 × R$100 ={' '}
-            <span style={{ color: 'var(--red)' }}>R$ 1.000</span> de risco
+            <span className="text-red">R$ 1.000</span> de risco
           </div>
           <div>
             2 × R$1.000 ={' '}
-            <span style={{ color: 'var(--green)' }}>R$ 2.000</span> recebidos
+            <span className="text-green">R$ 2.000</span> recebidos
           </div>
           <div>
-            <span className="eq">Lucro: R$ 1.000</span> com 20% de acerto
+            <span className="text-accent font-bold">Lucro: R$ 1.000</span> com 20% de acerto
           </div>
         </Formula>
-        <div
-          style={{
-            fontSize: 12,
-            color: '#94a3b8',
-            marginTop: 10,
-            lineHeight: 1.6,
-          }}
-        >
-          <strong style={{ color: 'var(--text)' }}>Ponto crítico:</strong>{' '}
+        <div className="text-xs text-[#94a3b8] mt-2.5 leading-[1.6]">
+          <strong className="text-text">Ponto crítico:</strong>{' '}
           tamanho de posição pequeno é o que mantém a estratégia viável. Nunca
           arrisque mais do que você aceita perder 100% — porque vai perder 100%
           na maioria das vezes.
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">Estratégias populares</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          Estratégias populares
+        </div>
         <UsoCard
           icon=""
           name="1. Compra simples de CALL (direcional)"

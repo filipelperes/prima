@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { CodeDecoder } from '@/components/molecules/CodeDecoder';
+import { Tag } from '@/components/atoms/Tag';
 import { decodeB3, decodeB3Weekly } from '@/data/decoder';
 import type { DecodeResult } from '@/data/decoder';
 
@@ -136,51 +137,19 @@ export default function MontadorTab() {
     setDecodedExample(decoded);
   }, []);
 
-  const labelStyle: React.CSSProperties = {
-    fontSize: 10,
-    color: 'var(--muted)',
-    marginBottom: 4,
-  };
-
-  const sectionHeader: React.CSSProperties = {
-    fontSize: 9,
-    color: 'var(--muted)',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    fontFamily: '"JetBrains Mono", monospace',
-    marginBottom: 12,
-  };
-
   return (
     <>
       {/* ── Card 1: Montador de Opções B3 ── */}
-      <div className="card">
-        <div className="card-header">🧩 Montador de Opções B3</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">🧩 Montador de Opções B3</div>
 
         {/* Exemplos rápidos */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 6,
-            flexWrap: 'wrap',
-            marginBottom: 16,
-          }}
-        >
+        <div className="flex flex-wrap gap-1.5 mb-4">
           {EXAMPLES_RAPIDOS.map((ex) => (
             <button
               key={ex.code}
               onClick={() => handleExample(ex)}
-              style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: 6,
-                padding: '4px 10px',
-                cursor: 'pointer',
-                color: 'var(--accent)',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 12,
-                transition: 'all 0.2s',
-              }}
+              className="bg-surface border border-border-custom rounded-sm px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200"
             >
               {ex.code}
             </button>
@@ -188,36 +157,20 @@ export default function MontadorTab() {
         </div>
 
         {/* Grid 2 colunas: Codificador | Decodificador */}
-        <div className="grid-2">
+        <div className="grid grid-cols-2 gap-2">
           {/* ── CODIFICADOR ── */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div style={sectionHeader}>CODIFICADOR</div>
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-3">CODIFICADOR</div>
 
             {/* Ativo */}
-            <div style={{ marginBottom: 10 }}>
-              <div style={labelStyle}>Ativo</div>
+            <div className="mb-2.5">
+              <div className="text-[10px] text-muted mb-1">Ativo</div>
               <input
                 list="asset-list"
                 value={asset}
                 onChange={(e) => setAsset(e.target.value.toUpperCase())}
                 placeholder="Ex: PETR"
-                style={{
-                  width: '100%',
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 6,
-                  padding: '8px 10px',
-                  color: 'var(--text)',
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: 13,
-                  outline: 'none',
-                }}
+                className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none"
               />
               <datalist id="asset-list">
                 {Object.keys(ASSET_NAMES).map((code) => (
@@ -227,42 +180,20 @@ export default function MontadorTab() {
             </div>
 
             {/* Tipo */}
-            <div style={{ marginBottom: 10 }}>
-              <div style={labelStyle}>Tipo</div>
-              <div style={{ display: 'flex', gap: 6 }}>
+            <div className="mb-2.5">
+              <div className="text-[10px] text-muted mb-1">Tipo</div>
+              <div className="flex gap-1.5">
                 {(['CALL', 'PUT'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setType(t)}
-                    style={{
-                      flex: 1,
-                      padding: '7px 0',
-                      borderRadius: 6,
-                      border: `1px solid ${
-                        type === t
-                          ? t === 'CALL'
-                            ? 'var(--green)'
-                            : 'var(--red)'
-                          : 'var(--border)'
-                      }`,
-                      background:
-                        type === t
-                          ? t === 'CALL'
-                            ? '#00e67611'
-                            : '#ff3d5711'
-                          : 'transparent',
-                      color:
-                        type === t
-                          ? t === 'CALL'
-                            ? 'var(--green)'
-                            : 'var(--red)'
-                          : 'var(--muted)',
-                      fontFamily: '"JetBrains Mono", monospace',
-                      fontSize: 12,
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                    }}
+                    className={`flex-1 py-[7px] rounded-sm border font-mono text-xs font-bold cursor-pointer transition-all duration-200 ${
+                      type === t
+                        ? t === 'CALL'
+                          ? 'bg-[#00e67611] border-green text-green'
+                          : 'bg-[#ff3d5711] border-red text-red'
+                        : 'border-border-custom text-muted bg-transparent'
+                    }`}
                   >
                     {t}
                   </button>
@@ -271,23 +202,12 @@ export default function MontadorTab() {
             </div>
 
             {/* Mês */}
-            <div style={{ marginBottom: 10 }}>
-              <div style={labelStyle}>Mês de vencimento</div>
+            <div className="mb-2.5">
+              <div className="text-[10px] text-muted mb-1">Mês de vencimento</div>
               <select
                 value={month}
                 onChange={(e) => setMonth(e.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 6,
-                  padding: '8px 10px',
-                  color: 'var(--text)',
-                  fontFamily: '"Space Grotesk", sans-serif',
-                  fontSize: 13,
-                  outline: 'none',
-                  cursor: 'pointer',
-                }}
+                className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-sans text-xs outline-none cursor-pointer"
               >
                 <option value="">Selecione</option>
                 {MONTHS.map((m) => (
@@ -299,8 +219,8 @@ export default function MontadorTab() {
             </div>
 
             {/* Strike */}
-            <div style={{ marginBottom: 10 }}>
-              <div style={labelStyle}>Strike (R$)</div>
+            <div className="mb-2.5">
+              <div className="text-[10px] text-muted mb-1">Strike (R$)</div>
               <input
                 type="number"
                 value={strike}
@@ -308,17 +228,7 @@ export default function MontadorTab() {
                 placeholder="Ex: 21"
                 min="0"
                 step="0.01"
-                style={{
-                  width: '100%',
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 6,
-                  padding: '8px 10px',
-                  color: 'var(--text)',
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: 13,
-                  outline: 'none',
-                }}
+                className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none"
               />
             </div>
 
@@ -326,65 +236,25 @@ export default function MontadorTab() {
             <button
               onClick={generateCode}
               disabled={!allFilled}
-              style={{
-                width: '100%',
-                padding: '10px 0',
-                borderRadius: 8,
-                border: 'none',
-                background: allFilled ? 'var(--accent)' : 'var(--border)',
-                color: allFilled ? '#fff' : 'var(--muted)',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: allFilled ? 'pointer' : 'not-allowed',
-                transition: 'all 0.2s',
-              }}
+              className={`w-full py-2.5 rounded-md border-none font-mono text-xs font-bold transition-all duration-200 ${
+                allFilled
+                  ? 'bg-accent text-white cursor-pointer'
+                  : 'bg-border-custom text-muted cursor-not-allowed'
+              }`}
             >
               Gerar Código
             </button>
 
             {/* Código gerado */}
             {generatedCode && (
-              <div
-                style={{
-                  marginTop: 12,
-                  background: 'var(--card)',
-                  border: '1px solid var(--accent)',
-                  borderRadius: 10,
-                  padding: 14,
-                  textAlign: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 9,
-                    color: 'var(--muted)',
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    fontFamily: '"JetBrains Mono", monospace',
-                    marginBottom: 6,
-                  }}
-                >
+              <div className="mt-3 bg-card-custom border border-accent rounded-[10px] p-3.5 text-center">
+                <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-1.5">
                   Código Gerado
                 </div>
-                <div
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 700,
-                    color: 'var(--accent)',
-                    fontFamily: '"JetBrains Mono", monospace',
-                    letterSpacing: 2,
-                  }}
-                >
+                <div className="text-[22px] font-bold text-accent font-mono tracking-[2px]">
                   {generatedCode}
                 </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: '#94a3b8',
-                    marginTop: 6,
-                  }}
-                >
+                <div className="text-[11px] text-slate-400 mt-1.5">
                   {asset} · {type} · {month}
                 </div>
               </div>
@@ -392,72 +262,38 @@ export default function MontadorTab() {
           </div>
 
           {/* ── DECODIFICADOR ── */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div style={sectionHeader}>DECODIFICADOR</div>
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-3">DECODIFICADOR</div>
             <CodeDecoder />
 
             {/* Resultado decodificado (via exemplo ou código gerado) */}
             {decodedExample && generatedCode && (
-              <div
-                style={{
-                  marginTop: 12,
-                  background: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 10,
-                  padding: 12,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 9,
-                    color: 'var(--muted)',
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    fontFamily: '"JetBrains Mono", monospace',
-                    marginBottom: 8,
-                  }}
-                >
+              <div className="mt-3 bg-card-custom border border-border-custom rounded-[10px] p-3">
+                <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-2">
                   Decodificação de {generatedCode}
                 </div>
-                <div className="grid-2" style={{ gap: 8 }}>
+                <div className="grid grid-cols-2 gap-2">
                   <DecodeField
                     label="Ativo"
                     value={decodedExample.asset}
-                    color="var(--accent)"
+                    color="text-accent"
                   />
                   <div>
-                    <div
-                      style={{
-                        fontSize: 9,
-                        color: 'var(--muted)',
-                        letterSpacing: 1,
-                        textTransform: 'uppercase',
-                        fontFamily: '"JetBrains Mono", monospace',
-                        marginBottom: 4,
-                      }}
-                    >
+                    <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-1">
                       Tipo
                     </div>
-                    <span
-                      className={
-                        decodedExample.type === 'CALL'
-                          ? 'tag tag-green'
-                          : 'tag tag-red'
+                    <Tag
+                      variant={
+                        decodedExample.type === 'CALL' ? 'green' : 'red'
                       }
                     >
                       {decodedExample.type}
-                    </span>
+                    </Tag>
                   </div>
                   <DecodeField
                     label="Strike"
                     value={`R$ ${decodedExample.strike.toFixed(1)}`}
-                    color="var(--yellow)"
+                    color="text-yellow"
                   />
                   <DecodeField
                     label="Vencimento"
@@ -466,7 +302,7 @@ export default function MontadorTab() {
                         ? `${decodedExample.month} — Semana ${decodedExample.week}`
                         : decodedExample.month
                     }
-                    color="var(--purple)"
+                    color="text-purple"
                   />
                 </div>
               </div>
@@ -476,33 +312,14 @@ export default function MontadorTab() {
       </div>
 
       {/* ── Card 2: Tabela de Referência das Séries ── */}
-      <div className="card">
-        <div className="card-header">📋 Tabela de Referência das Séries</div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 2,
-            fontSize: 12,
-          }}
-        >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">📋 Tabela de Referência das Séries</div>
+        <div className="grid grid-cols-3 gap-0.5 text-xs">
           {/* Cabeçalho */}
           {['CALL', 'Mês', 'PUT'].map((h) => (
             <div
               key={h}
-              style={{
-                padding: '6px 4px',
-                textAlign: 'center',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 10,
-                fontWeight: 700,
-                color: 'var(--muted)',
-                letterSpacing: 1,
-                textTransform: 'uppercase',
-                background: 'var(--surface)',
-                borderRadius: 4,
-                marginBottom: 2,
-              }}
+              className="px-1 py-1.5 text-center font-mono text-[10px] font-bold text-muted tracking-[1px] uppercase bg-surface rounded mb-0.5"
             >
               Letra {h}
             </div>
@@ -512,43 +329,19 @@ export default function MontadorTab() {
           {MONTHS.flatMap((m, i) => [
             <div
               key={`${m}-call`}
-              style={{
-                padding: '6px 4px',
-                textAlign: 'center',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 14,
-                fontWeight: 700,
-                color: 'var(--green)',
-                background: '#00e67608',
-                borderRadius: 4,
-              }}
+              className="px-1 py-1.5 text-center font-mono text-sm font-bold text-green bg-[#00e67608] rounded"
             >
               {CALL_LETTERS[i]}
             </div>,
             <div
               key={`${m}-month`}
-              style={{
-                padding: '6px 4px',
-                textAlign: 'center',
-                color: 'var(--text)',
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: 13,
-              }}
+              className="px-1 py-1.5 text-center text-text font-sans text-xs"
             >
               {m}
             </div>,
             <div
               key={`${m}-put`}
-              style={{
-                padding: '6px 4px',
-                textAlign: 'center',
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: 14,
-                fontWeight: 700,
-                color: 'var(--red)',
-                background: '#ff3d5708',
-                borderRadius: 4,
-              }}
+              className="px-1 py-1.5 text-center font-mono text-sm font-bold text-red bg-[#ff3d5708] rounded"
             >
               {PUT_LETTERS[i]}
             </div>,
@@ -557,72 +350,45 @@ export default function MontadorTab() {
       </div>
 
       {/* ── Card 3: Como funciona o código B3 ── */}
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           💡 Como funciona o código B3
         </div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 12,
-          }}
-        >
+        <p className="text-[13px] leading-[1.8] text-slate-400 mb-3">
           O código de uma opção na B3 segue o formato{' '}
-          <strong style={{ color: 'var(--text)' }}>AAAA B NNN</strong>:
+          <strong className="text-text">AAAA B NNN</strong>:
         </p>
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 12,
-            padding: 14,
-            marginBottom: 12,
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 12,
-            lineHeight: 1.8,
-          }}
-        >
+        <div className="bg-surface rounded-lg p-3.5 mb-3 font-mono text-xs leading-[1.8]">
           <div>
-            <span style={{ color: 'var(--accent)' }}>AAAA</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>
+            <span className="text-accent">AAAA</span>{' '}
+            <span className="text-muted">
               — código do ativo (4 letras, ex: PETR, VALE)
             </span>
           </div>
           <div>
-            <span style={{ color: 'var(--green)' }}>B</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>
+            <span className="text-green">B</span>{' '}
+            <span className="text-muted">
               — letra da série: A–L para CALL, M–X para PUT
             </span>
           </div>
           <div>
-            <span style={{ color: 'var(--yellow)' }}>NNN</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>
+            <span className="text-yellow">NNN</span>{' '}
+            <span className="text-muted">
               — número identificador do strike
             </span>
           </div>
-          <div style={{ marginTop: 8, color: '#4a9eff88' }}>
-            <span className="comment">// Exemplo: PETRH21</span>
+          <div className="mt-2 text-[11px] text-[#4a9eff88]">
+            <span>// Exemplo: PETRH21</span>
           </div>
           <div>
-            PETR <span style={{ color: 'var(--green)', fontWeight: 700 }}>H</span>
+            PETR <span className="text-green font-bold">H</span>
             {' '}21 → Petrobras{' '}
-            <span style={{ color: 'var(--green)', fontWeight: 700 }}>CALL</span>{' '}
+            <span className="text-green font-bold">CALL</span>{' '}
             Agosto, strike ≈ R$ 21
           </div>
         </div>
-        <div
-          style={{
-            background: '#ffd54f11',
-            border: '1px solid #ffd54f22',
-            borderRadius: 8,
-            padding: 10,
-            fontSize: 12,
-            color: '#94a3b8',
-            lineHeight: 1.7,
-          }}
-        >
-          <strong style={{ color: 'var(--yellow)' }}>
+        <div className="bg-[#ffd54f11] border border-[#ffd54f22] rounded-md p-2.5 text-xs text-slate-400 leading-[1.7]">
+          <strong className="text-yellow">
             ⚠ O número no código NÃO é necessariamente o strike real{' '}
           </strong>
           — a B3 usa um identificador numérico que pode divergir do valor de
@@ -646,26 +412,10 @@ function DecodeField({
 }) {
   return (
     <div>
-      <div
-        style={{
-          fontSize: 9,
-          color: 'var(--muted)',
-          letterSpacing: 1,
-          textTransform: 'uppercase',
-          fontFamily: '"JetBrains Mono", monospace',
-          marginBottom: 4,
-        }}
-      >
+      <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-1">
         {label}
       </div>
-      <div
-        style={{
-          fontSize: 13,
-          fontWeight: 700,
-          color,
-          fontFamily: '"JetBrains Mono", monospace',
-        }}
-      >
+      <div className={`text-[13px] font-bold font-mono ${color}`}>
         {value}
       </div>
     </div>

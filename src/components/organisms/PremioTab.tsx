@@ -17,22 +17,24 @@ export function PremioTab() {
 
   return (
     <>
-      <div className="card">
-        <div className="card-header">Formação do prêmio</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          Formação do prêmio
+        </div>
         <Formula>
           <div>
-            <span className="eq">Prêmio</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span>{' '}
-            <span className="val">Valor Intrínseco</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>+</span>{' '}
-            <span className="val">Valor Temporal</span>
+            <span className="text-accent font-bold">Prêmio</span>{' '}
+            <span className="text-muted">=</span>{' '}
+            <span className="text-yellow">Valor Intrínseco</span>{' '}
+            <span className="text-muted">+</span>{' '}
+            <span className="text-yellow">Valor Temporal</span>
           </div>
         </Formula>
         <PremioDiagram />
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           O que afeta o prêmio — simulador
         </div>
         <SliderControl
@@ -73,24 +75,8 @@ export function PremioTab() {
           minLabel="-15 OTM fundo"
           maxLabel="+15 ITM fundo"
         />
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 12,
-            padding: 16,
-            marginTop: 4,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--muted)',
-              marginBottom: 10,
-              letterSpacing: 0.5,
-              textTransform: 'uppercase',
-              fontFamily: "'JetBrains Mono', monospace",
-            }}
-          >
+        <div className="bg-surface rounded-lg px-4 py-3 mt-1">
+          <div className="text-[11px] text-muted mb-2.5 tracking-wide uppercase font-mono">
             Decomposição estimada do prêmio
           </div>
           <ProgressRow
@@ -105,89 +91,58 @@ export function PremioTab() {
             color="var(--blue)"
             displayValue={fmt(breakdown.temporal)}
           />
-          <div
-            style={{
-              borderTop: '1px solid var(--border)',
-              marginTop: 10,
-              paddingTop: 10,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <span style={{ fontSize: 12, color: 'var(--muted)' }}>
+          <div className="border-t border-[var(--border)] mt-2.5 pt-2.5 flex justify-between items-center">
+            <span className="text-xs text-muted">
               Prêmio estimado
             </span>
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 900,
-                color: 'var(--accent)',
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
+            <span className="text-xl font-black text-accent font-mono">
               {fmt(breakdown.total)}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Black-Scholes — a fórmula por trás
         </div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 10,
-          }}
-        >
+        <p className="text-[13px] leading-relaxed text-muted mb-2.5">
           A fórmula de Black-Scholes (1973) calcula o "preço justo" de uma
           opção com base em 5 variáveis:
         </p>
         <Formula>
           <div>
-            <span className="comment">// Inputs do modelo</span>
+            <span className="text-muted text-[11px]">// Inputs do modelo</span>
           </div>
           <div>
-            <span className="val">S</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span> Preço atual da ação
+            <span className="text-yellow">S</span>{' '}
+            <span className="text-muted">=</span> Preço atual da ação
           </div>
           <div>
-            <span className="val">K</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span> Strike (preço de
+            <span className="text-yellow">K</span>{' '}
+            <span className="text-muted">=</span> Strike (preço de
             exercício)
           </div>
           <div>
-            <span className="val">T</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span> Tempo até
+            <span className="text-yellow">T</span>{' '}
+            <span className="text-muted">=</span> Tempo até
             vencimento (em anos)
           </div>
           <div>
-            <span className="val">r</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span> Taxa de juros livre
+            <span className="text-yellow">r</span>{' '}
+            <span className="text-muted">=</span> Taxa de juros livre
             de risco
           </div>
           <div>
-            <span className="val">σ</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span> Volatilidade (o
+            <span className="text-yellow">σ</span>{' '}
+            <span className="text-muted">=</span> Volatilidade (o
             fator mais disputado)
           </div>
         </Formula>
-        <div
-          style={{
-            background: '#ffd54f11',
-            border: '1px solid #ffd54f33',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 4,
-          }}
-        >
-          <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+        <div className="bg-[#ffd54f11] border border-[#ffd54f33] rounded-lg p-3 mt-1">
+          <div className="text-[11px] text-muted leading-relaxed">
             As gregas (Delta, Theta, Vega, Gamma) são as{' '}
-            <strong style={{ color: 'var(--yellow)' }}>
+            <strong className="text-yellow">
               derivadas parciais
             </strong>{' '}
             dessa fórmula — medem como o prêmio muda quando cada variável se
@@ -196,69 +151,31 @@ export function PremioTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Volatilidade implícita vs realizada
         </div>
-        <div className="grid-2">
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: 'var(--blue)',
-                marginBottom: 6,
-                letterSpacing: 0.5,
-              }}
-            >
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-surface rounded-lg p-3">
+            <div className="text-[10px] font-bold text-blue mb-1.5 tracking-wide">
               IMPLÍCITA (IV)
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-muted leading-relaxed">
               O que o mercado <em>espera</em> que aconteça. Está embutida no
               prêmio. Alta antes de eventos (balanços, eleições).
             </div>
           </div>
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: 'var(--green)',
-                marginBottom: 6,
-                letterSpacing: 0.5,
-              }}
-            >
+          <div className="bg-surface rounded-lg p-3">
+            <div className="text-[10px] font-bold text-green mb-1.5 tracking-wide">
               REALIZADA (HV)
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-muted leading-relaxed">
               O que de fato <em>aconteceu</em> no mercado. Calculada com base no
               histórico de preços.
             </div>
           </div>
         </div>
-        <div
-          style={{
-            fontSize: 12,
-            color: '#94a3b8',
-            marginTop: 10,
-            lineHeight: 1.6,
-            padding: 10,
-            background: 'var(--surface)',
-            borderRadius: 8,
-          }}
-        >
+        <div className="text-xs text-muted mt-2.5 leading-relaxed p-2.5 bg-surface rounded-lg">
           Quando o balanço sai e a ação se move menos do que o mercado esperava,
           a IV despenca — o "esmagamento de volatilidade". Compradores podem
           perder dinheiro mesmo com a ação andando na direção certa.

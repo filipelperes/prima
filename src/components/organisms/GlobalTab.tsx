@@ -1,386 +1,181 @@
+import { cn } from '@/lib/utils';
+import { Tag } from '@/components/atoms/Tag';
+
 export default function GlobalTab() {
   return (
     <>
-      <div className="card">
-        <div className="card-header">🌎 Opções pelo Mundo</div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 0,
-          }}
-        >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          🌎 Opções pelo Mundo
+        </div>
+        <p className="text-[13px] leading-[1.8] text-muted mb-0">
           Mercado de opções não existe só no Brasil! Opções são negociadas em
           bolsas do mundo inteiro. Cada mercado tem suas próprias regras,
           horários e particularidades. Conheça os principais:
         </p>
       </div>
 
-      <div className="card">
-        <div className="card-header">Principais mercados</div>
-        <div className="grid-2">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          Principais mercados
+        </div>
+        <div className="grid grid-cols-2 gap-2">
           {/* 🇺🇸 Estados Unidos */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇺🇸 Estados Unidos — CBOE / NYSE / NASDAQ
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Maior mercado de opções do mundo. Casa do VIX, SPX, e das opções
               mais líquidas do planeta. Regulado pela SEC e CFTC.
             </div>
-            <span className="tag tag-blue">MAIOR MERCADO</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="blue">MAIOR MERCADO</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: SEC + CBOE Rule Book (atualizado mai/2026). Regulação: SEC e CFTC. Clearing: OCC.
             </div>
           </div>
 
           {/* 🇪🇺 Europa */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇪🇺 Europa — Eurex / Euronext
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Alemanha (Eurex), França, Holanda, Bélgica, Portugal (Euronext).
               Mais de 500 ações europeias com opções.
             </div>
-            <span className="tag tag-yellow">PAN-EUROPEU</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="yellow">PAN-EUROPEU</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: ESMA. Eurex Contract Specifications (mai/2026). Euronext Rule Book Book I (jun/2025).
             </div>
           </div>
 
           {/* 🇬🇧 Reino Unido */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇬🇧 Reino Unido — LSE
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               London Stock Exchange. Opções sobre ações do FTSE 100. Foco
               institucional.
             </div>
-            <span className="tag tag-purple">LONDRES</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="purple">LONDRES</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: FCA. IDEM Trading Procedures. LSE Derivatives Documentation.
             </div>
           </div>
 
           {/* 🇯🇵 Japão */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇯🇵 Japão — Osaka Exchange (OSE)
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Opções sobre Nikkei 225 e TOPIX. Fuso horário asiático.
             </div>
-            <span className="tag tag-green">ÁSIA</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="green">ÁSIA</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: JFSA. Osaka Exchange Nikkei 225 Options Contract Specs. JPX Rulebook.
             </div>
           </div>
 
           {/* 🇮🇳 Índia */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇮🇳 Índia — NSE / BSE
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Maior volume de opções do mundo em contratos. Crescimento
               explosivo.
             </div>
-            <span className="tag tag-accent">MAIOR VOLUME</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="accent">MAIOR VOLUME</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: SEBI. NSE Options Trading Manual. BSE Derivatives Rules & Regulations.
             </div>
           </div>
 
           {/* 🇨🇳 China */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇨🇳 China — CFFEX / HKEX
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               China Financial Futures Exchange + Hong Kong. Crescendo
               rapidamente.
             </div>
-            <span className="tag tag-yellow">CRESCENDO</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="yellow">CRESCENDO</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: CSRC. CFFEX Trading Rules. HKEX Derivatives Market Rules.
             </div>
           </div>
 
           {/* 🇦🇺 Austrália */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇦🇺 Austrália — ASX
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Australian Securities Exchange. Mercado maduro com boas opções
               sobre ações e índices.
             </div>
-            <span className="tag tag-green">MADURO</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="green">MADURO</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: ASIC. ASX Derivatives Trading Procedures. ASX Clear.
             </div>
           </div>
 
           {/* 🇸🇬 Singapura */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇸🇬 Singapura — SGX
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Singapore Exchange. Opções sobre índices MSCI. Hub asiático de
               derivatives.
             </div>
-            <span className="tag tag-blue">HUB</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="blue">HUB</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: MAS. SGX Derivatives Trading Rules. SGX FTSE Index Options Specs.
             </div>
           </div>
 
           {/* 🇨🇦 Canadá */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇨🇦 Canadá — TMX / Montreal Exchange
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Opções sobre ações canadenses e commodities. Forte em energia e
               mineração.
             </div>
-            <span className="tag tag-yellow">COMMODITIES</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="yellow">COMMODITIES</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: CSA. Montreal Exchange Options Rules. TMX Derivatives Manual.
             </div>
           </div>
 
           {/* 🇿🇦 África do Sul */}
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                marginBottom: 6,
-                color: 'var(--text)',
-              }}
-            >
+          <div className="bg-surface rounded-[10px] p-3.5">
+            <div className="text-[13px] font-bold mb-1.5 text-text">
               🇿🇦 África do Sul — JSE
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#94a3b8',
-                lineHeight: 1.7,
-                marginBottom: 8,
-              }}
-            >
+            <div className="text-[11px] text-muted leading-[1.7] mb-2">
               Johannesburg Stock Exchange. Maior mercado de derivatives da
               África.
             </div>
-            <span className="tag tag-purple">ÁFRICA</span>
-            <div style={{fontSize:10, color:'var(--soft)', marginTop:6, borderTop:'1px solid var(--border)', paddingTop:6}}>
+            <Tag variant="purple">ÁFRICA</Tag>
+            <div className="text-[10px] text-soft mt-1.5 border-t border-border-custom pt-1.5">
               📎 Ref: FSCA. JSE Equity Derivatives Rules. JSE Clear.
             </div>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">📊 Você sabia?</div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 0,
-          }}
-        >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          📊 Você sabia?
+        </div>
+        <p className="text-[13px] leading-[1.8] text-muted mb-0">
           O mercado de opções GLOBAL movimentou mais de 119 BILHÕES de
           contratos em 2025. O Brasil (B3) é um dos maiores mercados da América
           Latina, mas representa uma fração do volume global. Enquanto isso, a
@@ -389,70 +184,86 @@ export default function GlobalTab() {
         </p>
       </div>
 
-      <div className="card">
-  <div className="card-header">📚 Onde estudar opções no mundo</div>
-  <div style={{fontSize: 12, color: '#94a3b8', lineHeight: 1.8}}>
-    <p style={{marginBottom: 8}}><strong style={{color:'var(--text)'}}>Documentação oficial:</strong></p>
-    <ul style={{paddingLeft: 16, margin: 0, listStyle: 'none'}}>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>CBOE</strong> — cboe.com (Rule Books, especificações FIX/BOE, FAQ)</li>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>Eurex</strong> — eurex.com (Contract Specs, Trading Conditions, Circulars)</li>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>Euronext</strong> — euronext.com (Rule Book, Trading Procedures, Notices)</li>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>B3</strong> — b3.com.br (Regulamento de Negociação, Manual de Apreçamento, MPO)</li>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>OIC</strong> — optionseducation.org (Guia de Estratégias, calculadoras, cursos gratuitos)</li>
-      <li style={{marginBottom: 6}}>• <strong style={{color:'var(--accent)'}}>FIA</strong> — fia.org (Estatísticas globais de derivativos, volumes mensais)</li>
-    </ul>
-  </div>
-</div>
-
-<div className="card">
-  <div className="card-header">🌐 Termos internacionais vs Brasil</div>
-  <div style={{fontSize: 12, color: '#94a3b8', lineHeight: 1.8}}>
-    <p style={{marginBottom: 10}}>Cada mercado usa termos diferentes para o mesmo conceito:</p>
-    <div style={{
-      borderRadius: 10,
-      overflow: 'hidden',
-      border: '1px solid var(--border)',
-    }}>
-      {/* header grid */}
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', background:'var(--surface)', borderBottom:'1px solid var(--border)'}}>
-        <div style={{padding:'8px 10px', fontWeight:700, fontSize:10, color:'var(--muted)', fontFamily:'JetBrains Mono'}}>CONCEITO</div>
-        <div style={{padding:'8px 10px', fontWeight:700, fontSize:10, color:'var(--muted)', fontFamily:'JetBrains Mono'}}>BRASIL (B3)</div>
-        <div style={{padding:'8px 10px', fontWeight:700, fontSize:10, color:'var(--muted)', fontFamily:'JetBrains Mono'}}>EUA / EUROPA</div>
-      </div>
-      {[
-        ['Opção de Compra', 'CALL', 'Call Option'],
-        ['Opção de Venda', 'PUT', 'Put Option'],
-        ['Prêmio', 'Prêmio', 'Premium'],
-        ['Preço de Exercício', 'Strike', 'Strike Price'],
-        ['Lançador/Vendedor', 'Lançador', 'Writer / Seller'],
-        ['Titular/Comprador', 'Titular', 'Holder / Buyer'],
-        ['Lote Padrão', '100 ações', '100 shares'],
-        ['Fora do Dinheiro', 'OTM', 'Out of the Money'],
-        ['No Dinheiro', 'ITM', 'In the Money'],
-        ['No Preço', 'ATM', 'At the Money'],
-        ['Corretora', 'Corretora', 'Broker'],
-        ['Bolsa', 'B3', 'Exchange (CBOE/NYSE)'],
-      ].map((row, i) => (
-        <div key={i} style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', borderBottom:i<11?'1px solid var(--border)':'none', background:i%2===0?'var(--card)':'var(--surface)'}}>
-          <div style={{padding:'6px 10px', fontSize:11, color:'var(--text)'}}>{row[0]}</div>
-          <div style={{padding:'6px 10px', fontSize:11, color:'var(--accent)', fontFamily:'JetBrains Mono'}}>{row[1]}</div>
-          <div style={{padding:'6px 10px', fontSize:11, color:'var(--yellow)', fontFamily:'JetBrains Mono'}}>{row[2]}</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          📚 Onde estudar opções no mundo
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+        <div className="text-[12px] text-muted leading-[1.8]">
+          <p className="mb-2">
+            <strong className="text-text">Documentação oficial:</strong>
+          </p>
+          <ul className="pl-4 m-0 list-none">
+            <li className="mb-1.5">
+              • <strong className="text-accent">CBOE</strong> — cboe.com (Rule Books, especificações FIX/BOE, FAQ)
+            </li>
+            <li className="mb-1.5">
+              • <strong className="text-accent">Eurex</strong> — eurex.com (Contract Specs, Trading Conditions, Circulars)
+            </li>
+            <li className="mb-1.5">
+              • <strong className="text-accent">Euronext</strong> — euronext.com (Rule Book, Trading Procedures, Notices)
+            </li>
+            <li className="mb-1.5">
+              • <strong className="text-accent">B3</strong> — b3.com.br (Regulamento de Negociação, Manual de Apreçamento, MPO)
+            </li>
+            <li className="mb-1.5">
+              • <strong className="text-accent">OIC</strong> — optionseducation.org (Guia de Estratégias, calculadoras, cursos gratuitos)
+            </li>
+            <li className="mb-1.5">
+              • <strong className="text-accent">FIA</strong> — fia.org (Estatísticas globais de derivativos, volumes mensais)
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      <div className="card">
-        <div className="card-header">🇧🇷 O Brasil no Contexto Global</div>
-        <p
-          style={{
-            fontSize: 13,
-            lineHeight: 1.8,
-            color: '#94a3b8',
-            marginBottom: 0,
-          }}
-        >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          🌐 Termos internacionais vs Brasil
+        </div>
+        <div className="text-[12px] text-muted leading-[1.8]">
+          <p className="mb-2.5">Cada mercado usa termos diferentes para o mesmo conceito:</p>
+          <div className="rounded-[10px] overflow-hidden border border-border-custom">
+            {/* header grid */}
+            <div className="grid grid-cols-3 bg-surface border-b border-border-custom">
+              <div className="px-2.5 py-2 font-bold text-[10px] text-muted font-mono">CONCEITO</div>
+              <div className="px-2.5 py-2 font-bold text-[10px] text-muted font-mono">BRASIL (B3)</div>
+              <div className="px-2.5 py-2 font-bold text-[10px] text-muted font-mono">EUA / EUROPA</div>
+            </div>
+            {[
+              ['Opção de Compra', 'CALL', 'Call Option'],
+              ['Opção de Venda', 'PUT', 'Put Option'],
+              ['Prêmio', 'Prêmio', 'Premium'],
+              ['Preço de Exercício', 'Strike', 'Strike Price'],
+              ['Lançador/Vendedor', 'Lançador', 'Writer / Seller'],
+              ['Titular/Comprador', 'Titular', 'Holder / Buyer'],
+              ['Lote Padrão', '100 ações', '100 shares'],
+              ['Fora do Dinheiro', 'OTM', 'Out of the Money'],
+              ['No Dinheiro', 'ITM', 'In the Money'],
+              ['No Preço', 'ATM', 'At the Money'],
+              ['Corretora', 'Corretora', 'Broker'],
+              ['Bolsa', 'B3', 'Exchange (CBOE/NYSE)'],
+            ].map((row, i) => (
+              <div
+                key={i}
+                className={cn(
+                  'grid grid-cols-3',
+                  i < 11 && 'border-b border-border-custom',
+                  i % 2 === 0 ? 'bg-card-custom' : 'bg-surface',
+                )}
+              >
+                <div className="px-2.5 py-1.5 text-[11px] text-text">{row[0]}</div>
+                <div className="px-2.5 py-1.5 text-[11px] text-accent font-mono">{row[1]}</div>
+                <div className="px-2.5 py-1.5 text-[11px] text-yellow font-mono">{row[2]}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
+          🇧🇷 O Brasil no Contexto Global
+        </div>
+        <p className="text-[13px] leading-[1.8] text-muted mb-0">
           A B3 é a bolsa oficial do Brasil e uma das maiores do mundo em valor
           de mercado. O mercado de opções brasileiro é sofisticado, com liquidez
           em PETR4, VALE3, ITUB4, BBDC4 e BOVA11. Tem regulação da CVM, margem

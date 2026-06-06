@@ -10,11 +10,11 @@ export function IntroTab() {
   const current = ANALOGIES.find((a) => a.id === analogyTab) ?? ANALOGIES[0];
   return (
     <>
-      <div className="card">
-        <div className="card-header">O que é uma opção?</div>
-        <p style={{ fontSize: 14, lineHeight: 1.8, color: '#94a3b8', marginBottom: 12 }}>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">O que é uma opção?</div>
+        <p className="text-sm leading-relaxed text-[#94a3b8] mb-3">
           Uma opção é um{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             contrato que dá um direito, mas não uma obrigação
           </strong>
           , de comprar ou vender um ativo por um preço combinado até uma data
@@ -22,157 +22,75 @@ export function IntroTab() {
         </p>
         <Formula>
           <div>
-            <span className="eq">Opção</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>=</span>{' '}
-            <span className="val">Direito</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>+</span>{' '}
-            <span className="val">Preço Fixo</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>+</span>{' '}
-            <span className="val">Data Limite</span>
+            <span className="text-accent font-bold">Opção</span>{' '}
+            <span className="text-muted">=</span>{' '}
+            <span className="text-yellow">Direito</span>{' '}
+            <span className="text-muted">+</span>{' '}
+            <span className="text-yellow">Preço Fixo</span>{' '}
+            <span className="text-muted">+</span>{' '}
+            <span className="text-yellow">Data Limite</span>
           </div>
-          <div style={{ marginTop: 6 }}>
-            <span className="comment">
+          <div className="mt-1.5">
+            <span className="text-muted text-[11px]">
               // Você paga um prêmio por esse direito
             </span>
           </div>
         </Formula>
-        <p style={{ fontSize: 12, lineHeight: 1.7, color: '#94a3b8' }}>
+        <p className="text-xs leading-relaxed text-[#94a3b8]">
           O prêmio é o{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             máximo que você pode perder
           </strong>{' '}
           como comprador. Não tem como perder mais do que pagou.
         </p>
       </div>
 
-      <div className="card">
-        <div className="card-header">Analogias interativas</div>
-        <p style={{ fontSize: 13, lineHeight: 1.8, color: '#94a3b8', marginBottom: 12 }}>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Analogias interativas</div>
+        <p className="text-[13px] leading-relaxed text-[#94a3b8] mb-3">
           Cada analogia mostra o conceito financeiro (esquerda) lado a lado com
           o mundo real (direita). Clique para trocar:
         </p>
-        <div
-          style={{
-            display: 'flex',
-            gap: 4,
-            marginBottom: 12,
-            flexWrap: 'wrap',
-          }}
-        >
+        <div className="flex gap-1 mb-3 flex-wrap">
           {ANALOGIES.map((a) => (
             <button
               key={a.id}
               onClick={() => setAnalogyTab(a.id)}
-              style={{
-                flex: 1,
-                minWidth: 80,
-                padding: '8px 10px',
-                background:
-                  analogyTab === a.id
-                    ? 'var(--accent)22'
-                    : 'var(--surface)',
-                border: `1px solid ${
-                  analogyTab === a.id
-                    ? 'var(--accent)44'
-                    : 'var(--border)'
-                }`,
-                borderRadius: 8,
-                cursor: 'pointer',
-                color:
-                  analogyTab === a.id ? 'var(--accent)' : 'var(--muted)',
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: 11,
-                fontWeight: 700,
-                transition: 'all 0.2s',
-                textAlign: 'center',
-              }}
+              className={`flex-1 min-w-[80px] px-2.5 py-2 rounded-lg cursor-pointer text-[11px] font-bold font-sans transition-all duration-200 text-center border ${
+                analogyTab === a.id
+                  ? 'bg-accent/15 border-accent/30 text-accent'
+                  : 'bg-surface border-border-custom text-muted'
+              }`}
             >
               {a.icon} {a.title}
             </button>
           ))}
         </div>
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 8,
-            padding: '8px 12px',
-            marginBottom: 12,
-            fontSize: 12,
-            color: 'var(--accent)',
-            fontFamily: '"JetBrains Mono", monospace',
-            border: '1px solid var(--border)',
-          }}
-        >
+        <div className="bg-surface rounded-lg px-3 py-2 mb-3 text-xs text-accent font-mono border border-border-custom">
           💡 {current.conceito}
         </div>
-        <div className="grid-2" style={{ gap: 10 }}>
-          <div
-            style={{
-              background: '#00d4ff08',
-              border: '1px solid #00d4ff22',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 9,
-                color: 'var(--accent)',
-                fontWeight: 700,
-                letterSpacing: 1,
-                marginBottom: 8,
-                fontFamily: '"JetBrains Mono", monospace',
-                textTransform: 'uppercase',
-              }}
-            >
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="bg-accent/5 border border-accent/10 rounded-lg p-3.5">
+            <div className="text-[9px] text-accent font-bold tracking-[1px] mb-2 font-mono uppercase">
               📊 Mercado financeiro
             </div>
             {current.financeiro.map((line, i) => (
               <div
                 key={i}
-                style={{
-                  fontSize: 11,
-                  color: '#94a3b8',
-                  lineHeight: 1.7,
-                  marginBottom: 4,
-                  paddingLeft: i > 0 ? 12 : 0,
-                }}
+                className={`text-[11px] text-[#94a3b8] leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
               >
                 {line}
               </div>
             ))}
           </div>
-          <div
-            style={{
-              background: '#ffd54f08',
-              border: '1px solid #ffd54f22',
-              borderRadius: 10,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 9,
-                color: 'var(--yellow)',
-                fontWeight: 700,
-                letterSpacing: 1,
-                marginBottom: 8,
-                fontFamily: '"JetBrains Mono", monospace',
-                textTransform: 'uppercase',
-              }}
-            >
+          <div className="bg-yellow/5 border border-yellow/10 rounded-lg p-3.5">
+            <div className="text-[9px] text-yellow font-bold tracking-[1px] mb-2 font-mono uppercase">
               🌎 Mundo real
             </div>
             {current.mundoReal.map((line, i) => (
               <div
                 key={i}
-                style={{
-                  fontSize: 11,
-                  color: '#94a3b8',
-                  lineHeight: 1.7,
-                  marginBottom: 4,
-                  paddingLeft: i > 0 ? 12 : 0,
-                }}
+                className={`text-[11px] text-[#94a3b8] leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
               >
                 {line}
               </div>
@@ -181,77 +99,49 @@ export function IntroTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">Tipos de opção</div>
-        <div className="grid-2">
-          <div
-            style={{
-              background: '#00e67611',
-              border: '1px solid #00e67633',
-              borderRadius: 12,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 22,
-                fontWeight: 900,
-                color: 'var(--green)',
-                marginBottom: 4,
-              }}
-            >
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Tipos de opção</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-green/5 border border-green/20 rounded-lg p-3.5">
+            <div className="text-[22px] font-black text-green mb-1">
               CALL
             </div>
-            <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+            <div className="text-xs font-bold mb-1.5">
               Direito de COMPRAR
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               Você ganha quando o ativo{' '}
-              <strong style={{ color: 'var(--green)' }}>sobe</strong>. Aposta de
+              <strong className="text-green">sobe</strong>. Aposta de
               alta.
             </div>
           </div>
-          <div
-            style={{
-              background: '#ff3d5711',
-              border: '1px solid #ff3d5733',
-              borderRadius: 12,
-              padding: 14,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 22,
-                fontWeight: 900,
-                color: 'var(--red)',
-                marginBottom: 4,
-              }}
-            >
+          <div className="bg-red/5 border border-red/20 rounded-lg p-3.5">
+            <div className="text-[22px] font-black text-red mb-1">
               PUT
             </div>
-            <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
+            <div className="text-xs font-bold mb-1.5">
               Direito de VENDER
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               Você ganha quando o ativo{' '}
-              <strong style={{ color: 'var(--red)' }}>cai</strong>. Aposta de
+              <strong className="text-red">cai</strong>. Aposta de
               baixa ou proteção.
             </div>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">🔍 Decodificador de códigos B3</div>
-        <p style={{ fontSize: 12, lineHeight: 1.7, color: '#94a3b8', marginBottom: 10 }}>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">🔍 Decodificador de códigos B3</div>
+        <p className="text-xs leading-relaxed text-[#94a3b8] mb-2.5">
           Na B3, cada opção tem um código próprio. Digite ou clique em um
           exemplo para decodificar:
         </p>
         <CodeDecoder />
       </div>
 
-      <div className="card">
-        <div className="card-header">Opções vs outros mercados</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Opções vs outros mercados</div>
         <CompareTable
           columns={[
             { key: 'mercado', label: 'Mercado' },
@@ -296,7 +186,7 @@ export function IntroTab() {
           caption={
             <>
               No futuro, se o mercado vai contra você, você pode{' '}
-              <strong style={{ color: 'var(--red)' }}>
+              <strong className="text-red">
                 dever mais do que colocou
               </strong>
               . Na opção comprada, você conhece o pior cenário antes de entrar.
@@ -305,9 +195,9 @@ export function IntroTab() {
         />
       </div>
 
-      <div className="card">
-        <div className="card-header">Para que profissionais usam opções</div>
-        <div className="grid-2">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Para que profissionais usam opções</div>
+        <div className="grid grid-cols-2 gap-2">
           <UsoCard
             icon="🛡️"
             name="Proteção (Hedge)"

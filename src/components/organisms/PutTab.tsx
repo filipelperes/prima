@@ -28,22 +28,14 @@ export function PutTab() {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          gap: 6,
-          alignItems: 'center',
-          marginBottom: 12,
-          flexWrap: 'wrap',
-        }}
-      >
+      <div className="flex gap-1.5 items-center mb-3 flex-wrap">
         <Tag variant="red">PUT</Tag>
-        <span style={{ fontSize: 12, color: 'var(--muted)' }}>
+        <span className="text-xs text-muted">
           direito de vender
         </span>
       </div>
 
-      <div className="toggle-group">
+      <div className="flex gap-1 bg-surface border border-border-custom rounded-[10px] p-[3px] mb-3.5">
         <ToggleButton
           label="COMPRADOR"
           active={mode === 'comprador'}
@@ -64,7 +56,7 @@ export function PutTab() {
           <strong>comprar as ações se despencarem</strong>. Se a empresa falir,
           você compra papéis que valem zero, pagando o preço do strike. Risco
           máximo ={' '}
-          <strong style={{ color: 'var(--red)' }}>
+          <strong className="text-red">
             Strike × Contratos × 100
           </strong>
           .
@@ -72,43 +64,33 @@ export function PutTab() {
       )}
 
       <div
-        className="card"
-        style={{
-          display: mode === 'comprador' ? 'block' : 'none',
-          background: '#4fc3f711',
-          borderColor: '#4fc3f733',
-        }}
+        className={`${mode === 'comprador' ? 'block' : 'hidden'} bg-surface border border-blue/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-blue/10`}
       >
-        <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
+        <div className="text-xs text-[#94a3b8] leading-relaxed">
           Você paga o prêmio e ganha o direito de{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             vender as ações pelo preço do strike
           </strong>
           , mesmo que o mercado esteja pagando muito menos. É como um{' '}
-          <strong style={{ color: 'var(--blue)' }}>seguro de carro</strong>:
+          <strong className="text-blue">seguro de carro</strong>:
           você paga a anuidade e se o carro "bater" (ação cair), você aciona e
           garante a venda pelo preço combinado.
         </div>
       </div>
 
       <div
-        className="card"
-        style={{
-          display: mode === 'vendedor' ? 'block' : 'none',
-          background: '#ff3d5711',
-          borderColor: '#ff3d5744',
-        }}
+        className={`${mode === 'vendedor' ? 'block' : 'hidden'} bg-surface border border-red/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-red/10`}
       >
-        <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
-          Você é a <strong style={{ color: 'var(--text)' }}>seguradora</strong>.
+        <div className="text-xs text-[#94a3b8] leading-relaxed">
+          Você é a <strong className="text-text">seguradora</strong>.
           Recebe o prêmio todo mês. Funciona bem enquanto não há "sinistro". Mas
           se a ação derreter — ou pior, a empresa falir — você é obrigado a
           comprar ações quase sem valor pagando o preço do strike.
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">⚙ Parâmetros</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">⚙ Parâmetros</div>
         <SliderControl
           label="Ação atual (PETR4)"
           value={state.acao}
@@ -149,64 +131,39 @@ export function PutTab() {
           displayValue={String(state.contratos)}
           onChange={(v) => updateField('contratos', v)}
         />
-        <div className="grid-2">
-          <div
-            style={{
-              background: 'var(--surface)',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-            }}
-          >
-            <div className="stat-label">{resultadoLabel}</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-surface rounded-lg p-3 text-center">
+            <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">{resultadoLabel}</div>
             <div
-              className="stat-val"
-              style={{
-                color:
-                  mode === 'comprador' ? 'var(--red)' : 'var(--green)',
-              }}
+              className={`text-lg font-black ${mode === 'comprador' ? 'text-red' : 'text-green'}`}
             >
               {fmtInt(result.totalPago)}
             </div>
-            <div className="stat-sub">{resultadoSub}</div>
+            <div className="text-[10px] text-muted mt-0.5">{resultadoSub}</div>
           </div>
           {mode === 'vendedor' && (
-            <div
-              style={{
-                background: 'var(--surface)',
-                borderRadius: 10,
-                padding: 12,
-                textAlign: 'center',
-              }}
-            >
-              <div className="stat-label">Risco máx. vendedor</div>
-              <div className="stat-val" style={{ color: 'var(--red)' }}>
+            <div className="bg-surface rounded-lg p-3 text-center">
+              <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">Risco máx. vendedor</div>
+              <div className="text-lg font-black text-red">
                 {fmtInt(result.riscoMax)}
               </div>
-              <div className="stat-sub">empresa vai a zero</div>
+              <div className="text-[10px] text-muted mt-0.5">empresa vai a zero</div>
             </div>
           )}
           {mode === 'comprador' && (
-            <div
-              style={{
-                background: 'var(--surface)',
-                borderRadius: 10,
-                padding: 12,
-                textAlign: 'center',
-              }}
-            >
-              <div className="stat-label">Strike atual</div>
-              <div className="stat-val" style={{ color: 'var(--yellow)' }}>
+            <div className="bg-surface rounded-lg p-3 text-center">
+              <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">Strike atual</div>
+              <div className="text-lg font-black text-yellow">
                 {fmt(state.strike)}
               </div>
-              <div className="stat-sub">preço de exercício</div>
+              <div className="text-[10px] text-muted mt-0.5">preço de exercício</div>
             </div>
           )}
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">🎯 Cenários</div>
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">🎯 Cenários</div>
         <ScenarioGrid scenarios={scenarios} activeIndex={activeScenario} />
         <SliderControl
           label="Ação no vencimento"
@@ -252,84 +209,42 @@ export function PutTab() {
             },
           ]}
         />
-        <div className="result-text">{result.descricao}</div>
+        <div className="bg-black/35 rounded-lg p-3 text-xs leading-relaxed text-[#94a3b8]">{result.descricao}</div>
       </ResultBox>
 
-      <div className="card" style={{ marginTop: 12 }}>
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3 mt-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           PUT vendida — estratégia do investidor experiente
         </div>
-        <p
-          style={{
-            fontSize: 12,
-            lineHeight: 1.7,
-            color: '#94a3b8',
-            marginBottom: 10,
-          }}
-        >
+        <p className="text-xs leading-relaxed text-[#94a3b8] mb-2.5">
           PETR4 a R$ 30. Você gostaria de comprar se caísse para R$ 25. Em vez
           de deixar uma ordem de compra parada, você{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             vende uma PUT strike R$ 25
           </strong>{' '}
           e recebe o prêmio.
         </p>
-        <div className="grid-2">
-          <div
-            style={{
-              background: '#00e67611',
-              border: '1px solid #00e67633',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--green)',
-                fontWeight: 700,
-                marginBottom: 6,
-              }}
-            >
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-green/10 border border-green/30 rounded-lg p-3">
+            <div className="text-[10px] text-green font-bold mb-1.5">
               AÇÃO FICA ACIMA DE R$ 25
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               PUT não exercida. Você fica com o prêmio no bolso. Ganhou dinheiro
               por nada acontecer.
             </div>
           </div>
-          <div
-            style={{
-              background: '#4fc3f711',
-              border: '1px solid #4fc3f733',
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--blue)',
-                fontWeight: 700,
-                marginBottom: 6,
-              }}
-            >
+          <div className="bg-blue/10 border border-blue/30 rounded-lg p-3">
+            <div className="text-[10px] text-blue font-bold mb-1.5">
               AÇÃO CAI ABAIXO DE R$ 25
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.6 }}>
+            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
               Você compra a ação a R$ 25 — que já era o seu preço-alvo de
               qualquer jeito.
             </div>
           </div>
         </div>
-        <p
-          style={{
-            fontSize: 11,
-            color: 'var(--muted)',
-            marginTop: 10,
-            lineHeight: 1.6,
-          }}
-        >
+        <p className="text-[11px] text-muted mt-2.5 leading-relaxed">
           Isso pressupõe que você TEM o caixa para comprar as ações. A PUT
           vendida descoberta (sem caixa para honrar) é que pode quebrar alguém.
         </p>

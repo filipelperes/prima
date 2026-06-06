@@ -14,8 +14,8 @@ export default function EstrategiasTab() {
         se a ação continuar subindo.
       </WarningBox>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           📋 Covered Call — Venda Coberta
         </div>
         <UsoCard
@@ -23,54 +23,24 @@ export default function EstrategiasTab() {
           name="O que é"
           desc="Você TEM as ações e vende CALL contra elas. Embolsa o prêmio todo mês. Se a ação subir além do strike, ela 'é chamada' e você entrega pelo preço combinado."
         />
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 10,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--blue)',
-              fontWeight: 700,
-              marginBottom: 6,
-              letterSpacing: 0.5,
-            }}
-          >
+        <div className="bg-surface rounded-[10px] p-3 mt-2.5">
+          <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
             Você tem 1.000 PETR4 a R$ 38. Vende{' '}
-            <strong style={{ color: 'var(--text)' }}>CALL strike R$ 42</strong>{' '}
-            por <strong style={{ color: 'var(--text)' }}>R$ 0,60</strong> de
+            <strong className="text-text">CALL strike R$ 42</strong>{' '}
+            por <strong className="text-text">R$ 0,60</strong> de
             prêmio. Recebe R$ 600. Se PETR4 fechar abaixo de R$ 42, o prêmio é
             seu. Se subir acima, entrega as ações a R$ 42 e lucra R$ 4 por ação
             + o prêmio.
           </div>
         </div>
-        <div
-          style={{
-            background: '#ffd54f11',
-            border: '1px solid #ffd54f22',
-            borderRadius: 8,
-            padding: 12,
-            marginTop: 8,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--yellow)',
-              fontWeight: 700,
-              marginBottom: 4,
-            }}
-          >
+        <div className="bg-yellow/5 border border-yellow/15 rounded-md p-3 mt-2">
+          <div className="text-[11px] text-yellow font-bold mb-1">
             ⏱ O tempo (Theta) trabalha A SEU FAVOR como vendedor
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.6 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.6]">
             A cada dia que passa, a opção vale menos. Como você vendeu, o
             decaimento temporal é lucro para você. Diferente do comprador, que
             luta contra o relógio.
@@ -78,8 +48,8 @@ export default function EstrategiasTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           🛡️ Protective Put — Seguro de Carteira
         </div>
         <UsoCard
@@ -87,107 +57,46 @@ export default function EstrategiasTab() {
           name="O que é"
           desc="Você já tem as ações e compra PUTs como seguro. Se o mercado cair forte, as PUTs valorizam e compensam as perdas da carteira. É como um seguro de carro: paga o prêmio, nunca quer usar."
         />
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 10,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--blue)',
-              fontWeight: 700,
-              marginBottom: 6,
-              letterSpacing: 0.5,
-            }}
-          >
+        <div className="bg-surface rounded-[10px] p-3 mt-2.5">
+          <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
             Carteira de R$ 10M em ações. Compra PUTs de 1% do valor (R$ 100k em
             prêmio). Se o mercado cai 20%, a carteira perde R$ 2M, mas as PUTs
             valorizam ~R$ 1,5M. O seguro{' '}
-            <strong style={{ color: 'var(--green)' }}>reduziu a perda</strong> de
+            <strong className="text-green">reduziu a perda</strong> de
             20% para 5-6%.
           </div>
         </div>
-        <div className="grid-2" style={{ marginTop: 10 }}>
-          <div
-            style={{
-              background: '#ff3d5711',
-              border: '1px solid #ff3d5733',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--red)',
-                fontWeight: 700,
-                marginBottom: 4,
-                letterSpacing: 0.5,
-              }}
-            >
+        <div className="grid grid-cols-2 gap-2 mt-2.5">
+          <div className="bg-red/5 border border-red/20 rounded-[10px] p-3 text-center">
+            <div className="text-[10px] text-red font-bold mb-1 tracking-[0.5px]">
               SEM SEGURO
             </div>
-            <div
-              style={{
-                fontSize: 18,
-                color: 'var(--red)',
-                fontWeight: 700,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
+            <div className="text-lg text-red font-bold font-mono">
               -20%
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>
+            <div className="text-[11px] text-[#94a3b8]">
               Perda total de R$ 2M
             </div>
           </div>
-          <div
-            style={{
-              background: '#00e67611',
-              border: '1px solid #00e67633',
-              borderRadius: 10,
-              padding: 12,
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                color: 'var(--green)',
-                fontWeight: 700,
-                marginBottom: 4,
-                letterSpacing: 0.5,
-              }}
-            >
+          <div className="bg-green/5 border border-green/20 rounded-[10px] p-3 text-center">
+            <div className="text-[10px] text-green font-bold mb-1 tracking-[0.5px]">
               COM SEGURO
             </div>
-            <div
-              style={{
-                fontSize: 18,
-                color: 'var(--green)',
-                fontWeight: 700,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
+            <div className="text-lg text-green font-bold font-mono">
               -5,5%
             </div>
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>
+            <div className="text-[11px] text-[#94a3b8]">
               Perda reduzida para ~R$ 550k
             </div>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           🔒 Collar — A Estratégia dos Profissionais
         </div>
         <UsoCard
@@ -195,26 +104,11 @@ export default function EstrategiasTab() {
           name="O que é"
           desc="Comprar uma PUT (proteção) e vender uma CALL (financiamento) ao mesmo tempo sobre a mesma ação. O prêmio recebido da CALL pode pagar parcial ou totalmente a PUT."
         />
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 10,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--blue)',
-              fontWeight: 700,
-              marginBottom: 6,
-              letterSpacing: 0.5,
-            }}
-          >
+        <div className="bg-surface rounded-[10px] p-3 mt-2.5">
+          <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
             PETR4 a R$ 38. Compra PUT strike R$ 35 (R$ 0,50). Vende CALL strike
             R$ 42 (R$ 0,50). Prêmio pago líquido = <strong>R$ 0</strong>. Sua
             carteira está protegida entre R$ 35 e R$ 42. Se a ação despencar,
@@ -222,26 +116,11 @@ export default function EstrategiasTab() {
             ainda lucrou até lá.
           </div>
         </div>
-        <div
-          style={{
-            background: '#ffd54f11',
-            border: '1px solid #ffd54f22',
-            borderRadius: 8,
-            padding: 12,
-            marginTop: 8,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 11,
-              color: 'var(--yellow)',
-              fontWeight: 700,
-              marginBottom: 4,
-            }}
-          >
+        <div className="bg-yellow/5 border border-yellow/15 rounded-md p-3 mt-2">
+          <div className="text-[11px] text-yellow font-bold mb-1">
             💡 Custo zero? Sim, se os prêmios se equilibrarem
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.6 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.6]">
             Quando a CALL vendida paga exatamente o que a PUT comprada custa, o
             resultado é uma proteção completa sem desembolso. Profissionais de
             mercado montam collars para dormir tranquilos.
@@ -249,8 +128,8 @@ export default function EstrategiasTab() {
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           💰 Cash Secured Put — Comprar com Desconto
         </div>
         <UsoCard
@@ -258,146 +137,80 @@ export default function EstrategiasTab() {
           name="O que é"
           desc="Vender uma PUT com caixa garantido — você deixa dinheiro separado para comprar a ação se for exercido. Se a PUT expirar OTM, fica com o prêmio. Se for exercido, compra a ação pelo strike (que já era um preço desejado)."
         />
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 10,
-            padding: 12,
-            marginTop: 10,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--blue)',
-              fontWeight: 700,
-              marginBottom: 6,
-              letterSpacing: 0.5,
-            }}
-          >
+        <div className="bg-surface rounded-[10px] p-3 mt-2.5">
+          <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.7 }}>
+          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
             PETR4 a R$ 38. Você quer comprar por R$ 35. Vende{' '}
-            <strong style={{ color: 'var(--text)' }}>PUT strike R$ 35</strong>{' '}
-            por <strong style={{ color: 'var(--text)' }}>R$ 0,70</strong> de
+            <strong className="text-text">PUT strike R$ 35</strong>{' '}
+            por <strong className="text-text">R$ 0,70</strong> de
             prêmio. Garante R$ 35 x 100 = R$ 3.500 por opção na conta. Se a PUT
             expirar OTM, você embolsa R$ 70 por lote. Se for exercido, compra
             a PETR4 efetivamente a R$ 34,30 (R$ 35 - R$ 0,70).
           </div>
         </div>
-        <div
-          style={{
-            fontSize: 12,
-            color: '#94a3b8',
-            lineHeight: 1.7,
-            padding: 10,
-            marginTop: 8,
-            background: '#00e67611',
-            borderRadius: 8,
-            border: '1px solid #00e67622',
-          }}
-        >
-          <strong style={{ color: 'var(--green)' }}>Resultado:</strong> Se a ação
+        <div className="text-[12px] text-[#94a3b8] leading-[1.7] p-2.5 mt-2 bg-green/5 rounded-md border border-green/15">
+          <strong className="text-green">Resultado:</strong> Se a ação
           não caiu abaixo de R$ 35, você lucra o prêmio. Se caiu, compra a ação
           com desconto — exatamente o que queria. É uma{' '}
-          <strong style={{ color: 'var(--text)' }}>
+          <strong className="text-text">
             operação ganha-ganha
           </strong>{' '}
           quando você realmente quer ser acionista.
         </div>
       </div>
 
-      <div className="card">
-        <div className="card-header">
+      <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
+        <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           📊 Tabela Comparativa de Estratégias
         </div>
-        <div style={{ fontSize: 12, color: '#94a3b8', lineHeight: 1.6, marginBottom: 10 }}>
+        <div className="text-[12px] text-[#94a3b8] leading-[1.6] mb-2.5">
           Resumo das quatro estratégias abordadas:
         </div>
-        <div
-          style={{
-            borderRadius: 10,
-            overflow: 'hidden',
-            border: '1px solid var(--border)',
-          }}
-        >
+        <div className="rounded-[10px] overflow-hidden border border-border-custom">
           {/* Header */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1.2fr',
-              background: 'var(--surface)',
-              borderBottom: '1px solid var(--border)',
-            }}
-          >
-            <div style={{ padding: '8px 10px', fontWeight: 700, fontSize: 10, color: 'var(--muted)', letterSpacing: 0.5, fontFamily: "'JetBrains Mono', monospace" }}>
+          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] bg-surface border-b border-border-custom">
+            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
               ESTRATÉGIA
             </div>
-            <div style={{ padding: '8px 10px', fontWeight: 700, fontSize: 10, color: 'var(--muted)', letterSpacing: 0.5, fontFamily: "'JetBrains Mono', monospace" }}>
+            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
               RISCO
             </div>
-            <div style={{ padding: '8px 10px', fontWeight: 700, fontSize: 10, color: 'var(--muted)', letterSpacing: 0.5, fontFamily: "'JetBrains Mono', monospace" }}>
+            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
               THETA
             </div>
-            <div style={{ padding: '8px 10px', fontWeight: 700, fontSize: 10, color: 'var(--muted)', letterSpacing: 0.5, fontFamily: "'JetBrains Mono', monospace" }}>
+            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
               IDEAL PARA
             </div>
           </div>
           {/* Linha 1 */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1.2fr',
-              borderBottom: '1px solid var(--border)',
-              background: 'var(--card)',
-            }}
-          >
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--text)' }}>Covered Call</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--green)' }}>Baixo</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--green)' }}>A favor</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: '#94a3b8' }}>Renda mensal</div>
+          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-card-custom">
+            <div className="p-[8px_10px] text-[11px] text-text">Covered Call</div>
+            <div className="p-[8px_10px] text-[11px] text-green">Baixo</div>
+            <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
+            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Renda mensal</div>
           </div>
           {/* Linha 2 */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1.2fr',
-              borderBottom: '1px solid var(--border)',
-              background: 'var(--surface)',
-            }}
-          >
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--text)' }}>Protective Put</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--yellow)' }}>Prêmio pago</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--red)' }}>Contra</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: '#94a3b8' }}>Proteger carteira</div>
+          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-surface">
+            <div className="p-[8px_10px] text-[11px] text-text">Protective Put</div>
+            <div className="p-[8px_10px] text-[11px] text-yellow">Prêmio pago</div>
+            <div className="p-[8px_10px] text-[11px] text-red">Contra</div>
+            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Proteger carteira</div>
           </div>
           {/* Linha 3 */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1.2fr',
-              borderBottom: '1px solid var(--border)',
-              background: 'var(--card)',
-            }}
-          >
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--text)' }}>Collar</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--green)' }}>Limitado</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: '#94a3b8' }}>Neutro</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: '#94a3b8' }}>Proteção zero-custo</div>
+          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-card-custom">
+            <div className="p-[8px_10px] text-[11px] text-text">Collar</div>
+            <div className="p-[8px_10px] text-[11px] text-green">Limitado</div>
+            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Neutro</div>
+            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Proteção zero-custo</div>
           </div>
           {/* Linha 4 */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.5fr 0.8fr 0.8fr 1.2fr',
-              background: 'var(--surface)',
-            }}
-          >
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--text)' }}>Cash Secured Put</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--yellow)' }}>Strike</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: 'var(--green)' }}>A favor</div>
-            <div style={{ padding: '8px 10px', fontSize: 11, color: '#94a3b8' }}>Comprar com desconto</div>
+          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] bg-surface">
+            <div className="p-[8px_10px] text-[11px] text-text">Cash Secured Put</div>
+            <div className="p-[8px_10px] text-[11px] text-yellow">Strike</div>
+            <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
+            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Comprar com desconto</div>
           </div>
         </div>
       </div>
