@@ -69,7 +69,7 @@ export function IntroTab() {
         <div className="bg-surface rounded-lg px-3 py-2 mb-3 text-xs text-accent font-mono border border-border-custom">
           💡 {current.conceito}
         </div>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5 max-sm:grid-cols-1">
           <div className="bg-accent/5 border border-accent/10 rounded-lg p-3.5">
             <div className="text-[9px] text-accent font-bold tracking-[1px] mb-2 font-mono uppercase">
               📊 Mercado financeiro
@@ -101,7 +101,7 @@ export function IntroTab() {
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Tipos de opção</div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-green/5 border border-green/20 rounded-lg p-3.5">
             <div className="text-[22px] font-black text-green mb-1">
               CALL
@@ -197,7 +197,7 @@ export function IntroTab() {
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Para que profissionais usam opções</div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <UsoCard
             icon="🛡️"
             name="Proteção (Hedge)"

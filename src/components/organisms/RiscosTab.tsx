@@ -31,7 +31,7 @@ export function RiscosTab() {
         <p className="text-[13px] leading-[1.8] text-slate-400 mb-2.5">
           Quem vende opção assume risco, então a B3 exige garantia depositada.
         </p>
-        <div className="grid grid-cols-2 gap-2 mb-2.5">
+        <div className="grid grid-cols-2 gap-2 mb-2.5 max-sm:grid-cols-1">
           <div className="bg-surface rounded-[10px] p-3">
             <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
               ACEITO COMO MARGEM

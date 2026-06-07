@@ -95,7 +95,7 @@ export function CallTab() {
           minLabel="1"
           maxLabel="50"
         />
-        <div className="grid grid-cols-2 gap-2 mt-1">
+        <div className="grid grid-cols-2 gap-2 mt-1 max-sm:grid-cols-1">
           <div className="bg-surface rounded-lg p-3 text-center">
             <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">Total pago</div>
             <div className="text-lg font-black text-red">

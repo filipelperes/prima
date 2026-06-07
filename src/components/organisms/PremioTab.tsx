@@ -155,7 +155,7 @@ export function PremioTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Volatilidade implícita vs realizada
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-surface rounded-lg p-3">
             <div className="text-[10px] font-bold text-blue mb-1.5 tracking-wide">
               IMPLÍCITA (IV)

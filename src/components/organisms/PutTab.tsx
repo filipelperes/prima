@@ -131,7 +131,7 @@ export function PutTab() {
           displayValue={String(state.contratos)}
           onChange={(v) => updateField('contratos', v)}
         />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-surface rounded-lg p-3 text-center">
             <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">{resultadoLabel}</div>
             <div
@@ -224,7 +224,7 @@ export function PutTab() {
           </strong>{' '}
           e recebe o prêmio.
         </p>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-green/10 border border-green/30 rounded-lg p-3">
             <div className="text-[10px] text-green font-bold mb-1.5">
               AÇÃO FICA ACIMA DE R$ 25

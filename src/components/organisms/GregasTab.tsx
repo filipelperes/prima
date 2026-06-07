@@ -162,7 +162,7 @@ export function GregasTab() {
           </strong>
           .
         </p>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-surface rounded-lg p-3">
             <div className="text-[10px] text-green font-bold mb-1.5 tracking-[0.5px]">
               BAIXA VOLATILIDADE

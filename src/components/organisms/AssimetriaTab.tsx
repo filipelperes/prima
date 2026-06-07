@@ -78,7 +78,7 @@ export function AssimetriaTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           📊 Resultado
         </div>
-        <div className="grid grid-cols-2 gap-2 mb-3">
+        <div className="grid grid-cols-2 gap-2 mb-3 max-sm:grid-cols-1">
           <div className="bg-[#ff3d5711] border border-[#ff3d5733] rounded-[10px] p-3 text-center">
             <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">
               Total perdido

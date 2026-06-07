@@ -69,7 +69,7 @@ export default function EstrategiasTab() {
             20% para 5-6%.
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-2.5">
+        <div className="grid grid-cols-2 gap-2 mt-2.5 max-sm:grid-cols-1">
           <div className="bg-red/5 border border-red/20 rounded-[10px] p-3 text-center">
             <div className="text-[10px] text-red font-bold mb-1 tracking-[0.5px]">
               SEM SEGURO
