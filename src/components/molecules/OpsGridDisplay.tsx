@@ -26,7 +26,7 @@ export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
           className={cn(
             'w-[52px] h-[52px] rounded-[10px] flex flex-col items-center justify-center text-lg border-2 border-transparent',
             op.win ? 'bg-[#00e67611] border-[#00e67644]' : 'bg-[#ff3d5709] border-[#ff3d5730]',
-            'max-sm:w-[38px] max-sm:h-[38px] max-sm:text-[13px] max-sm:rounded-lg',
+            'max-sm:w-[38px] max-sm:h-[38px] max-sm:text-[13px] max-sm:rounded-[8px]',
           )}
         >
           <div>{op.win ? '🚀' : '💀'}</div>

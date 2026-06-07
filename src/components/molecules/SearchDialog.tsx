@@ -161,7 +161,7 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
 
   return (
     <div
-      className="fixed inset-0 z-[1000] bg-bg/85 backdrop-blur-2xl flex items-start justify-center px-4 pt-[10vh] animate-[fade-in_0.2s_ease-out] max-sm:px-2.5 max-sm:pt-[6vh]"
+      className="fixed inset-0 z-[1000] bg-bg/85 backdrop-blur-[20px] flex items-start justify-center px-4 pt-[10vh] animate-[fade-in_0.2s_ease-out] max-sm:px-2.5 max-sm:pt-[6vh]"
       onClick={handleOverlayClick}
     >
       <div
