@@ -7,7 +7,7 @@ interface HierarchyRowProps extends HierarchyItem {
 export function HierarchyRow({ name, risk, riskPct, color, desc, rank }: HierarchyRowProps) {
   return (
     <div
-      className="flex items-center gap-2.5 p-2.5 rounded mb-1.5"
+      className="flex items-center gap-2.5 px-3 py-2.5 rounded mb-1.5"
       style={{ background: `${color}11`, border: `1px solid ${color}22` }}
     >
       <div
