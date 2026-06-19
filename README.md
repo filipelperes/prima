@@ -14,7 +14,7 @@ Assim como um prisma decompõe a luz branca em cores, a Prima decompõe o prêmi
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite)](https://vitejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
 [![shadcn/ui](https://img.shields.io/badge/shadcn/ui-Radix-000000?logo=shadcnui)](https://ui.shadcn.com)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-2ea44f?logo=github)](https://filipelperes.github.io/opcoes/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-2ea44f?logo=github)](https://filipelperes.github.io/prima/)
 
 ---
 
@@ -109,8 +109,8 @@ src/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/filipelperes/opcoes.git
-cd opcoes
+git clone https://github.com/filipelperes/prima.git
+cd prima
 
 # Instale as dependências
 npm install
@@ -139,8 +139,8 @@ Isso executa `npm run build` seguido de `gh-pages -d dist`, publicando no branch
 
 ## Links
 
-- 🌐 **Site**: [filipelperes.github.io/opcoes](https://filipelperes.github.io/opcoes/)
-- 📦 **Repo**: [github.com/filipelperes/opcoes](https://github.com/filipelperes/opcoes)
+- 🌐 **Site**: [filipelperes.github.io/prima](https://filipelperes.github.io/prima/)
+- 📦 **Repo**: [github.com/filipelperes/prima](https://github.com/filipelperes/prima)
 
 ---
 
