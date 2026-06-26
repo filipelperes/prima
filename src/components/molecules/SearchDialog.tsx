@@ -17,6 +17,49 @@ interface SearchResult {
   tabId: string;
 }
 
+/* ───────── Lazy search index (built once on first use) ───────── */
+
+interface SearchIndexEntry {
+  id: string;
+  type: 'glossário' | 'analogia';
+  label: string;
+  text: string;
+  tabId: string;
+}
+
+function buildSearchIndex(): SearchIndexEntry[] {
+  const index: SearchIndexEntry[] = [];
+
+  for (const item of GLOSSARY) {
+    index.push({ id: `gloss-term-${item.term}`, type: 'glossário', label: item.term, text: item.term, tabId: 'glossario' });
+    index.push({ id: `gloss-def-${item.term}`, type: 'glossário', label: item.term, text: item.def, tabId: 'glossario' });
+    if (item.analogy) {
+      index.push({ id: `gloss-ana-${item.term}`, type: 'glossário', label: item.term, text: item.analogy, tabId: 'glossario' });
+    }
+  }
+
+  for (const item of ANALOGIES) {
+    index.push({ id: `analog-title-${item.id}`, type: 'analogia', label: item.title, text: item.title, tabId: 'intro' });
+    for (let i = 0; i < item.financeiro.length; i++) {
+      index.push({ id: `analog-fin-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.financeiro[i], tabId: 'intro' });
+    }
+    for (let i = 0; i < item.mundoReal.length; i++) {
+      index.push({ id: `analog-real-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.mundoReal[i], tabId: 'intro' });
+    }
+  }
+
+  return index;
+}
+
+let searchIndexInstance: SearchIndexEntry[] | null = null;
+
+function getSearchIndex(): SearchIndexEntry[] {
+  if (!searchIndexInstance) {
+    searchIndexInstance = buildSearchIndex();
+  }
+  return searchIndexInstance;
+}
+
 /* ───────── Helpers ───────── */
 
 function getSnippet(text: string, query: string): string {
@@ -53,12 +96,43 @@ function highlightMatch(text: string, query: string): React.ReactNode {
 export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  /* Compute search results from pre-computed index */
+  const results = useMemo(() => {
+    const q = debouncedQuery.toLowerCase().trim();
+    if (!q) return [];
+
+    return getSearchIndex()
+      .filter((entry) => entry.text.toLowerCase().includes(q))
+      .slice(0, 10)
+      .map((entry) => ({
+        id: entry.id,
+        type: entry.type,
+        label: entry.label,
+        snippet: getSnippet(entry.text, q),
+        tabId: entry.tabId,
+      }));
+  }, [debouncedQuery]);
+
+  /* Refs to stabilize keyboard effect deps — synced via effects */
+  const onCloseRef = useRef(onClose);
+  const onNavigateRef = useRef(onNavigate);
+  const selectedIndexRef = useRef(selectedIndex);
+  const resultsRefStable = useRef(results);
+
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
+  useEffect(() => { onNavigateRef.current = onNavigate; }, [onNavigate]);
+  useEffect(() => { selectedIndexRef.current = selectedIndex; }, [selectedIndex]);
+  useEffect(() => { resultsRefStable.current = results; }, [results]);
 
   /* Debounce */
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
+      setSelectedIndex(-1);
     }, 200);
     return () => clearTimeout(timer);
   }, [query]);
@@ -68,88 +142,49 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
     inputRef.current?.focus();
   }, []);
 
-  /* Keyboard handlers */
+  function scrollResultIntoView(index: number) {
+    requestAnimationFrame(() => {
+      const container = resultsRef.current;
+      if (!container) return;
+      const buttons = container.querySelectorAll<HTMLButtonElement>('button');
+      buttons[index]?.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  /* Keyboard handlers — stabilized via refs to avoid recreating the listener */
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      const currentResults = resultsRefStable.current;
+      const currentIndex = selectedIndexRef.current;
+
+      if (e.key === 'Escape') {
+        onCloseRef.current();
+        return;
+      }
+      if (currentResults.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) => {
+          const next = prev < currentResults.length - 1 ? prev + 1 : 0;
+          scrollResultIntoView(next);
+          return next;
+        });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) => {
+          const next = prev > 0 ? prev - 1 : currentResults.length - 1;
+          scrollResultIntoView(next);
+          return next;
+        });
+      } else if (e.key === 'Enter' && currentIndex >= 0) {
+        e.preventDefault();
+        onNavigateRef.current(currentResults[currentIndex].tabId, currentResults[currentIndex].label);
+      }
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [onClose]);
-
-  /* Compute search results */
-  const results = useMemo(() => {
-    const q = debouncedQuery.toLowerCase().trim();
-    if (!q) return [];
-
-    const items: SearchResult[] = [];
-
-    for (const item of GLOSSARY) {
-      if (item.term.toLowerCase().includes(q)) {
-        items.push({
-          id: `gloss-term-${item.term}`,
-          type: 'glossário',
-          label: item.term,
-          snippet: getSnippet(item.def, q),
-          tabId: 'glossario',
-        });
-      }
-      if (item.def.toLowerCase().includes(q)) {
-        items.push({
-          id: `gloss-def-${item.term}`,
-          type: 'glossário',
-          label: item.term,
-          snippet: getSnippet(item.def, q),
-          tabId: 'glossario',
-        });
-      }
-      if (item.analogy && item.analogy.toLowerCase().includes(q)) {
-        items.push({
-          id: `gloss-ana-${item.term}`,
-          type: 'glossário',
-          label: item.term,
-          snippet: getSnippet(item.analogy, q),
-          tabId: 'glossario',
-        });
-      }
-    }
-
-    for (const item of ANALOGIES) {
-      if (item.title.toLowerCase().includes(q)) {
-        items.push({
-          id: `analog-title-${item.id}`,
-          type: 'analogia',
-          label: item.title,
-          snippet: getSnippet(item.title, q),
-          tabId: 'intro',
-        });
-      }
-      for (let i = 0; i < item.financeiro.length; i++) {
-        if (item.financeiro[i].toLowerCase().includes(q)) {
-          items.push({
-            id: `analog-fin-${item.id}-${i}`,
-            type: 'analogia',
-            label: item.title,
-            snippet: getSnippet(item.financeiro[i], q),
-            tabId: 'intro',
-          });
-        }
-      }
-      for (let i = 0; i < item.mundoReal.length; i++) {
-        if (item.mundoReal[i].toLowerCase().includes(q)) {
-          items.push({
-            id: `analog-real-${item.id}-${i}`,
-            type: 'analogia',
-            label: item.title,
-            snippet: getSnippet(item.mundoReal[i], q),
-            tabId: 'intro',
-          });
-        }
-      }
-    }
-
-    return items.slice(0, 10);
-  }, [debouncedQuery]);
+  }, []); /* stable — never recreates */
 
   const handleSelect = (result: SearchResult) => {
     onNavigate(result.tabId, result.label);
@@ -159,17 +194,21 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
     if (e.target === e.currentTarget) onClose();
   };
 
+  const handleMouseEnter = (index: number) => {
+    setSelectedIndex(index);
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[1000] bg-bg/85 backdrop-blur-[20px] flex items-start justify-center px-4 pt-[10vh] animate-[fade-in_0.2s_ease-out] max-sm:px-2.5 max-sm:pt-[6vh]"
+      className="fixed inset-0 z-[1000] bg-bg/85 backdrop-blur-[20px] will-change-[backdrop-filter] flex items-start justify-center px-4 pt-[10vh] animate-[fade-in_0.2s_ease-out] max-sm:px-2.5 max-sm:pt-[6vh]"
       onClick={handleOverlayClick}
     >
       <div
-        className="w-full max-w-[620px] bg-card-custom border border-border-custom rounded-2xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.6)] animate-[slide-down_0.25s_ease-out] max-sm:rounded-2xl"
+        className="w-full max-w-[620px] bg-card-custom border border-border-custom rounded-2xl overflow-hidden shadow-[var(--shadow-lg)_var(--shadow-lg-color)] animate-[slide-down_0.25s_ease-out] max-sm:rounded-2xl"
       >
         {/* Header row */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border-custom max-sm:px-2.5 max-sm:py-2.5">
-          <div className="flex-1 flex items-center gap-2.5 bg-surface border border-border-custom rounded-lg px-3 transition-colors duration-200 focus-within:border-accent max-sm:px-2">
+          <div className="flex-1 flex items-center gap-2.5 bg-surface border border-border-custom rounded-lg px-3 transition-colors duration-200 focus-within:border-accent dark:focus-within:border-accent max-sm:px-2">
             <span className="text-base shrink-0">🔍</span>
             <input
               ref={inputRef}
@@ -182,7 +221,7 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
               <button
                 onClick={() => setQuery('')}
                 aria-label="Limpar busca"
-                className="bg-transparent border-none cursor-pointer text-muted text-sm p-1 rounded-md transition-colors hover:text-text flex items-center justify-center"
+                className="bg-transparent border-none cursor-pointer text-muted text-sm p-1 rounded-md transition-colors hover:text-text dark:hover:text-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent flex items-center justify-center"
               >
                 ✕
               </button>
@@ -191,7 +230,7 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
           <button
             onClick={onClose}
             aria-label="Fechar busca"
-            className="w-9 h-9 flex items-center justify-center bg-surface border border-border-custom rounded-[10px] text-sm text-muted transition-colors hover:bg-white/5 hover:text-text shrink-0 max-sm:w-8 max-sm:h-8"
+            className="w-9 h-9 flex items-center justify-center bg-surface border border-border-custom rounded-[10px] text-sm text-muted transition-colors hover:bg-accent/5 hover:text-text dark:hover:bg-accent/[0.07] dark:hover:text-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent shrink-0 max-sm:w-8 max-sm:h-8"
           >
             ✕
           </button>
@@ -217,12 +256,15 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
           )}
 
           {results.length > 0 && (
-            <div className="flex flex-col gap-0.5">
-              {results.map((result) => (
+            <div ref={resultsRef} className="flex flex-col gap-0.5">
+              {results.map((result, index) => (
                 <button
                   key={result.id}
                   onClick={() => handleSelect(result)}
-                  className="flex items-start gap-3 w-full p-2.5 bg-transparent border-none rounded-[10px] cursor-pointer text-left font-sans transition-colors duration-150 hover:bg-accent/5"
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  className={`flex items-start gap-3 w-full p-2.5 border-none rounded-[10px] cursor-pointer text-left font-sans transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    selectedIndex === index ? 'bg-accent/10' : 'bg-transparent hover:bg-accent/5 dark:hover:bg-accent/[0.07]'
+                  }`}
                 >
                   <span className="text-lg shrink-0 mt-0.5">
                     {result.type === 'glossário' ? '📚' : '💡'}
