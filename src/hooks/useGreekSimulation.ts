@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { GreekState, GreekValues } from '@/lib/types';
-import { calcGreekValues, getThetaBarsData } from '@/lib/calculations';
+import { calcGreekValues } from '@/lib/calculations';
 
 const DEFAULT_STATE: GreekState = {
   dias: 30,
@@ -11,16 +11,19 @@ const DEFAULT_STATE: GreekState = {
 export function useGreekSimulation() {
   const [state, setState] = useState<GreekState>(DEFAULT_STATE);
 
+  const { dias, vol, dist } = state;
+
   const values = useMemo<GreekValues>(
-    () => calcGreekValues(state.dias, state.vol, state.dist),
-    [state],
+    () => calcGreekValues(dias, vol, dist),
+    [dias, vol, dist],
   );
 
-  const thetaBars = useMemo(() => getThetaBarsData(), []);
+  const updateField = useCallback(
+    <K extends keyof GreekState>(key: K, value: GreekState[K]) => {
+      setState((prev) => ({ ...prev, [key]: value }));
+    },
+    [],
+  );
 
-  const updateField = <K extends keyof GreekState>(key: K, value: GreekState[K]) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-  };
-
-  return { state, values, thetaBars, updateField };
+  return { state, values, updateField };
 }

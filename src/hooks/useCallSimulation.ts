@@ -20,7 +20,12 @@ export function useCallSimulation() {
     [],
   );
 
-  const result = useMemo<CallResult>(() => calcCallResult(state), [state]);
+  const { acao, strike, premio, contratos, final } = state;
+
+  const result = useMemo<CallResult>(
+    () => calcCallResult({ acao, strike, premio, contratos, final }),
+    [acao, strike, premio, contratos, final],
+  );
 
   const setFinal = useCallback((value: number) => {
     setState((prev) => ({ ...prev, final: value }));

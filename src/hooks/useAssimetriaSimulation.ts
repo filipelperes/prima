@@ -12,18 +12,18 @@ const DEFAULT_STATE: AssimetriaState = {
 export function useAssimetriaSimulation() {
   const [state, setState] = useState<AssimetriaState>(DEFAULT_STATE);
 
-  const result = useMemo<AssimetriaResult>(() => calcAssimetria(state), [state]);
+  const { premio, ops, acertos, mult } = state;
+
+  const result = useMemo<AssimetriaResult>(
+    () => calcAssimetria({ premio, ops, acertos, mult }),
+    [premio, ops, acertos, mult],
+  );
 
   const updateField = useCallback(
     <K extends keyof AssimetriaState>(key: K, value: AssimetriaState[K]) => {
       setState((prev) => {
         const next = { ...prev, [key]: value };
-        if (key === 'ops') {
-          next.acertos = Math.min(next.acertos, next.ops);
-        }
-        if (key === 'acertos') {
-          next.acertos = Math.min(value as number, next.ops);
-        }
+        next.acertos = Math.min(next.acertos, next.ops);
         return next;
       });
     },

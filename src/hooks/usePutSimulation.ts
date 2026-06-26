@@ -21,7 +21,12 @@ export function usePutSimulation() {
     [],
   );
 
-  const result = useMemo<PutResult>(() => calcPutResult(state, mode), [state, mode]);
+  const { acao, strike, premio, contratos, final } = state;
+
+  const result = useMemo<PutResult>(
+    () => calcPutResult({ acao, strike, premio, contratos, final }, mode),
+    [acao, strike, premio, contratos, final, mode],
+  );
 
   const setFinal = useCallback((value: number) => {
     setState((prev) => ({ ...prev, final: value }));
