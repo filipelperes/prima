@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { Formula } from '@/components/atoms/Formula';
 import { OpsGridDisplay } from '@/components/molecules/OpsGridDisplay';
@@ -7,6 +8,12 @@ import { fmtInt } from '@/lib/formatters';
 
 export function AssimetriaTab() {
   const { state, result, updateField } = useAssimetriaSimulation();
+
+  /* Estabiliza callbacks dos SliderControl para respeitar memo */
+  const handlePremioChange = useCallback((v: number) => updateField('premio', v), [updateField]);
+  const handleOpsChange = useCallback((v: number) => updateField('ops', v), [updateField]);
+  const handleAcertosChange = useCallback((v: number) => updateField('acertos', v), [updateField]);
+  const handleMultChange = useCallback((v: number) => updateField('mult', v), [updateField]);
 
   return (
     <>
@@ -34,7 +41,7 @@ export function AssimetriaTab() {
           step={50}
           color="var(--color-red)"
           displayValue={`R$ ${state.premio}`}
-          onChange={(v) => updateField('premio', v)}
+          onChange={handlePremioChange}
           minLabel="R$ 50"
           maxLabel="R$ 2.000"
         />
@@ -46,7 +53,7 @@ export function AssimetriaTab() {
           step={1}
           color="var(--muted)"
           displayValue={String(state.ops)}
-          onChange={(v) => updateField('ops', v)}
+          onChange={handleOpsChange}
           minLabel="3"
           maxLabel="20"
         />
@@ -58,7 +65,7 @@ export function AssimetriaTab() {
           step={1}
           color="var(--color-green)"
           displayValue={`${state.acertos} de ${state.ops} (${Math.round((state.acertos / state.ops) * 100)}%)`}
-          onChange={(v) => updateField('acertos', v)}
+          onChange={handleAcertosChange}
         />
         <SliderControl
           label="Multiplicador dos acertos"
@@ -68,7 +75,7 @@ export function AssimetriaTab() {
           step={1}
           color="var(--color-accent)"
           displayValue={`${state.mult}x`}
-          onChange={(v) => updateField('mult', v)}
+          onChange={handleMultChange}
           minLabel="2x"
           maxLabel="30x"
         />

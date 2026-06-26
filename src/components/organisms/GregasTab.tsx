@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { GreekGrid } from '@/components/molecules/GreekGrid';
 import { ThetaBarsChart } from '@/components/molecules/ThetaBarsChart';
@@ -11,15 +11,30 @@ import type { Inimigo } from '@/lib/types';
 export function GregasTab() {
   const { state, values, updateField } = useGreekSimulation();
 
-  const daysColor =
-    state.dias <= 7 ? 'var(--color-red)' : state.dias <= 14 ? 'var(--color-yellow)' : 'var(--color-green)';
+  /* Estabiliza callbacks dos SliderControl para respeitar memo */
+  const handleDiasChange = useCallback((v: number) => updateField('dias', v), [updateField]);
+  const handleVolChange = useCallback((v: number) => updateField('vol', v), [updateField]);
+  const handleDistChange = useCallback((v: number) => updateField('dist', v), [updateField]);
 
-  const distText =
+  const daysColor = useMemo(() =>
+    state.dias <= 7 ? 'var(--color-red)' : state.dias <= 14 ? 'var(--color-yellow)' : 'var(--color-green)',
+  [state.dias]);
+
+  const distText = useMemo(() =>
     state.dist > 0
       ? `+${fmt(state.dist)} ITM`
       : state.dist < 0
         ? `${fmt(Math.abs(state.dist))} OTM`
-        : 'ATM';
+        : 'ATM',
+  [state.dist]);
+
+  const thetaStatus = useMemo(() =>
+    state.dias <= 7
+      ? `🔴 PERIGO: ${state.dias} dia(s). Theta devastando o prêmio. Mova ou saia agora.`
+      : state.dias <= 14
+        ? `🟡 ATENÇÃO: ${state.dias} dias. Theta acelerando. Ação precisa se mover em breve.`
+        : `🟢 ${state.dias} dias restantes. Theta controlado, mas sempre corroendo.`,
+  [state.dias]);
 
   const inimigos: Inimigo[] = useMemo(() => [
     {
@@ -42,12 +57,46 @@ export function GregasTab() {
     },
   ], [state.dias, state.vol]);
 
-  const thetaStatus =
-    state.dias <= 7
-      ? `🔴 PERIGO: ${state.dias} dia(s). Theta devastando o prêmio. Mova ou saia agora.`
-      : state.dias <= 14
-        ? `🟡 ATENÇÃO: ${state.dias} dias. Theta acelerando. Ação precisa se mover em breve.`
-        : `🟢 ${state.dias} dias restantes. Theta controlado, mas sempre corroendo.`;
+
+
+  const greekCards = useMemo(() => [
+    {
+      name: 'Δ DELTA',
+      nameColor: 'var(--color-accent)',
+      value: values.delta.toFixed(2),
+      icon: 'velocidade do carro',
+      children: `Para cada R$ 1 que a ação sobe, o prêmio sobe R$ ${values.delta.toFixed(2)}. Delta ${values.delta > 0.7 ? 'alto — comporta-se quase como a ação' : values.delta < 0.3 ? 'baixo — OTM, responde pouco' : 'médio — ATM region'}.`,
+    },
+    {
+      name: 'Θ THETA',
+      nameColor: 'var(--color-red)',
+      value: `-R$ ${values.theta.toFixed(2)}/dia`,
+      icon: 'combustível vazando',
+      children:
+        state.dias <= 7
+          ? `ZONA CRÍTICA: apenas ${state.dias} dia(s). Theta está destruindo o prêmio rapidamente — cada dia remove R$ ${values.theta.toFixed(2)}.`
+          : `O prêmio perde R$ ${values.theta.toFixed(2)} por dia pela passagem do tempo, mesmo sem a ação se mover.`,
+    },
+    {
+      name: 'V VEGA',
+      nameColor: 'var(--color-yellow)',
+      value: `×${values.vega.toFixed(2)}`,
+      icon: 'sensibilidade ao caos',
+      children:
+        state.vol > 50
+          ? 'Volatilidade muito alta — prêmios caros. Cuidado com o esmagamento de volatilidade após o evento.'
+          : state.vol < 20
+            ? 'Volatilidade baixa — bom momento para comprar opções mais baratas.'
+            : 'Mercado em volatilidade normal. Vega sensível a eventos próximos.',
+    },
+    {
+      name: 'Γ GAMMA',
+      nameColor: 'var(--color-green)',
+      value: values.gamma,
+      icon: 'aceleração do carro',
+      children: `Mede a velocidade de variação do Delta. ${values.gamma === 'máximo' ? 'ATM tem o maior Gamma. Quando explode ITM, o Delta acelera.' : values.gamma === 'alto' ? 'Gamma elevado — Delta muda rapidamente.' : 'Gamma baixo — Delta estável.'}`,
+    },
+  ], [values.delta, values.theta, values.vega, values.gamma, state.dias, state.vol]);
 
   return (
     <>
@@ -61,7 +110,7 @@ export function GregasTab() {
           step={1}
           color={daysColor}
           displayValue={`${state.dias} dias`}
-          onChange={(v) => updateField('dias', v)}
+          onChange={handleDiasChange}
           minLabel="1 dia"
           maxLabel="60 dias"
         />
@@ -73,7 +122,7 @@ export function GregasTab() {
           step={1}
           color="var(--color-accent)"
           displayValue={`${state.vol}%`}
-          onChange={(v) => updateField('vol', v)}
+          onChange={handleVolChange}
           minLabel="10%"
           maxLabel="80%"
         />
@@ -91,52 +140,13 @@ export function GregasTab() {
                 : 'var(--color-yellow)'
           }
           displayValue={distText}
-          onChange={(v) => updateField('dist', v)}
+          onChange={handleDistChange}
           minLabel="-10 OTM"
           maxLabel="+10 ITM"
         />
       </div>
 
-      <GreekGrid
-        cards={[
-          {
-            name: 'Δ DELTA',
-            nameColor: 'var(--color-accent)',
-            value: values.delta.toFixed(2),
-            icon: 'velocidade do carro',
-            children: `Para cada R$ 1 que a ação sobe, o prêmio sobe R$ ${values.delta.toFixed(2)}. Delta ${values.delta > 0.7 ? 'alto — comporta-se quase como a ação' : values.delta < 0.3 ? 'baixo — OTM, responde pouco' : 'médio — ATM region'}.`,
-          },
-          {
-            name: 'Θ THETA',
-            nameColor: 'var(--color-red)',
-            value: `-R$ ${values.theta.toFixed(2)}/dia`,
-            icon: 'combustível vazando',
-            children:
-              state.dias <= 7
-                ? `ZONA CRÍTICA: apenas ${state.dias} dia(s). Theta está destruindo o prêmio rapidamente — cada dia remove R$ ${values.theta.toFixed(2)}.`
-                : `O prêmio perde R$ ${values.theta.toFixed(2)} por dia pela passagem do tempo, mesmo sem a ação se mover.`,
-          },
-          {
-            name: 'V VEGA',
-            nameColor: 'var(--color-yellow)',
-            value: `×${values.vega.toFixed(2)}`,
-            icon: 'sensibilidade ao caos',
-            children:
-              state.vol > 50
-                ? 'Volatilidade muito alta — prêmios caros. Cuidado com o esmagamento de volatilidade após o evento.'
-                : state.vol < 20
-                  ? 'Volatilidade baixa — bom momento para comprar opções mais baratas.'
-                  : 'Mercado em volatilidade normal. Vega sensível a eventos próximos.',
-          },
-          {
-            name: 'Γ GAMMA',
-            nameColor: 'var(--color-green)',
-            value: values.gamma,
-            icon: 'aceleração do carro',
-            children: `Mede a velocidade de variação do Delta. ${values.gamma === 'máximo' ? 'ATM tem o maior Gamma. Quando explode ITM, o Delta acelera.' : values.gamma === 'alto' ? 'Gamma elevado — Delta muda rapidamente.' : 'Gamma baixo — Delta estável.'}`,
-          },
-        ]}
-      />
+      <GreekGrid cards={greekCards} />
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">

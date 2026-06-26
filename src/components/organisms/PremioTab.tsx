@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { Formula } from '@/components/atoms/Formula';
 import { ProgressRow } from '@/components/atoms/ProgressRow';
@@ -7,6 +8,11 @@ import { fmt } from '@/lib/formatters';
 
 export function PremioTab() {
   const { state, breakdown, updateField } = usePremiumSimulation();
+
+  /* Estabiliza callbacks dos SliderControl para respeitar memo */
+  const handleDiasChange = useCallback((v: number) => updateField('dias', v), [updateField]);
+  const handleVolChange = useCallback((v: number) => updateField('vol', v), [updateField]);
+  const handleDistChange = useCallback((v: number) => updateField('dist', v), [updateField]);
 
   const distText =
     state.dist > 0
@@ -45,7 +51,7 @@ export function PremioTab() {
           step={1}
           color="var(--color-blue)"
           displayValue={`${state.dias} dias`}
-          onChange={(v) => updateField('dias', v)}
+          onChange={handleDiasChange}
         />
         <SliderControl
           label="Volatilidade implícita"
@@ -55,7 +61,7 @@ export function PremioTab() {
           step={1}
           color="var(--color-yellow)"
           displayValue={`${state.vol}%`}
-          onChange={(v) => updateField('vol', v)}
+          onChange={handleVolChange}
         />
         <SliderControl
           label="Distância ao strike (OTM → ITM)"
@@ -71,7 +77,7 @@ export function PremioTab() {
                 : 'var(--color-yellow)'
           }
           displayValue={distText}
-          onChange={(v) => updateField('dist', v)}
+          onChange={handleDistChange}
           minLabel="-15 OTM fundo"
           maxLabel="+15 ITM fundo"
         />
