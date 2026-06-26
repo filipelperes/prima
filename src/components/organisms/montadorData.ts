@@ -40,8 +40,13 @@ export const EXAMPLES_RAPIDOS: readonly MontadorExample[] = [
   { code: 'PETRC32W2', asset: 'PETR', type: 'CALL', month: 'Março', strike: 32 },
 ];
 
+const MONTH_INDEX_MAP = new Map<string, number>(
+  MONTHS.map((m, i) => [m, i])
+);
+
 export function getSeriesLetter(type: OptionType, month: string): string {
-  const idx = MONTHS.indexOf(month as (typeof MONTHS)[number]);
+  const idx = MONTH_INDEX_MAP.get(month) ?? -1;
   if (idx === -1) return '?';
-  return type === 'CALL' ? CALL_LETTERS[idx] : PUT_LETTERS[idx];
+  const letters = type === 'CALL' ? CALL_LETTERS : PUT_LETTERS;
+  return letters[idx] ?? '?';
 }
