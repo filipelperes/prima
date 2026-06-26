@@ -22,7 +22,7 @@ export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
     <div className="flex flex-wrap gap-1.5 my-3">
       {ops.map((op, i) => (
         <div
-          key={i}
+          key={`${op.win}-${op.profit}-${i}`}
           className={cn(
             'w-[52px] h-[52px] rounded-[10px] flex flex-col items-center justify-center text-lg border-2 border-transparent',
             op.win ? 'bg-green/[0.07] border-green/[0.27]' : 'bg-red/[0.04] border-red/[0.19]',

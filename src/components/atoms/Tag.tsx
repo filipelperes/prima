@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -16,7 +16,7 @@ const variantClasses: Record<NonNullable<TagProps['variant']>, string> = {
   accent: 'bg-accent/15 text-accent border-accent/30',
 };
 
-export function Tag({ variant = 'accent', children }: TagProps) {
+export const Tag = memo(function Tag({ variant = 'accent', children }: TagProps) {
   return (
     <Badge
       variant="outline"
@@ -28,4 +28,4 @@ export function Tag({ variant = 'accent', children }: TagProps) {
       {children}
     </Badge>
   );
-}
+});

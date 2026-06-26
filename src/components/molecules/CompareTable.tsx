@@ -36,11 +36,11 @@ export function CompareTable({ columns, rows, caption }: CompareTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, ri) => (
-            <tr key={ri}>
+          {rows.map((row) => (
+            <tr key={row.cells.map(c => c.value).join('-')}>
               {row.cells.map((cell, ci) => (
                 <td
-                  key={ci}
+                  key={`${cell.value}-${ci}`}
                   className="px-2.5 py-[9px] border-b border-border-custom align-middle last:border-b-0 max-sm:px-1.5 max-sm:py-1"
                   style={cell.color ? { color: cell.color } : undefined}
                 >

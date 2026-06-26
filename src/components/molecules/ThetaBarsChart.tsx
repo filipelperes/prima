@@ -1,9 +1,11 @@
+import { memo } from 'react';
+
 interface ThetaBarsChartProps {
   bars: readonly number[];
   currentDias: number;
 }
 
-export function ThetaBarsChart({ bars, currentDias }: ThetaBarsChartProps) {
+export const ThetaBarsChart = memo(function ThetaBarsChart({ bars, currentDias }: ThetaBarsChartProps) {
   return (
     <div className="h-20 flex items-end gap-[3px]">
       {bars.map((d) => {
@@ -30,4 +32,4 @@ export function ThetaBarsChart({ bars, currentDias }: ThetaBarsChartProps) {
       })}
     </div>
   );
-}
+});

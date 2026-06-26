@@ -26,7 +26,7 @@ export function ResultGrid({ stats }: ResultGridProps) {
   return (
     <div className="grid grid-cols-2 gap-2.5 mb-3 max-sm:grid-cols-1">
       {stats.map((s, i) => (
-        <StatItem key={`${s.label}-${i}`} {...s} />
+        <StatItem key={`${s.label}-${i}`} label={s.label} value={s.value} sub={s.sub} valueColor={s.valueColor} />
       ))}
     </div>
   );
