@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { cn } from '@/lib/utils';
 import { GLOSSARY } from '@/data/glossary';
 import { ANALOGIES } from '@/data/analogies';
 
@@ -41,10 +42,10 @@ function buildSearchIndex(): SearchIndexEntry[] {
   for (const item of ANALOGIES) {
     index.push({ id: `analog-title-${item.id}`, type: 'analogia', label: item.title, text: item.title, tabId: 'intro' });
     for (let i = 0; i < item.financeiro.length; i++) {
-      index.push({ id: `analog-fin-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.financeiro[i], tabId: 'intro' });
+      index.push({ id: `analog-fin-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.financeiro[i]!, tabId: 'intro' });
     }
     for (let i = 0; i < item.mundoReal.length; i++) {
-      index.push({ id: `analog-real-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.mundoReal[i], tabId: 'intro' });
+      index.push({ id: `analog-real-${item.id}-${i}`, type: 'analogia', label: item.title, text: item.mundoReal[i]!, tabId: 'intro' });
     }
   }
 
@@ -91,9 +92,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
   );
 }
 
-/* ───────── Component ───────── */
-
-export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps) {
+export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: SearchDialogProps) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -116,17 +115,6 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
         tabId: entry.tabId,
       }));
   }, [debouncedQuery]);
-
-  /* Refs to stabilize keyboard effect deps — synced via effects */
-  const onCloseRef = useRef(onClose);
-  const onNavigateRef = useRef(onNavigate);
-  const selectedIndexRef = useRef(selectedIndex);
-  const resultsRefStable = useRef(results);
-
-  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
-  useEffect(() => { onNavigateRef.current = onNavigate; }, [onNavigate]);
-  useEffect(() => { selectedIndexRef.current = selectedIndex; }, [selectedIndex]);
-  useEffect(() => { resultsRefStable.current = results; }, [results]);
 
   /* Debounce */
   useEffect(() => {
@@ -151,40 +139,39 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
     });
   }
 
-  /* Keyboard handlers — stabilized via refs to avoid recreating the listener */
+  /* Keyboard handler — uses useCallback with all deps, attached via useEffect */
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+      return;
+    }
+    if (results.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => {
+        const next = prev < results.length - 1 ? prev + 1 : 0;
+        scrollResultIntoView(next);
+        return next;
+      });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => {
+        const next = prev > 0 ? prev - 1 : results.length - 1;
+        scrollResultIntoView(next);
+        return next;
+      });
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      const result = results[selectedIndex];
+      if (result) onNavigate(result.tabId, result.label);
+    }
+  }, [onClose, onNavigate, results, selectedIndex]);
+
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      const currentResults = resultsRefStable.current;
-      const currentIndex = selectedIndexRef.current;
-
-      if (e.key === 'Escape') {
-        onCloseRef.current();
-        return;
-      }
-      if (currentResults.length === 0) return;
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSelectedIndex((prev) => {
-          const next = prev < currentResults.length - 1 ? prev + 1 : 0;
-          scrollResultIntoView(next);
-          return next;
-        });
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSelectedIndex((prev) => {
-          const next = prev > 0 ? prev - 1 : currentResults.length - 1;
-          scrollResultIntoView(next);
-          return next;
-        });
-      } else if (e.key === 'Enter' && currentIndex >= 0) {
-        e.preventDefault();
-        onNavigateRef.current(currentResults[currentIndex].tabId, currentResults[currentIndex].label);
-      }
-    };
-    document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
-  }, []); /* stable — never recreates */
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const handleSelect = (result: SearchResult) => {
     onNavigate(result.tabId, result.label);
@@ -262,9 +249,12 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
                   key={result.id}
                   onClick={() => handleSelect(result)}
                   onMouseEnter={() => handleMouseEnter(index)}
-                  className={`flex items-start gap-3 w-full p-2.5 border-none rounded-[10px] cursor-pointer text-left font-sans transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    selectedIndex === index ? 'bg-accent/10' : 'bg-transparent hover:bg-accent/5 dark:hover:bg-accent/[0.07]'
-                  }`}
+                  className={cn(
+                    'flex items-start gap-3 w-full p-2.5 border-none rounded-[10px] cursor-pointer text-left font-sans transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                    selectedIndex === index
+                      ? 'bg-accent/10'
+                      : 'bg-transparent hover:bg-accent/5 dark:hover:bg-accent/[0.07]',
+                  )}
                 >
                   <span className="text-lg shrink-0 mt-0.5">
                     {result.type === 'glossário' ? '📚' : '💡'}
@@ -294,4 +284,4 @@ export default function SearchDialog({ onClose, onNavigate }: SearchDialogProps)
       </div>
     </div>
   );
-}
+});
