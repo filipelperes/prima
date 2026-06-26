@@ -59,11 +59,13 @@ export interface PutResult {
   riscoMax: number;
 }
 
+export type GammaLevel = 'máximo' | 'alto' | 'baixo';
+
 export interface GreekValues {
   delta: number;
   theta: number;
   vega: number;
-  gamma: string;
+  gamma: GammaLevel;
 }
 
 export interface PremiumBreakdown {
@@ -103,15 +105,4 @@ export interface GlossaryItem {
   analogy?: string;
 }
 
-export interface UsoCardItem {
-  icon: string;
-  name: string;
-  desc: string;
-}
 
-export interface OtmBlockItem {
-  label: string;
-  color: string;
-  desc: string;
-  val?: string;
-}
