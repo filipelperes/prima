@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { CodeDecoder } from '@/components/molecules/CodeDecoder';
 import { Tag } from '@/components/atoms/Tag';
 import type { DecodeResult } from '@/data/decoder';
@@ -33,14 +34,22 @@ export function MontadorBuilderCard(props: MontadorBuilderCardProps) {
       <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">🧩 Montador de Opções B3</div>
       <QuickExamples onExample={props.onExample} />
       <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-        <EncoderPanel {...props} />
-        <DecoderPanel {...props} />
+        <EncoderPanel
+          asset={props.asset} type={props.type} month={props.month} strike={props.strike}
+          allFilled={props.allFilled} generatedCode={props.generatedCode}
+          onAssetChange={props.onAssetChange} onTypeChange={props.onTypeChange}
+          onMonthChange={props.onMonthChange} onStrikeChange={props.onStrikeChange}
+          onGenerate={props.onGenerate}
+        />
+        <DecoderPanel
+          decodedExample={props.decodedExample} generatedCode={props.generatedCode}
+        />
       </div>
     </div>
   );
 }
 
-function QuickExamples({ onExample }: Pick<MontadorBuilderCardProps, 'onExample'>) {
+const QuickExamples = memo(function QuickExamples({ onExample }: Pick<MontadorBuilderCardProps, 'onExample'>) {
   return (
     <div className="flex flex-wrap gap-1.5 mb-4">
         {EXAMPLES_RAPIDOS.map((ex) => (
@@ -50,9 +59,11 @@ function QuickExamples({ onExample }: Pick<MontadorBuilderCardProps, 'onExample'
         ))}
     </div>
   );
-}
+});
 
-function EncoderPanel(props: MontadorBuilderCardProps) {
+type EncoderProps = Pick<MontadorBuilderCardProps, 'asset' | 'type' | 'month' | 'strike' | 'allFilled' | 'generatedCode' | 'onAssetChange' | 'onTypeChange' | 'onMonthChange' | 'onStrikeChange' | 'onGenerate'>;
+
+const EncoderPanel = memo(function EncoderPanel(props: EncoderProps) {
   return (
     <div className="bg-surface rounded-[10px] p-3.5">
       <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-3">CODIFICADOR</div>
@@ -64,13 +75,17 @@ function EncoderPanel(props: MontadorBuilderCardProps) {
       <GeneratedCodeSummary {...props} />
     </div>
   );
-}
+});
 
-function AssetInput({ asset, onAssetChange }: Pick<MontadorBuilderCardProps, 'asset' | 'onAssetChange'>) {
+const AssetInput = memo(function AssetInput({ asset, onAssetChange }: Pick<MontadorBuilderCardProps, 'asset' | 'onAssetChange'>) {
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => onAssetChange(event.target.value.toUpperCase()),
+    [onAssetChange],
+  );
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Ativo</div>
-      <input list="asset-list" value={asset} onChange={(event) => onAssetChange(event.target.value.toUpperCase())} placeholder="Ex: PETR" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
+      <input list="asset-list" value={asset} onChange={handleChange} placeholder="Ex: PETR" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
       <datalist id="asset-list">
         {Object.keys(ASSET_NAMES).map((code) => (
           <option key={code} value={code} label={ASSET_NAMES[code]} />
@@ -78,9 +93,9 @@ function AssetInput({ asset, onAssetChange }: Pick<MontadorBuilderCardProps, 'as
       </datalist>
     </div>
   );
-}
+});
 
-function TypePicker({ type, onTypeChange }: Pick<MontadorBuilderCardProps, 'type' | 'onTypeChange'>) {
+const TypePicker = memo(function TypePicker({ type, onTypeChange }: Pick<MontadorBuilderCardProps, 'type' | 'onTypeChange'>) {
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Tipo</div>
@@ -93,7 +108,7 @@ function TypePicker({ type, onTypeChange }: Pick<MontadorBuilderCardProps, 'type
       </div>
     </div>
   );
-}
+});
 
 function getTypeButtonClass(current: OptionType, optionType: OptionType): string {
   const active = optionType === 'CALL' ? 'bg-green/[0.07] border-green text-green' : 'bg-red/[0.07] border-red text-red';
@@ -101,11 +116,15 @@ function getTypeButtonClass(current: OptionType, optionType: OptionType): string
   return `flex-1 py-[7px] rounded-sm border font-mono text-xs font-bold cursor-pointer transition-all duration-200 ${current === optionType ? active : inactive}`;
 }
 
-function MonthSelect({ type, month, onMonthChange }: Pick<MontadorBuilderCardProps, 'type' | 'month' | 'onMonthChange'>) {
+const MonthSelect = memo(function MonthSelect({ type, month, onMonthChange }: Pick<MontadorBuilderCardProps, 'type' | 'month' | 'onMonthChange'>) {
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => onMonthChange(event.target.value),
+    [onMonthChange],
+  );
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Mês de vencimento</div>
-      <select value={month} onChange={(event) => onMonthChange(event.target.value)} className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-sans text-xs outline-none cursor-pointer transition-colors duration-200 focus:border-accent dark:focus:border-accent">
+      <select value={month} onChange={handleChange} className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-sans text-xs outline-none cursor-pointer transition-colors duration-200 focus:border-accent dark:focus:border-accent">
         <option value="">Selecione</option>
         {MONTHS.map((item) => (
           <option key={item} value={item}>
@@ -115,26 +134,30 @@ function MonthSelect({ type, month, onMonthChange }: Pick<MontadorBuilderCardPro
       </select>
     </div>
   );
-}
+});
 
-function StrikeInput({ strike, onStrikeChange }: Pick<MontadorBuilderCardProps, 'strike' | 'onStrikeChange'>) {
+const StrikeInput = memo(function StrikeInput({ strike, onStrikeChange }: Pick<MontadorBuilderCardProps, 'strike' | 'onStrikeChange'>) {
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => onStrikeChange(event.target.value),
+    [onStrikeChange],
+  );
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Strike (R$)</div>
-      <input type="number" value={strike} onChange={(event) => onStrikeChange(event.target.value)} placeholder="Ex: 21" min="0" step="0.01" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
+      <input type="number" value={strike} onChange={handleChange} placeholder="Ex: 21" min="0" step="0.01" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
     </div>
   );
-}
+});
 
-function GenerateButton({ allFilled, onGenerate }: Pick<MontadorBuilderCardProps, 'allFilled' | 'onGenerate'>) {
+const GenerateButton = memo(function GenerateButton({ allFilled, onGenerate }: Pick<MontadorBuilderCardProps, 'allFilled' | 'onGenerate'>) {
   return (
     <button onClick={onGenerate} disabled={!allFilled} className={`w-full py-2.5 rounded-md border-none font-mono text-xs font-bold transition-all duration-200 ${allFilled ? 'bg-accent text-white cursor-pointer hover:bg-accent/90 dark:hover:bg-accent/80' : 'bg-border-custom text-muted cursor-not-allowed dark:bg-border2/50'}`}>
       Gerar Código
     </button>
   );
-}
+});
 
-function GeneratedCodeSummary({ generatedCode, asset, type, month }: Pick<MontadorBuilderCardProps, 'generatedCode' | 'asset' | 'type' | 'month'>) {
+const GeneratedCodeSummary = memo(function GeneratedCodeSummary({ generatedCode, asset, type, month }: { generatedCode: string; asset: string; type: OptionType; month: string }) {
   if (!generatedCode) return null;
   return (
     <div className="mt-3 bg-card-custom border border-accent rounded-[10px] p-3.5 text-center">
@@ -143,19 +166,19 @@ function GeneratedCodeSummary({ generatedCode, asset, type, month }: Pick<Montad
       <div className="text-[11px] text-text-secondary mt-1.5">{asset} · {type} · {month}</div>
     </div>
   );
-}
+});
 
-function DecoderPanel(props: MontadorBuilderCardProps) {
+const DecoderPanel = memo(function DecoderPanel({ decodedExample, generatedCode }: Pick<MontadorBuilderCardProps, 'decodedExample' | 'generatedCode'>) {
   return (
     <div className="bg-surface rounded-[10px] p-3.5">
       <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-3">DECODIFICADOR</div>
       <CodeDecoder />
-      <DecodedExampleSummary {...props} />
+      <DecodedExampleSummary decodedExample={decodedExample} generatedCode={generatedCode} />
     </div>
   );
-}
+});
 
-function DecodedExampleSummary({ decodedExample, generatedCode }: Pick<MontadorBuilderCardProps, 'decodedExample' | 'generatedCode'>) {
+const DecodedExampleSummary = memo(function DecodedExampleSummary({ decodedExample, generatedCode }: Pick<MontadorBuilderCardProps, 'decodedExample' | 'generatedCode'>) {
   if (!decodedExample || !generatedCode) return null;
   return (
     <div className="mt-3 bg-card-custom border border-border-custom rounded-[10px] p-3">
@@ -170,16 +193,16 @@ function DecodedExampleSummary({ decodedExample, generatedCode }: Pick<MontadorB
       </div>
     </div>
   );
-}
+});
 
-function DecodedType({ type }: Pick<DecodeResult, 'type'>) {
+const DecodedType = memo(function DecodedType({ type }: Pick<DecodeResult, 'type'>) {
   return (
     <div>
       <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-1">Tipo</div>
       <Tag variant={type === 'CALL' ? 'green' : 'red'}>{type}</Tag>
     </div>
   );
-}
+});
 
 function getExpirationLabel(decodedExample: DecodeResult): string {
   if (decodedExample.week !== undefined) {

@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, type ReactNode } from 'react';
 import { CALL_LETTERS, MONTHS, PUT_LETTERS, type OptionType, getSeriesLetter } from '@/components/organisms/montadorData';
 
 export function MontadorReferenceCards() {
@@ -36,7 +36,7 @@ function SeriesReferenceCard() {
   );
 }
 
-const ReferenceCell = memo(function ReferenceCell({ children, color, bg }: { readonly children: string; readonly color: string; readonly bg: string }) {
+const ReferenceCell = memo(function ReferenceCell({ children, color, bg }: { readonly children: ReactNode; readonly color: string; readonly bg: string }) {
   return (
     <div className={`px-1 py-1.5 text-center font-mono text-sm font-bold rounded ${color} ${bg}`}>
       {children}
