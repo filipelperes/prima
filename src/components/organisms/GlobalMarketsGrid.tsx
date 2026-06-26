@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { MARKETS_DATA, type MarketData } from '@/components/organisms/globalTabData';
 
-export function GlobalMarketsGrid() {
+export const GlobalMarketsGrid = memo(function GlobalMarketsGrid() {
   return (
     <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
       <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
@@ -15,7 +15,7 @@ export function GlobalMarketsGrid() {
       </div>
     </div>
   );
-}
+});
 
 const MarketCard = memo(function MarketCard({ market }: { readonly market: MarketData }) {
   return (

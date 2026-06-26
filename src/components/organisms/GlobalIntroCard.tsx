@@ -1,4 +1,6 @@
-export function GlobalIntroCard() {
+import { memo } from 'react';
+
+export const GlobalIntroCard = memo(function GlobalIntroCard() {
   return (
     <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
       <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
@@ -11,4 +13,4 @@ export function GlobalIntroCard() {
       </p>
     </div>
   );
-}
+});

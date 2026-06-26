@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { TERMS_TABLE } from '@/components/organisms/globalTabData';
 
-export function GlobalTermsTable() {
+export const GlobalTermsTable = memo(function GlobalTermsTable() {
   return (
     <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
       <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
@@ -33,4 +34,4 @@ export function GlobalTermsTable() {
       </div>
     </div>
   );
-}
+});
