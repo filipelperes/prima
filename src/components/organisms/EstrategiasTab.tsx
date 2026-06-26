@@ -27,7 +27,7 @@ export default function EstrategiasTab() {
           <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
+          <div className="text-[12px] text-text-secondary leading-[1.7]">
             Você tem 1.000 PETR4 a R$ 38. Vende{' '}
             <strong className="text-text">CALL strike R$ 42</strong>{' '}
             por <strong className="text-text">R$ 0,60</strong> de
@@ -36,11 +36,11 @@ export default function EstrategiasTab() {
             + o prêmio.
           </div>
         </div>
-        <div className="bg-yellow/5 border border-yellow/15 rounded-md p-3 mt-2">
+        <div className="bg-yellow/5 border border-yellow/15 dark:bg-yellow/[0.04] dark:border-yellow/[0.1] rounded-md p-3 mt-2">
           <div className="text-[11px] text-yellow font-bold mb-1">
             ⏱ O tempo (Theta) trabalha A SEU FAVOR como vendedor
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.6]">
+          <div className="text-[12px] text-text-secondary leading-[1.6]">
             A cada dia que passa, a opção vale menos. Como você vendeu, o
             decaimento temporal é lucro para você. Diferente do comprador, que
             luta contra o relógio.
@@ -61,7 +61,7 @@ export default function EstrategiasTab() {
           <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
+          <div className="text-[12px] text-text-secondary leading-[1.7]">
             Carteira de R$ 10M em ações. Compra PUTs de 1% do valor (R$ 100k em
             prêmio). Se o mercado cai 20%, a carteira perde R$ 2M, mas as PUTs
             valorizam ~R$ 1,5M. O seguro{' '}
@@ -77,7 +77,7 @@ export default function EstrategiasTab() {
             <div className="text-lg text-red font-bold font-mono">
               -20%
             </div>
-            <div className="text-[11px] text-[#94a3b8]">
+            <div className="text-[11px] text-text-secondary">
               Perda total de R$ 2M
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function EstrategiasTab() {
             <div className="text-lg text-green font-bold font-mono">
               -5,5%
             </div>
-            <div className="text-[11px] text-[#94a3b8]">
+            <div className="text-[11px] text-text-secondary">
               Perda reduzida para ~R$ 550k
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function EstrategiasTab() {
           <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
+          <div className="text-[12px] text-text-secondary leading-[1.7]">
             PETR4 a R$ 38. Compra PUT strike R$ 35 (R$ 0,50). Vende CALL strike
             R$ 42 (R$ 0,50). Prêmio pago líquido = <strong>R$ 0</strong>. Sua
             carteira está protegida entre R$ 35 e R$ 42. Se a ação despencar,
@@ -116,11 +116,11 @@ export default function EstrategiasTab() {
             ainda lucrou até lá.
           </div>
         </div>
-        <div className="bg-yellow/5 border border-yellow/15 rounded-md p-3 mt-2">
+        <div className="bg-yellow/5 border border-yellow/15 dark:bg-yellow/[0.04] dark:border-yellow/[0.1] rounded-md p-3 mt-2">
           <div className="text-[11px] text-yellow font-bold mb-1">
             💡 Custo zero? Sim, se os prêmios se equilibrarem
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.6]">
+          <div className="text-[12px] text-text-secondary leading-[1.6]">
             Quando a CALL vendida paga exatamente o que a PUT comprada custa, o
             resultado é uma proteção completa sem desembolso. Profissionais de
             mercado montam collars para dormir tranquilos.
@@ -141,7 +141,7 @@ export default function EstrategiasTab() {
           <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
             EXEMPLO PRÁTICO
           </div>
-          <div className="text-[12px] text-[#94a3b8] leading-[1.7]">
+          <div className="text-[12px] text-text-secondary leading-[1.7]">
             PETR4 a R$ 38. Você quer comprar por R$ 35. Vende{' '}
             <strong className="text-text">PUT strike R$ 35</strong>{' '}
             por <strong className="text-text">R$ 0,70</strong> de
@@ -150,7 +150,7 @@ export default function EstrategiasTab() {
             a PETR4 efetivamente a R$ 34,30 (R$ 35 - R$ 0,70).
           </div>
         </div>
-        <div className="text-[12px] text-[#94a3b8] leading-[1.7] p-2.5 mt-2 bg-green/5 rounded-md border border-green/15">
+        <div className="text-[12px] text-text-secondary leading-[1.7] p-2.5 mt-2 bg-green/5 rounded-md border border-green/15 dark:bg-green/[0.04] dark:border-green/[0.1]">
           <strong className="text-green">Resultado:</strong> Se a ação
           não caiu abaixo de R$ 35, você lucra o prêmio. Se caiu, compra a ação
           com desconto — exatamente o que queria. É uma{' '}
@@ -165,7 +165,7 @@ export default function EstrategiasTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           📊 Tabela Comparativa de Estratégias
         </div>
-        <div className="text-[12px] text-[#94a3b8] leading-[1.6] mb-2.5">
+        <div className="text-[12px] text-text-secondary leading-[1.6] mb-2.5">
           Resumo das quatro estratégias abordadas:
         </div>
         <div className="rounded-[10px] overflow-hidden border border-border-custom">
@@ -189,28 +189,28 @@ export default function EstrategiasTab() {
             <div className="p-[8px_10px] text-[11px] text-text">Covered Call</div>
             <div className="p-[8px_10px] text-[11px] text-green">Baixo</div>
             <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
-            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Renda mensal</div>
+            <div className="p-[8px_10px] text-[11px] text-text-secondary">Renda mensal</div>
           </div>
           {/* Linha 2 */}
           <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-surface">
             <div className="p-[8px_10px] text-[11px] text-text">Protective Put</div>
             <div className="p-[8px_10px] text-[11px] text-yellow">Prêmio pago</div>
             <div className="p-[8px_10px] text-[11px] text-red">Contra</div>
-            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Proteger carteira</div>
+            <div className="p-[8px_10px] text-[11px] text-text-secondary">Proteger carteira</div>
           </div>
           {/* Linha 3 */}
           <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-card-custom">
             <div className="p-[8px_10px] text-[11px] text-text">Collar</div>
             <div className="p-[8px_10px] text-[11px] text-green">Limitado</div>
-            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Neutro</div>
-            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Proteção zero-custo</div>
+            <div className="p-[8px_10px] text-[11px] text-text-secondary">Neutro</div>
+            <div className="p-[8px_10px] text-[11px] text-text-secondary">Proteção zero-custo</div>
           </div>
           {/* Linha 4 */}
           <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] bg-surface">
             <div className="p-[8px_10px] text-[11px] text-text">Cash Secured Put</div>
             <div className="p-[8px_10px] text-[11px] text-yellow">Strike</div>
             <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
-            <div className="p-[8px_10px] text-[11px] text-[#94a3b8]">Comprar com desconto</div>
+            <div className="p-[8px_10px] text-[11px] text-text-secondary">Comprar com desconto</div>
           </div>
         </div>
       </div>

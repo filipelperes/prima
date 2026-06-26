@@ -25,7 +25,7 @@ export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
           key={i}
           className={cn(
             'w-[52px] h-[52px] rounded-[10px] flex flex-col items-center justify-center text-lg border-2 border-transparent',
-            op.win ? 'bg-[#00e67611] border-[#00e67644]' : 'bg-[#ff3d5709] border-[#ff3d5730]',
+            op.win ? 'bg-green/[0.07] border-green/[0.27]' : 'bg-red/[0.04] border-red/[0.19]',
             'max-sm:w-[38px] max-sm:h-[38px] max-sm:text-[13px] max-sm:rounded-[8px]',
           )}
         >

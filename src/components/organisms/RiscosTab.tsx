@@ -28,7 +28,7 @@ export function RiscosTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Margem de garantia (para vendedores)
         </div>
-        <p className="text-[13px] leading-[1.8] text-slate-400 mb-2.5">
+        <p className="text-[13px] leading-[1.8] text-text-secondary mb-2.5">
           Quem vende opção assume risco, então a B3 exige garantia depositada.
         </p>
         <div className="grid grid-cols-2 gap-2 mb-2.5 max-sm:grid-cols-1">
@@ -36,7 +36,7 @@ export function RiscosTab() {
             <div className="text-[10px] text-blue font-bold mb-1.5 tracking-[0.5px]">
               ACEITO COMO MARGEM
             </div>
-            <div className="text-[11px] text-slate-400 leading-[1.7]">
+            <div className="text-[11px] text-text-secondary leading-[1.7]">
               Dinheiro, Títulos do Tesouro, Ações, BDRs, FIIs. A B3 usa o
               sistema CORE para calcular.
             </div>
@@ -45,17 +45,17 @@ export function RiscosTab() {
             <div className="text-[10px] text-yellow font-bold mb-1.5 tracking-[0.5px]">
               QUANTO EXIGE
             </div>
-            <div className="text-[11px] text-slate-400 leading-[1.7]">
+            <div className="text-[11px] text-text-secondary leading-[1.7]">
               Varia: 10% a 40% do valor do ativo. Depende de volatilidade,
               prazo, distância do strike.
             </div>
           </div>
         </div>
-        <div className="bg-[#ff3d5711] border border-[#ff3d5733] rounded-[10px] p-3">
+        <div className="bg-red/[0.07] border border-red/[0.20] rounded-[10px] p-3">
           <div className="text-xs text-red font-bold mb-1.5">
             Chamada de Margem (Margin Call)
           </div>
-          <div className="text-xs text-slate-400 leading-[1.7]">
+          <div className="text-xs text-text-secondary leading-[1.7]">
             O mercado se move contra o vendedor. A corretora exige mais depósito
             até um horário. Se não depositar,{' '}
             <strong>
@@ -70,11 +70,11 @@ export function RiscosTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           O seguro que quebra a seguradora
         </div>
-        <p className="text-[13px] leading-[1.8] text-slate-400 mb-3">
+        <p className="text-[13px] leading-[1.8] text-text-secondary mb-3">
           A analogia perfeita para entender vender opções:
         </p>
         <div className="bg-surface rounded-lg p-3.5 mb-2">
-          <div className="text-xs text-slate-400 leading-[1.8]">
+          <div className="text-xs text-text-secondary leading-[1.8]">
             Você oferece seguro de carro. R$ 100/mês. Por anos:
             <br />
             Recebe R$ 100 ✅ Recebe R$ 100 ✅ Recebe R$ 100 ✅
@@ -87,7 +87,7 @@ export function RiscosTab() {
             </strong>
           </div>
         </div>
-        <div className="text-xs text-slate-400 leading-[1.7] p-2.5 bg-[#ffd54f11] rounded-lg border border-[#ffd54f22]">
+        <div className="text-xs text-text-secondary leading-[1.7] p-2.5 bg-yellow/[0.07] rounded-lg border border-yellow/[0.13]">
           Vender opções = muitos ganhos pequenos + poucas perdas enormes.
           Funciona bem na maioria do tempo. Mas o "tail risk" pode ser
           devastador se não houver gestão adequada de risco.

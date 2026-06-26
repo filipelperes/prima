@@ -10,8 +10,8 @@ export function AssimetriaTab() {
 
   return (
     <>
-      <div className="bg-[#00e67609] border border-[#00e67622] rounded-xl p-4 mb-3">
-        <div className="text-[13px] leading-[1.8] text-[#94a3b8]">
+      <div className="bg-green/[0.04] border border-green/[0.13] rounded-xl p-4 mb-3">
+        <div className="text-[13px] leading-[1.8] text-text-secondary">
           O modelo do Tio Huli:{' '}
           <strong className="text-text">
             não precisa acertar sempre
@@ -32,7 +32,7 @@ export function AssimetriaTab() {
           min={50}
           max={2000}
           step={50}
-          color="var(--red)"
+          color="var(--color-red)"
           displayValue={`R$ ${state.premio}`}
           onChange={(v) => updateField('premio', v)}
           minLabel="R$ 50"
@@ -56,7 +56,7 @@ export function AssimetriaTab() {
           min={1}
           max={state.ops}
           step={1}
-          color="var(--green)"
+          color="var(--color-green)"
           displayValue={`${state.acertos} de ${state.ops} (${Math.round((state.acertos / state.ops) * 100)}%)`}
           onChange={(v) => updateField('acertos', v)}
         />
@@ -66,7 +66,7 @@ export function AssimetriaTab() {
           min={2}
           max={30}
           step={1}
-          color="var(--accent)"
+          color="var(--color-accent)"
           displayValue={`${state.mult}x`}
           onChange={(v) => updateField('mult', v)}
           minLabel="2x"
@@ -79,7 +79,7 @@ export function AssimetriaTab() {
           📊 Resultado
         </div>
         <div className="grid grid-cols-2 gap-2 mb-3 max-sm:grid-cols-1">
-          <div className="bg-[#ff3d5711] border border-[#ff3d5733] rounded-[10px] p-3 text-center">
+          <div className="bg-red/[0.07] border border-red/[0.20] rounded-[10px] p-3 text-center">
             <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">
               Total perdido
             </div>
@@ -90,7 +90,7 @@ export function AssimetriaTab() {
               {state.ops - state.acertos} viraram pó
             </div>
           </div>
-          <div className="bg-[#00e67611] border border-[#00e67633] rounded-[10px] p-3 text-center">
+          <div className="bg-green/[0.07] border border-green/[0.20] rounded-[10px] p-3 text-center">
             <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-[3px]">
               Total ganho
             </div>
@@ -103,7 +103,7 @@ export function AssimetriaTab() {
           </div>
         </div>
         <div
-          className={`rounded-lg p-[18px] text-center mt-3 ${result.isProfit ? 'bg-[#00e67611] border border-[#00e67633]' : 'bg-[#ff3d5711] border border-[#ff3d5733]'}`}
+          className={`rounded-lg p-[18px] text-center mt-3 ${result.isProfit ? 'bg-green/[0.07] border border-green/[0.20]' : 'bg-red/[0.07] border border-red/[0.20]'}`}
         >
           <div className="text-[11px] tracking-[1px] text-muted uppercase font-mono">
             Resultado final
@@ -114,7 +114,7 @@ export function AssimetriaTab() {
             {result.isProfit ? '+' : '-'}
             {fmtInt(Math.abs(result.resultado))}
           </div>
-          <div className="text-xs text-[#94a3b8]">
+          <div className="text-xs text-text-secondary">
             {result.isProfit
               ? `Lucrativo com apenas ${Math.round((state.acertos / state.ops) * 100)}% de acerto`
               : 'Aumente o multiplicador ou o número de acertos'}
@@ -127,7 +127,7 @@ export function AssimetriaTab() {
           Visualização das operações
         </div>
         <OpsGridDisplay ops={result.opsArray} />
-        <div className="bg-black/35 rounded-lg p-3 text-xs leading-relaxed text-[#94a3b8] mt-0">
+        <div className="bg-[var(--overlay)] rounded-lg p-3 text-xs leading-relaxed text-text-secondary mt-0">
           {result.descricao}
         </div>
       </div>
@@ -136,7 +136,7 @@ export function AssimetriaTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           Por que funciona matematicamente
         </div>
-        <p className="text-[13px] leading-[1.8] text-[#94a3b8] mb-3">
+        <p className="text-[13px] leading-[1.8] text-text-secondary mb-3">
           Imagine um cassino onde:
         </p>
         <Formula>
@@ -168,7 +168,7 @@ export function AssimetriaTab() {
             <span className="text-accent font-bold">Lucro: R$ 1.000</span> com 20% de acerto
           </div>
         </Formula>
-        <div className="text-xs text-[#94a3b8] mt-2.5 leading-[1.6]">
+        <div className="text-xs text-text-secondary mt-2.5 leading-[1.6]">
           <strong className="text-text">Ponto crítico:</strong>{' '}
           tamanho de posição pequeno é o que mantém a estratégia viável. Nunca
           arrisque mais do que você aceita perder 100% — porque vai perder 100%

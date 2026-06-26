@@ -1,16 +1,18 @@
+import { useMemo } from 'react';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { GreekGrid } from '@/components/molecules/GreekGrid';
 import { ThetaBarsChart } from '@/components/molecules/ThetaBarsChart';
 import { InimigosProgress } from '@/components/molecules/InimigosProgress';
 import { useGreekSimulation } from '@/hooks/useGreekSimulation';
+import { THETA_BARS } from '@/lib/calculations';
 import { fmt } from '@/lib/formatters';
 import type { Inimigo } from '@/lib/types';
 
 export function GregasTab() {
-  const { state, values, thetaBars, updateField } = useGreekSimulation();
+  const { state, values, updateField } = useGreekSimulation();
 
   const daysColor =
-    state.dias <= 7 ? 'var(--red)' : state.dias <= 14 ? 'var(--yellow)' : 'var(--green)';
+    state.dias <= 7 ? 'var(--color-red)' : state.dias <= 14 ? 'var(--color-yellow)' : 'var(--color-green)';
 
   const distText =
     state.dist > 0
@@ -19,26 +21,26 @@ export function GregasTab() {
         ? `${fmt(Math.abs(state.dist))} OTM`
         : 'ATM';
 
-  const inimigos: Inimigo[] = [
+  const inimigos: Inimigo[] = useMemo(() => [
     {
       label: 'Direção',
       val: 66,
-      color: 'var(--accent)',
+      color: 'var(--color-accent)',
       desc: 'Necessidade de acertar para onde a ação vai',
     },
     {
       label: 'Tempo (Theta)',
       val: state.dias <= 7 ? 95 : state.dias <= 14 ? 75 : 55,
-      color: 'var(--red)',
+      color: 'var(--color-red)',
       desc: 'Quanto menos tempo, mais perigoso',
     },
     {
       label: 'Volatilidade',
       val: state.vol > 50 ? 80 : state.vol < 20 ? 30 : 50,
-      color: 'var(--yellow)',
+      color: 'var(--color-yellow)',
       desc: 'Comprar com IV alta = desvantagem estrutural',
     },
-  ];
+  ], [state.dias, state.vol]);
 
   const thetaStatus =
     state.dias <= 7
@@ -69,7 +71,7 @@ export function GregasTab() {
           min={10}
           max={80}
           step={1}
-          color="var(--accent)"
+          color="var(--color-accent)"
           displayValue={`${state.vol}%`}
           onChange={(v) => updateField('vol', v)}
           minLabel="10%"
@@ -83,10 +85,10 @@ export function GregasTab() {
           step={0.5}
           color={
             state.dist > 0
-              ? 'var(--green)'
+              ? 'var(--color-green)'
               : state.dist < 0
-                ? 'var(--red)'
-                : 'var(--yellow)'
+                ? 'var(--color-red)'
+                : 'var(--color-yellow)'
           }
           displayValue={distText}
           onChange={(v) => updateField('dist', v)}
@@ -99,14 +101,14 @@ export function GregasTab() {
         cards={[
           {
             name: 'Δ DELTA',
-            nameColor: 'var(--accent)',
+            nameColor: 'var(--color-accent)',
             value: values.delta.toFixed(2),
             icon: 'velocidade do carro',
             children: `Para cada R$ 1 que a ação sobe, o prêmio sobe R$ ${values.delta.toFixed(2)}. Delta ${values.delta > 0.7 ? 'alto — comporta-se quase como a ação' : values.delta < 0.3 ? 'baixo — OTM, responde pouco' : 'médio — ATM region'}.`,
           },
           {
             name: 'Θ THETA',
-            nameColor: 'var(--red)',
+            nameColor: 'var(--color-red)',
             value: `-R$ ${values.theta.toFixed(2)}/dia`,
             icon: 'combustível vazando',
             children:
@@ -116,7 +118,7 @@ export function GregasTab() {
           },
           {
             name: 'V VEGA',
-            nameColor: 'var(--yellow)',
+            nameColor: 'var(--color-yellow)',
             value: `×${values.vega.toFixed(2)}`,
             icon: 'sensibilidade ao caos',
             children:
@@ -128,7 +130,7 @@ export function GregasTab() {
           },
           {
             name: 'Γ GAMMA',
-            nameColor: 'var(--green)',
+            nameColor: 'var(--color-green)',
             value: values.gamma,
             icon: 'aceleração do carro',
             children: `Mede a velocidade de variação do Delta. ${values.gamma === 'máximo' ? 'ATM tem o maior Gamma. Quando explode ITM, o Delta acelera.' : values.gamma === 'alto' ? 'Gamma elevado — Delta muda rapidamente.' : 'Gamma baixo — Delta estável.'}`,
@@ -140,8 +142,8 @@ export function GregasTab() {
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           ⏳ Theta decay — como o prêmio derrete
         </div>
-        <ThetaBarsChart bars={thetaBars} currentDias={state.dias} />
-        <div className="text-xs text-[#94a3b8] mt-3 p-2.5 bg-surface rounded-lg leading-relaxed text-center">
+        <ThetaBarsChart bars={THETA_BARS} currentDias={state.dias} />
+        <div className="text-xs text-text-secondary mt-3 p-2.5 bg-surface rounded-lg leading-relaxed text-center">
           {thetaStatus}
         </div>
         <p className="text-[11px] text-muted mt-2.5 leading-relaxed">
@@ -155,7 +157,7 @@ export function GregasTab() {
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">O que é volatilidade?</div>
-        <p className="text-[13px] leading-relaxed text-[#94a3b8] mb-3">
+        <p className="text-[13px] leading-relaxed text-text-secondary mb-3">
           Volatilidade não é direção — é{' '}
           <strong className="text-text">
             intensidade esperada do movimento
@@ -167,7 +169,7 @@ export function GregasTab() {
             <div className="text-[10px] text-green font-bold mb-1.5 tracking-[0.5px]">
               BAIXA VOLATILIDADE
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               Mercado espera PETR4 entre R$ 29 e R$ 31. Opções baratas. Pouca
               oportunidade para compradores.
             </div>
@@ -176,14 +178,14 @@ export function GregasTab() {
             <div className="text-[10px] text-red font-bold mb-1.5 tracking-[0.5px]">
               ALTA VOLATILIDADE
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               Mercado espera PETR4 entre R$ 20 e R$ 40. Opções caras. Antes de
               balanço, eleição, COPOM.
             </div>
           </div>
         </div>
-        <div className="bg-yellow/10 border border-yellow/30 rounded-lg p-3 mt-2">
-          <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+        <div className="bg-yellow/10 border border-yellow/30 dark:bg-yellow/[0.06] dark:border-yellow/[0.15] rounded-lg p-3 mt-2">
+          <div className="text-[11px] text-text-secondary leading-relaxed">
             Comprar opções com alta volatilidade implícita é caro — você paga
             pela expectativa de movimento. Compradores experientes tentam comprar
             com volatilidade baixa e vender quando ela sobe.

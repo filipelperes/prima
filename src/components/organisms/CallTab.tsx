@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { ScenarioGrid } from '@/components/molecules/ScenarioGrid';
@@ -26,14 +26,14 @@ export function CallTab() {
         ? 'fora do dinheiro'
         : 'no limite';
 
-  const scenarios = [
+  const scenarios = useMemo(() => [
     { label: 'PETR4 cai → R$ 28', onClick: () => { setFinal(28); setActiveScenario(0); } },
     { label: 'Fica igual → R$ 38', onClick: () => { setFinal(38); setActiveScenario(1); } },
     { label: 'Toca o strike → R$ 40', onClick: () => { setFinal(40); setActiveScenario(2); } },
     { label: 'Dispara → R$ 46', onClick: () => { setFinal(46); setActiveScenario(3); } },
     { label: 'Explode → R$ 54', onClick: () => { setFinal(54); setActiveScenario(4); } },
     { label: 'Lua 🚀 → R$ 100', onClick: () => { setFinal(100); setActiveScenario(5); } },
-  ];
+  ], [setFinal]);
 
   return (
     <>
@@ -53,7 +53,7 @@ export function CallTab() {
           min={20}
           max={60}
           step={0.5}
-          color="#00d4ff"
+          color="var(--color-accent)"
           displayValue={fmt(state.acao)}
           onChange={(v) => updateField('acao', v)}
           minLabel="R$ 20"
@@ -65,7 +65,7 @@ export function CallTab() {
           min={20}
           max={65}
           step={0.5}
-          color="#ffd54f"
+          color="var(--color-yellow)"
           displayValue={fmt(state.strike)}
           onChange={(v) => updateField('strike', v)}
           minLabel="R$ 20"
@@ -77,7 +77,7 @@ export function CallTab() {
           min={0.1}
           max={6}
           step={0.1}
-          color="#6b7a94"
+          color="var(--color-muted)"
           displayValue={fmt(state.premio)}
           onChange={(v) => updateField('premio', v)}
           minLabel="R$ 0,10"
@@ -89,7 +89,7 @@ export function CallTab() {
           min={1}
           max={50}
           step={1}
-          color="#00d4ff"
+          color="var(--color-accent)"
           displayValue={String(state.contratos)}
           onChange={(v) => updateField('contratos', v)}
           minLabel="1"
@@ -122,7 +122,7 @@ export function CallTab() {
           min={0}
           max={120}
           step={0.5}
-          color={state.final >= state.strike ? '#00e676' : '#ff3d57'}
+          color={state.final >= state.strike ? 'var(--color-green)' : 'var(--color-red)'}
           displayValue={fmt(state.final)}
           onChange={(v) => setFinal(v)}
         />
@@ -140,7 +140,7 @@ export function CallTab() {
               value: fmt(result.vi),
               sub: result.vi > 0 ? 'ITM ✓' : 'OTM',
               valueColor:
-                result.vi > 0 ? '#00e676' : '#6b7a94',
+                result.vi > 0 ? 'var(--color-green)' : 'var(--color-muted)',
             },
             {
               label: 'Resultado',
@@ -148,8 +148,8 @@ export function CallTab() {
                 ? `+${fmtInt(result.lucro)}`
                 : `-${fmtInt(Math.abs(result.lucro))}`,
               valueColor: result.isProfit
-                ? '#00e676'
-                : '#ff3d57',
+                ? 'var(--color-green)'
+                : 'var(--color-red)',
             },
             {
               label: 'Retorno',
@@ -157,12 +157,12 @@ export function CallTab() {
                 ? fmtPct(result.retornoPct)
                 : '-100%',
               valueColor: result.isProfit
-                ? '#00e676'
-                : '#ff3d57',
+                ? 'var(--color-green)'
+                : 'var(--color-red)',
             },
           ]}
         />
-        <div className="bg-black/35 rounded-lg p-3 text-xs leading-relaxed text-[#94a3b8]">{result.descricao}</div>
+        <div className="bg-[var(--overlay)] rounded-lg p-3 text-xs leading-relaxed text-text-secondary">{result.descricao}</div>
       </ResultBox>
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3 mt-3">
@@ -173,9 +173,9 @@ export function CallTab() {
         </p>
         <OtmBlock
           label="ITM — In The Money ✓"
-          labelColor="#00e676"
-          bgColor="#00e67611"
-          borderColor="#00e67633"
+          labelColor="var(--color-green)"
+          bgColor="color-mix(in srgb, var(--color-green) 7%, transparent)"
+          borderColor="color-mix(in srgb, var(--color-green) 20%, transparent)"
         >
           Strike{' '}
           <strong className="text-green">
@@ -190,9 +190,9 @@ export function CallTab() {
         </OtmBlock>
         <OtmBlock
           label="ATM — At The Money ⚡"
-          labelColor="#ffd54f"
-          bgColor="#ffd54f11"
-          borderColor="#ffd54f33"
+          labelColor="var(--color-yellow)"
+          bgColor="color-mix(in srgb, var(--color-yellow) 7%, transparent)"
+          borderColor="color-mix(in srgb, var(--color-yellow) 20%, transparent)"
         >
           Strike{' '}
           <strong className="text-yellow">
@@ -203,9 +203,9 @@ export function CallTab() {
         </OtmBlock>
         <OtmBlock
           label="OTM — Out of The Money ✨"
-          labelColor="#ff3d57"
-          bgColor="#ff3d5711"
-          borderColor="#ff3d5733"
+          labelColor="var(--color-red)"
+          bgColor="color-mix(in srgb, var(--color-red) 7%, transparent)"
+          borderColor="color-mix(in srgb, var(--color-red) 20%, transparent)"
         >
           Strike{' '}
           <strong className="text-red">

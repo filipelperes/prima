@@ -43,7 +43,7 @@ export function PremioTab() {
           min={1}
           max={90}
           step={1}
-          color="var(--blue)"
+          color="var(--color-blue)"
           displayValue={`${state.dias} dias`}
           onChange={(v) => updateField('dias', v)}
         />
@@ -53,7 +53,7 @@ export function PremioTab() {
           min={10}
           max={80}
           step={1}
-          color="var(--yellow)"
+          color="var(--color-yellow)"
           displayValue={`${state.vol}%`}
           onChange={(v) => updateField('vol', v)}
         />
@@ -65,10 +65,10 @@ export function PremioTab() {
           step={0.5}
           color={
             state.dist > 0
-              ? 'var(--green)'
+              ? 'var(--color-green)'
               : state.dist < 0
-                ? 'var(--red)'
-                : 'var(--yellow)'
+                ? 'var(--color-red)'
+                : 'var(--color-yellow)'
           }
           displayValue={distText}
           onChange={(v) => updateField('dist', v)}
@@ -82,16 +82,16 @@ export function PremioTab() {
           <ProgressRow
             label="Intrínseco"
             value={breakdown.intrinseco}
-            color="var(--green)"
+            color="var(--color-green)"
             displayValue={fmt(breakdown.intrinseco)}
           />
           <ProgressRow
             label="Temporal"
             value={breakdown.temporal}
-            color="var(--blue)"
+            color="var(--color-blue)"
             displayValue={fmt(breakdown.temporal)}
           />
-          <div className="border-t border-[var(--border)] mt-2.5 pt-2.5 flex justify-between items-center">
+          <div className="border-t border-border mt-2.5 pt-2.5 flex justify-between items-center">
             <span className="text-xs text-muted">
               Prêmio estimado
             </span>
@@ -139,7 +139,7 @@ export function PremioTab() {
             fator mais disputado)
           </div>
         </Formula>
-        <div className="bg-[#ffd54f11] border border-[#ffd54f33] rounded-lg p-3 mt-1">
+        <div className="bg-yellow/[0.07] border border-yellow/[0.20] dark:bg-yellow/[0.04] dark:border-yellow/[0.12] rounded-lg p-3 mt-1">
           <div className="text-[11px] text-muted leading-relaxed">
             As gregas (Delta, Theta, Vega, Gamma) são as{' '}
             <strong className="text-yellow">

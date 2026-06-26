@@ -15,7 +15,7 @@ export function ToggleButton({ label, active, variant, onClick }: ToggleButtonPr
         'flex-1 p-2 rounded-[7px] border text-[11px] font-bold font-sans tracking-wide uppercase transition-all duration-200',
         active && variant === 'green' && 'bg-green/15 border-green/40 text-green',
         active && variant === 'red' && 'bg-red/15 border-red/40 text-red',
-        !active && 'bg-transparent border-transparent text-muted',
+        !active && 'bg-transparent border-transparent text-muted hover:text-text dark:hover:text-soft',
       )}
     >
       {label}

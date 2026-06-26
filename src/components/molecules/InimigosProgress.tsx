@@ -15,10 +15,10 @@ export function InimigosProgress({ inimigos }: InimigosProgressProps) {
             </span>
             <div className="flex-1 h-2 bg-border-custom rounded-[4px] overflow-hidden">
               <div
-                className="h-full rounded-[4px] transition-[width] duration-300"
+                className="h-full w-full rounded-[4px] origin-left transition-transform duration-300"
                 style={{
                   background: item.color,
-                  width: `${item.val}%`,
+                  transform: `scaleX(${item.val / 100})`,
                 }}
               />
             </div>

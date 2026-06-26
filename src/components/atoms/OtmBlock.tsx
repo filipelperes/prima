@@ -23,7 +23,7 @@ export function OtmBlock({
       <div className="text-[11px] font-bold tracking-[0.5px] mb-1" style={{ color: labelColor }}>
         {label}
       </div>
-      <div className="text-xs leading-[1.6] text-[#94a3b8]">
+      <div className="text-xs leading-[1.6] text-text-secondary">
         {children}
       </div>
     </div>

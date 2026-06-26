@@ -35,13 +35,8 @@ export function PremioDiagram() {
             <div className="text-[15px] font-bold mb-1.5" style={{ color: b.nameColor }}>
               {b.name}
             </div>
-            <div className="text-xs leading-relaxed text-[#94a3b8]">
-              {b.desc.split('\n').map((line, li) => (
-                <span key={li}>
-                  {line}
-                  {li < b.desc.split('\n').length - 1 && <br />}
-                </span>
-              ))}
+            <div className="text-xs leading-relaxed text-text-secondary whitespace-pre-line">
+              {b.desc}
             </div>
           </div>
           {i < blocks.length - 1 && (
@@ -58,7 +53,7 @@ export function PremioDiagram() {
         <div className="text-[15px] font-bold text-accent mb-1.5">
           Prêmio = soma dos dois
         </div>
-        <div className="text-xs leading-relaxed text-[#94a3b8]">
+        <div className="text-xs leading-relaxed text-text-secondary">
           Uma OTM tem apenas valor temporal (pura esperança). Uma ITM profunda
           tem principalmente valor intrínseco com pouco temporal. ATM tem o
           maior valor temporal absoluto.

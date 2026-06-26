@@ -12,7 +12,7 @@ export function IntroTab() {
     <>
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">O que é uma opção?</div>
-        <p className="text-sm leading-relaxed text-[#94a3b8] mb-3">
+        <p className="text-sm leading-relaxed text-text-secondary mb-3">
           Uma opção é um{' '}
           <strong className="text-text">
             contrato que dá um direito, mas não uma obrigação
@@ -36,7 +36,7 @@ export function IntroTab() {
             </span>
           </div>
         </Formula>
-        <p className="text-xs leading-relaxed text-[#94a3b8]">
+        <p className="text-xs leading-relaxed text-text-secondary">
           O prêmio é o{' '}
           <strong className="text-text">
             máximo que você pode perder
@@ -47,7 +47,7 @@ export function IntroTab() {
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Analogias interativas</div>
-        <p className="text-[13px] leading-relaxed text-[#94a3b8] mb-3">
+        <p className="text-[13px] leading-relaxed text-text-secondary mb-3">
           Cada analogia mostra o conceito financeiro (esquerda) lado a lado com
           o mundo real (direita). Clique para trocar:
         </p>
@@ -59,7 +59,7 @@ export function IntroTab() {
               className={`flex-1 min-w-[80px] px-2.5 py-2 rounded-lg cursor-pointer text-[11px] font-bold font-sans transition-all duration-200 text-center border ${
                 analogyTab === a.id
                   ? 'bg-accent/15 border-accent/30 text-accent'
-                  : 'bg-surface border-border-custom text-muted'
+                  : 'bg-surface border-border-custom text-muted hover:bg-accent/5 dark:hover:bg-accent/[0.07]'
               }`}
             >
               {a.icon} {a.title}
@@ -77,7 +77,7 @@ export function IntroTab() {
             {current.financeiro.map((line, i) => (
               <div
                 key={i}
-                className={`text-[11px] text-[#94a3b8] leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
+                className={`text-[11px] text-text-secondary leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
               >
                 {line}
               </div>
@@ -90,7 +90,7 @@ export function IntroTab() {
             {current.mundoReal.map((line, i) => (
               <div
                 key={i}
-                className={`text-[11px] text-[#94a3b8] leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
+                className={`text-[11px] text-text-secondary leading-relaxed mb-1 ${i > 0 ? 'pl-3' : ''}`}
               >
                 {line}
               </div>
@@ -109,7 +109,7 @@ export function IntroTab() {
             <div className="text-xs font-bold mb-1.5">
               Direito de COMPRAR
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               Você ganha quando o ativo{' '}
               <strong className="text-green">sobe</strong>. Aposta de
               alta.
@@ -122,7 +122,7 @@ export function IntroTab() {
             <div className="text-xs font-bold mb-1.5">
               Direito de VENDER
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               Você ganha quando o ativo{' '}
               <strong className="text-red">cai</strong>. Aposta de
               baixa ou proteção.
@@ -133,7 +133,7 @@ export function IntroTab() {
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">🔍 Decodificador de códigos B3</div>
-        <p className="text-xs leading-relaxed text-[#94a3b8] mb-2.5">
+        <p className="text-xs leading-relaxed text-text-secondary mb-2.5">
           Na B3, cada opção tem um código próprio. Digite ou clique em um
           exemplo para decodificar:
         </p>
@@ -153,33 +153,33 @@ export function IntroTab() {
             {
               cells: [
                 { value: 'Ações', isBold: true },
-                { value: '100%', color: 'var(--yellow)' },
-                { value: 'Nenhuma', color: 'var(--green)' },
+                { value: '100%', color: 'var(--color-yellow)' },
+                { value: 'Nenhuma', color: 'var(--color-green)' },
                 { value: 'Nenhuma', color: 'var(--muted)' },
               ],
             },
             {
               cells: [
                 { value: 'Futuros', isBold: true },
-                { value: 'Ilimitada', color: 'var(--red)' },
-                { value: 'Sim ⚠️', color: 'var(--red)' },
-                { value: 'Alta', color: 'var(--red)' },
+                { value: 'Ilimitada', color: 'var(--color-red)' },
+                { value: 'Sim ⚠️', color: 'var(--color-red)' },
+                { value: 'Alta', color: 'var(--color-red)' },
               ],
             },
             {
               cells: [
                 { value: 'Opção (compra)', isBold: true },
-                { value: 'Só o prêmio', color: 'var(--green)' },
-                { value: 'Nenhuma', color: 'var(--green)' },
-                { value: 'Altíssima', color: 'var(--green)' },
+                { value: 'Só o prêmio', color: 'var(--color-green)' },
+                { value: 'Nenhuma', color: 'var(--color-green)' },
+                { value: 'Altíssima', color: 'var(--color-green)' },
               ],
             },
             {
               cells: [
                 { value: 'Opção (venda)', isBold: true },
-                { value: 'Ilimitada', color: 'var(--red)' },
-                { value: 'Sim ⚠️', color: 'var(--red)' },
-                { value: 'Alta', color: 'var(--red)' },
+                { value: 'Ilimitada', color: 'var(--color-red)' },
+                { value: 'Sim ⚠️', color: 'var(--color-red)' },
+                { value: 'Alta', color: 'var(--color-red)' },
               ],
             },
           ]}

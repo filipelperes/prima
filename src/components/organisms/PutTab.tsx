@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { ToggleButton } from '@/components/atoms/ToggleButton';
@@ -14,14 +14,14 @@ export function PutTab() {
     usePutSimulation();
   const [activeScenario, setActiveScenario] = useState<number | undefined>(undefined);
 
-  const scenarios = [
+  const scenarios = useMemo(() => [
     { label: 'Empresa faliu → R$ 0', onClick: () => { setFinal(0); setActiveScenario(0); } },
     { label: 'Crash → R$ 15', onClick: () => { setFinal(15); setActiveScenario(1); } },
     { label: 'Queda → R$ 28', onClick: () => { setFinal(28); setActiveScenario(2); } },
     { label: 'Fica igual → R$ 38', onClick: () => { setFinal(38); setActiveScenario(3); } },
     { label: 'Sobe → R$ 46', onClick: () => { setFinal(46); setActiveScenario(4); } },
     { label: 'Alta forte → R$ 60', onClick: () => { setFinal(60); setActiveScenario(5); } },
-  ];
+  ], [setFinal]);
 
   const resultadoLabel = mode === 'comprador' ? 'Prêmio pago' : 'Prêmio recebido';
   const resultadoSub = mode === 'comprador' ? 'risco máximo' : 'ganho máximo';
@@ -35,7 +35,7 @@ export function PutTab() {
         </span>
       </div>
 
-      <div className="flex gap-1 bg-surface border border-border-custom rounded-[10px] p-[3px] mb-3.5">
+      <div className="flex gap-1 bg-surface border border-border-custom rounded-[10px] p-[3px] mb-3.5 dark:border-border2">
         <ToggleButton
           label="COMPRADOR"
           active={mode === 'comprador'}
@@ -66,7 +66,7 @@ export function PutTab() {
       <div
         className={`${mode === 'comprador' ? 'block' : 'hidden'} bg-surface border border-blue/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-blue/10`}
       >
-        <div className="text-xs text-[#94a3b8] leading-relaxed">
+        <div className="text-xs text-text-secondary leading-relaxed">
           Você paga o prêmio e ganha o direito de{' '}
           <strong className="text-text">
             vender as ações pelo preço do strike
@@ -81,7 +81,7 @@ export function PutTab() {
       <div
         className={`${mode === 'vendedor' ? 'block' : 'hidden'} bg-surface border border-red/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-red/10`}
       >
-        <div className="text-xs text-[#94a3b8] leading-relaxed">
+        <div className="text-xs text-text-secondary leading-relaxed">
           Você é a <strong className="text-text">seguradora</strong>.
           Recebe o prêmio todo mês. Funciona bem enquanto não há "sinistro". Mas
           se a ação derreter — ou pior, a empresa falir — você é obrigado a
@@ -97,7 +97,7 @@ export function PutTab() {
           min={10}
           max={70}
           step={0.5}
-          color="var(--accent)"
+          color="var(--color-accent)"
           displayValue={fmt(state.acao)}
           onChange={(v) => updateField('acao', v)}
         />
@@ -107,7 +107,7 @@ export function PutTab() {
           min={10}
           max={70}
           step={0.5}
-          color="var(--red)"
+          color="var(--color-red)"
           displayValue={fmt(state.strike)}
           onChange={(v) => updateField('strike', v)}
         />
@@ -127,7 +127,7 @@ export function PutTab() {
           min={1}
           max={50}
           step={1}
-          color="var(--accent)"
+          color="var(--color-accent)"
           displayValue={String(state.contratos)}
           onChange={(v) => updateField('contratos', v)}
         />
@@ -171,7 +171,7 @@ export function PutTab() {
           min={0}
           max={80}
           step={0.5}
-          color={state.final < state.strike ? 'var(--red)' : 'var(--green)'}
+          color={state.final < state.strike ? 'var(--color-red)' : 'var(--color-green)'}
           displayValue={fmt(state.final)}
           onChange={(v) => setFinal(v)}
         />
@@ -189,7 +189,7 @@ export function PutTab() {
               value: fmt(result.vi),
               sub: result.vi > 0 ? 'ITM — exercida' : 'OTM — vira pó',
               valueColor:
-                result.vi > 0 ? 'var(--green)' : 'var(--muted)',
+                result.vi > 0 ? 'var(--color-green)' : 'var(--muted)',
             },
             {
               label: 'Resultado',
@@ -197,26 +197,26 @@ export function PutTab() {
                 ? `+${fmtInt(result.lucro)}`
                 : `-${fmtInt(Math.abs(result.lucro))}`,
               valueColor: result.isProfit
-                ? 'var(--green)'
-                : 'var(--red)',
+                ? 'var(--color-green)'
+                : 'var(--color-red)',
             },
             {
               label: 'Retorno',
               value: fmtPct(result.retornoPct),
               valueColor: result.isProfit
-                ? 'var(--green)'
-                : 'var(--red)',
+                ? 'var(--color-green)'
+                : 'var(--color-red)',
             },
           ]}
         />
-        <div className="bg-black/35 rounded-lg p-3 text-xs leading-relaxed text-[#94a3b8]">{result.descricao}</div>
+        <div className="bg-[var(--overlay)] rounded-lg p-3 text-xs leading-relaxed text-text-secondary">{result.descricao}</div>
       </ResultBox>
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3 mt-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">
           PUT vendida — estratégia do investidor experiente
         </div>
-        <p className="text-xs leading-relaxed text-[#94a3b8] mb-2.5">
+        <p className="text-xs leading-relaxed text-text-secondary mb-2.5">
           PETR4 a R$ 30. Você gostaria de comprar se caísse para R$ 25. Em vez
           de deixar uma ordem de compra parada, você{' '}
           <strong className="text-text">
@@ -229,7 +229,7 @@ export function PutTab() {
             <div className="text-[10px] text-green font-bold mb-1.5">
               AÇÃO FICA ACIMA DE R$ 25
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               PUT não exercida. Você fica com o prêmio no bolso. Ganhou dinheiro
               por nada acontecer.
             </div>
@@ -238,7 +238,7 @@ export function PutTab() {
             <div className="text-[10px] text-blue font-bold mb-1.5">
               AÇÃO CAI ABAIXO DE R$ 25
             </div>
-            <div className="text-[11px] text-[#94a3b8] leading-relaxed">
+            <div className="text-[11px] text-text-secondary leading-relaxed">
               Você compra a ação a R$ 25 — que já era o seu preço-alvo de
               qualquer jeito.
             </div>

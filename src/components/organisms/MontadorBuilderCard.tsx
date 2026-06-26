@@ -43,11 +43,11 @@ export function MontadorBuilderCard(props: MontadorBuilderCardProps) {
 function QuickExamples({ onExample }: Pick<MontadorBuilderCardProps, 'onExample'>) {
   return (
     <div className="flex flex-wrap gap-1.5 mb-4">
-      {EXAMPLES_RAPIDOS.map((ex) => (
-        <button key={ex.code} onClick={() => onExample(ex)} className="bg-surface border border-border-custom rounded-sm px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200">
-          {ex.code}
-        </button>
-      ))}
+        {EXAMPLES_RAPIDOS.map((ex) => (
+          <button key={ex.code} onClick={() => onExample(ex)} className="bg-surface border border-border-custom rounded-sm px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200 hover:bg-accent/10 dark:hover:bg-accent/[0.12]">
+            {ex.code}
+          </button>
+        ))}
     </div>
   );
 }
@@ -70,7 +70,7 @@ function AssetInput({ asset, onAssetChange }: Pick<MontadorBuilderCardProps, 'as
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Ativo</div>
-      <input list="asset-list" value={asset} onChange={(event) => onAssetChange(event.target.value.toUpperCase())} placeholder="Ex: PETR" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none" />
+      <input list="asset-list" value={asset} onChange={(event) => onAssetChange(event.target.value.toUpperCase())} placeholder="Ex: PETR" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
       <datalist id="asset-list">
         {Object.keys(ASSET_NAMES).map((code) => (
           <option key={code} value={code} label={ASSET_NAMES[code]} />
@@ -96,8 +96,8 @@ function TypePicker({ type, onTypeChange }: Pick<MontadorBuilderCardProps, 'type
 }
 
 function getTypeButtonClass(current: OptionType, optionType: OptionType): string {
-  const active = optionType === 'CALL' ? 'bg-[#00e67611] border-green text-green' : 'bg-[#ff3d5711] border-red text-red';
-  const inactive = 'border-border-custom text-muted bg-transparent';
+  const active = optionType === 'CALL' ? 'bg-green/[0.07] border-green text-green' : 'bg-red/[0.07] border-red text-red';
+  const inactive = 'border-border-custom text-muted bg-transparent hover:text-text dark:hover:text-soft';
   return `flex-1 py-[7px] rounded-sm border font-mono text-xs font-bold cursor-pointer transition-all duration-200 ${current === optionType ? active : inactive}`;
 }
 
@@ -105,7 +105,7 @@ function MonthSelect({ type, month, onMonthChange }: Pick<MontadorBuilderCardPro
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Mês de vencimento</div>
-      <select value={month} onChange={(event) => onMonthChange(event.target.value)} className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-sans text-xs outline-none cursor-pointer">
+      <select value={month} onChange={(event) => onMonthChange(event.target.value)} className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-sans text-xs outline-none cursor-pointer transition-colors duration-200 focus:border-accent dark:focus:border-accent">
         <option value="">Selecione</option>
         {MONTHS.map((item) => (
           <option key={item} value={item}>
@@ -121,14 +121,14 @@ function StrikeInput({ strike, onStrikeChange }: Pick<MontadorBuilderCardProps, 
   return (
     <div className="mb-2.5">
       <div className="text-[10px] text-muted mb-1">Strike (R$)</div>
-      <input type="number" value={strike} onChange={(event) => onStrikeChange(event.target.value)} placeholder="Ex: 21" min="0" step="0.01" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none" />
+      <input type="number" value={strike} onChange={(event) => onStrikeChange(event.target.value)} placeholder="Ex: 21" min="0" step="0.01" className="w-full bg-card-custom border border-border-custom rounded-sm px-2.5 py-2 text-text font-mono text-xs outline-none transition-colors duration-200 focus:border-accent dark:focus:border-accent" />
     </div>
   );
 }
 
 function GenerateButton({ allFilled, onGenerate }: Pick<MontadorBuilderCardProps, 'allFilled' | 'onGenerate'>) {
   return (
-    <button onClick={onGenerate} disabled={!allFilled} className={`w-full py-2.5 rounded-md border-none font-mono text-xs font-bold transition-all duration-200 ${allFilled ? 'bg-accent text-white cursor-pointer' : 'bg-border-custom text-muted cursor-not-allowed'}`}>
+    <button onClick={onGenerate} disabled={!allFilled} className={`w-full py-2.5 rounded-md border-none font-mono text-xs font-bold transition-all duration-200 ${allFilled ? 'bg-accent text-white cursor-pointer hover:bg-accent/90 dark:hover:bg-accent/80' : 'bg-border-custom text-muted cursor-not-allowed dark:bg-border2/50'}`}>
       Gerar Código
     </button>
   );
@@ -140,7 +140,7 @@ function GeneratedCodeSummary({ generatedCode, asset, type, month }: Pick<Montad
     <div className="mt-3 bg-card-custom border border-accent rounded-[10px] p-3.5 text-center">
       <div className="text-[9px] tracking-[1px] text-muted uppercase font-mono mb-1.5">Código Gerado</div>
       <div className="text-[22px] font-bold text-accent font-mono tracking-[2px]">{generatedCode}</div>
-      <div className="text-[11px] text-slate-400 mt-1.5">{asset} · {type} · {month}</div>
+      <div className="text-[11px] text-text-secondary mt-1.5">{asset} · {type} · {month}</div>
     </div>
   );
 }
