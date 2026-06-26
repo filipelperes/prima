@@ -1,60 +1,60 @@
 @import "tailwindcss";
 
-/* ════════════════════════════════════════════
-   Tailwind v4 Design Tokens
-   Custom palette for Prima – Guia de Opções
-   ════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   Tailwind v4 Design Tokens — Theme‑aware via CSS variables
+   ═══════════════════════════════════════════════════════════ */
 @theme {
-    /* ── Backgrounds ── */
-    --color-bg: #07090f;
-    --color-surface: #0e1117;
-    --color-card-custom: #141820;
+    /* ── Backgrounds (resolve from theme‑switched props) ── */
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-card-custom: var(--card);
 
     /* ── Borders ── */
-    --color-border-custom: #1c2433;
-    --color-border2: #243042;
+    --color-border-custom: var(--border);
+    --color-border2: var(--border2);
 
     /* ── Text ── */
-    --color-text: #e8edf5;
-    --color-muted: #6b7a94;
-    --color-soft: #4a5568;
+    --color-text: var(--text);
+    --color-muted: var(--muted);
+    --color-soft: var(--soft);
+    --color-text-secondary: var(--text-secondary);
 
-    /* ── Functional colors ── */
-    --color-green: #00e676;
-    --color-red: #ff3d57;
-    --color-blue: #4fc3f7;
-    --color-yellow: #ffd54f;
-    --color-purple: #ce93d8;
-    --color-accent: #00d4ff;
+    /* ── Functional colors (theme‑aware — swap per light/dark) ── */
+    --color-green: var(--green);
+    --color-red: var(--red);
+    --color-blue: var(--blue);
+    --color-yellow: var(--yellow);
+    --color-purple: var(--purple);
+    --color-accent: var(--accent);
 
-    /* ── Semantic aliases for shadcn (light) ── */
-    --color-background: var(--color-bg);
-    --color-foreground: var(--color-text);
-    --color-card: var(--color-card-custom);
-    --color-card-foreground: var(--color-text);
-    --color-popover: var(--color-surface);
-    --color-popover-foreground: var(--color-text);
+    /* ── Semantic aliases for shadcn ── */
+    --color-background: var(--bg);
+    --color-foreground: var(--text);
+    --color-card: var(--card);
+    --color-card-foreground: var(--text);
+    --color-popover: var(--surface);
+    --color-popover-foreground: var(--text);
     --color-primary: var(--color-accent);
-    --color-primary-foreground: #07090f;
-    --color-secondary: var(--color-surface);
-    --color-secondary-foreground: var(--color-text);
-    --color-muted-foreground: var(--color-muted);
-    --color-accent-foreground: var(--color-text);
+    --color-primary-foreground: #fff;
+    --color-secondary: var(--surface);
+    --color-secondary-foreground: var(--text);
+    --color-muted-foreground: var(--muted);
+    --color-accent-foreground: var(--text);
     --color-destructive: var(--color-red);
     --color-destructive-foreground: #fff;
-    --color-border: var(--color-border-custom);
-    --color-input: var(--color-border-custom);
+    --color-border: var(--border);
+    --color-input: var(--border);
     --color-ring: var(--color-accent);
 
-    /* ── Radius (pixel-perfect matching original CSS class design) ── */
-    --radius-2xs: 0.1875rem; /* 3px  — slider fills, scrollbars */
-    --radius-xs: 0.3125rem; /* 5px  — gloss term labels */
-    --radius-sm: 0.375rem; /* 6px  — tags */
-    --radius-md: 0.5rem; /* 8px  — scenario buttons, formulas */
-    --radius: 0.5625rem; /* 9px  — hierarchy rows */
-    --radius-lg: 0.75rem; /* 12px — greek cards, result boxes, premium diagram, warning boxes */
-    --radius-xl: 0.875rem; /* 14px — cards, tab bar, app header */
-    --radius-2xl: 1.25rem; /* 20px — search dialog */
+    /* ── Radius (pixel‑perfect) ── */
+    --radius-2xs: 0.1875rem;
+    --radius-xs: 0.3125rem;
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius: 0.5625rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 0.875rem;
+    --radius-2xl: 1.25rem;
 
     /* ── Fonts ── */
     --font-sans: "Space Grotesk", sans-serif;
@@ -66,137 +66,141 @@
     --animate-scale-in: scale-in 0.2s ease-out;
 
     @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+        from { opacity: 0; }
+        to   { opacity: 1; }
     }
 
     @keyframes slide-down {
-        from {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.97);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes scale-in {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+        from { opacity: 0; transform: scale(0.95); }
+        to   { opacity: 1; transform: scale(1); }
     }
 }
 
-/* ── Dark mode variant (must come after @theme) ── */
+/* ── Dark‑mode variant (activates when .dark is on <html>) ── */
 @custom-variant dark (&:is(.dark *));
 
-@layer base {
-    :root {
-        --bg: #07090f;
-        --surface: #0e1117;
-        --card: #141820;
-        --border: #1c2433;
-        --border2: #243042;
-        --text: #e8edf5;
-        --muted: #6b7a94;
-        --soft: #4a5568;
-        --green: #00e676;
-        --red: #ff3d57;
-        --blue: #4fc3f7;
-        --yellow: #ffd54f;
-        --purple: #ce93d8;
-        --accent: #00d4ff;
-    }
+/* ════════════════════════════════════════════
+   @property — registers custom properties so the
+   browser can interpolate theme colours smoothly.
+   Without this, `transition: --bg 0.3s` is ignored.
+   ════════════════════════════════════════════ */
+@property --bg              { syntax: "<color>"; inherits: true; initial-value: #e3e7ee; }
+@property --surface         { syntax: "<color>"; inherits: true; initial-value: #f1f5f9; }
+@property --card            { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --border          { syntax: "<color>"; inherits: true; initial-value: #cdd5e2; }
+@property --text            { syntax: "<color>"; inherits: true; initial-value: #0e1320; }
+@property --muted           { syntax: "<color>"; inherits: true; initial-value: #5f6d86; }
 
+/* ── Functional colours (theme‑aware — keep @property for animated ones) ── */
+@property --green  { syntax: "<color>"; inherits: true; initial-value: #16a34a; }
+@property --red    { syntax: "<color>"; inherits: true; initial-value: #dc2626; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #0891b2; }
+
+/* ════════════════════════════════════════════
+   Light mode (default — no class needed)
+   ════════════════════════════════════════════ */
+:root {
+    --bg: #e3e7ee;
+    --surface: #f1f5f9;
+    --card: #ffffff;
+    --border: #cdd5e2;
+    --border2: #b5bfcf;
+    --text: #0e1320;
+    --muted: #5f6d86;
+    --soft: #536580;
+    --text-secondary: #5f6d86;
+    --overlay: rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 24px 80px;
+    --shadow-lg-color: rgba(0, 0, 0, 0.6);
+
+    /* ── Functional colours — light mode ── */
+    --green: #16a34a;
+    --red: #dc2626;
+    --blue: #2563eb;
+    --yellow: #a16207;
+    --purple: #9333ea;
+    --accent: #0891b2;
+}
+
+/* ════════════════════════════════════════════
+   Dark mode
+   ════════════════════════════════════════════ */
+.dark {
+    --bg: #07090f;
+    --surface: #0e1117;
+    --card: #141820;
+    --border: #1c2433;
+    --border2: #243042;
+    --text: #e8edf5;
+    --muted: #6b7a94;
+    --soft: #4a5568;
+    --text-secondary: #94a3b8;
+    --overlay: rgba(255, 255, 255, 0.06);
+    --shadow-lg: 0 24px 80px;
+    --shadow-lg-color: rgba(0, 0, 0, 0.8);
+
+    /* ── Functional colours — dark mode ── */
+    --green: #00e676;
+    --red: #ff3d57;
+    --blue: #4fc3f7;
+    --yellow: #ffd54f;
+    --purple: #ce93d8;
+    --accent: #00d4ff;
+}
+
+@layer base {
     @media (prefers-reduced-motion: no-preference) {
         html {
             interpolate-size: allow-keywords;
+            /* Smooth theme-switch transition for every themed CSS variable.
+               Every Tailwind utility that resolves through these (bg-surface,
+               text-muted, border-border-custom, …) animates automatically. */
+            transition: --bg 0.3s ease, --surface 0.3s ease, --card 0.3s ease,
+                        --border 0.3s ease,
+                        --text 0.3s ease, --muted 0.3s ease,
+                        --accent 0.3s ease, --green 0.3s ease, --red 0.3s ease;
         }
     }
 
     * {
         scrollbar-width: thin;
-        scrollbar-color: var(--color-border2) var(--color-surface);
+        scrollbar-color: var(--border2) var(--surface);
     }
 
     body {
-        background: var(--color-bg);
-        color: var(--color-text);
+        background: var(--bg);
+        color: var(--text);
         font-family: "Space Grotesk", sans-serif;
         min-height: 100vh;
         overflow-x: hidden;
-
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
 
-    img,
-    picture,
-    video,
-    canvas,
-    svg {
+    img, picture, video, canvas, svg {
         max-width: 100%;
     }
 
-    input,
-    button,
-    textarea,
-    select {
+    input, button, textarea, select {
         font: inherit;
     }
 
-    p,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    p, h1, h2, h3, h4, h5, h6 {
         overflow-wrap: break-word;
     }
 
-    p {
-        text-wrap: pretty;
-    }
+    p { text-wrap: pretty; }
+    h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        text-wrap: balance;
-    }
+    #root { isolation: isolate; }
 
-    #root {
-        isolation: isolate;
-    }
-
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: var(--color-surface);
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: var(--color-border2);
-        border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--color-soft);
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--soft); }
 }
