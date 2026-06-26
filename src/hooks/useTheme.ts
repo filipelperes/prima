@@ -27,7 +27,9 @@ export function useTheme() {
 
   useEffect(() => {
     applyTheme(theme);
-    try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* localStorage unavailable */ }
+    try { localStorage.setItem(STORAGE_KEY, theme); } catch {
+      if (import.meta.env.DEV) console.warn('useTheme: localStorage unavailable');
+    }
   }, [theme]);
 
   const toggle = useCallback(() => {

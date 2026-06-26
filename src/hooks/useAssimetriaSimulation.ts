@@ -22,9 +22,13 @@ export function useAssimetriaSimulation() {
   const updateField = useCallback(
     <K extends keyof AssimetriaState>(key: K, value: AssimetriaState[K]) => {
       setState((prev) => {
-        const next = { ...prev, [key]: value };
-        next.acertos = Math.min(next.acertos, next.ops);
-        return next;
+        const opsValue = key === 'ops' ? value as number : prev.ops;
+        const acertosValue = key === 'acertos' ? value as number : prev.acertos;
+        return {
+          ...prev,
+          [key]: value,
+          acertos: key === 'ops' && acertosValue > opsValue ? opsValue : acertosValue,
+        };
       });
     },
     [],
