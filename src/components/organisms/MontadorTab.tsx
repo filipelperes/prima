@@ -5,7 +5,7 @@ import { MontadorReferenceCards } from '@/components/organisms/MontadorReference
 import type { MontadorExample, OptionType } from '@/components/organisms/montadorData';
 import { getSeriesLetter } from '@/components/organisms/montadorData';
 
-export default function MontadorTab() {
+export function MontadorTab() {
   const [asset, setAsset] = useState('');
   const [type, setType] = useState<OptionType>('CALL');
   const [month, setMonth] = useState('');

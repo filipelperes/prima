@@ -3,7 +3,7 @@ import { AppHeader } from '@/components/molecules/AppHeader';
 import { TabBar } from '@/components/molecules/TabBar';
 import type { Tab } from '@/components/molecules/TabBar';
 
-const SearchDialog = lazy(() => import('@/components/molecules/SearchDialog'));
+const SearchDialog = lazy(() => import('@/components/molecules/SearchDialog').then(m => ({ default: m.SearchDialog })));
 
 const IntroTab = lazy(() => import('@/components/organisms/IntroTab').then(m => ({ default: m.IntroTab })));
 const CallTab = lazy(() => import('@/components/organisms/CallTab').then(m => ({ default: m.CallTab })));
@@ -13,9 +13,9 @@ const PremioTab = lazy(() => import('@/components/organisms/PremioTab').then(m =
 const AssimetriaTab = lazy(() => import('@/components/organisms/AssimetriaTab').then(m => ({ default: m.AssimetriaTab })));
 const RiscosTab = lazy(() => import('@/components/organisms/RiscosTab').then(m => ({ default: m.RiscosTab })));
 const GlossarioTab = lazy(() => import('@/components/organisms/GlossarioTab').then(m => ({ default: m.GlossarioTab })));
-const EstrategiasTab = lazy(() => import('@/components/organisms/EstrategiasTab'));
-const MontadorTab = lazy(() => import('@/components/organisms/MontadorTab'));
-const GlobalTab = lazy(() => import('@/components/organisms/GlobalTab'));
+const EstrategiasTab = lazy(() => import('@/components/organisms/EstrategiasTab').then(m => ({ default: m.EstrategiasTab })));
+const MontadorTab = lazy(() => import('@/components/organisms/MontadorTab').then(m => ({ default: m.MontadorTab })));
+const GlobalTab = lazy(() => import('@/components/organisms/GlobalTab').then(m => ({ default: m.GlobalTab })));
 
 const TAB_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
   intro: IntroTab,

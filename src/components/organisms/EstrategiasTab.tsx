@@ -1,7 +1,7 @@
 import { UsoCard } from '@/components/atoms/UsoCard';
 import { WarningBox } from '@/components/atoms/WarningBox';
 
-export default function EstrategiasTab() {
+export function EstrategiasTab() {
   return (
     <>
       <WarningBox title="⚠️ NAKED CALL — Risco Ilimitado">

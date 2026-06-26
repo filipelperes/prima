@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { GlobalIntroCard } from '@/components/organisms/GlobalIntroCard';
 import { GlobalMarketsGrid } from '@/components/organisms/GlobalMarketsGrid';
 import { GlobalDidYouKnowCard } from '@/components/organisms/GlobalDidYouKnowCard';
@@ -5,7 +6,7 @@ import { GlobalStudyResourcesCard } from '@/components/organisms/GlobalStudyReso
 import { GlobalTermsTable } from '@/components/organisms/GlobalTermsTable';
 import { GlobalBrazilContextCard } from '@/components/organisms/GlobalBrazilContextCard';
 
-export default function GlobalTab() {
+export const GlobalTab = memo(function GlobalTab() {
   return (
     <>
       <GlobalIntroCard />
@@ -16,4 +17,4 @@ export default function GlobalTab() {
       <GlobalBrazilContextCard />
     </>
   );
-}
+});
