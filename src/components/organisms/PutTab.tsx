@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { ToggleButton } from '@/components/atoms/ToggleButton';
@@ -14,6 +14,12 @@ export function PutTab() {
     usePutSimulation();
   const [activeScenario, setActiveScenario] = useState<number | undefined>(undefined);
 
+  /* Estabiliza callbacks dos SliderControl para respeitar memo */
+  const handleAcaoChange = useCallback((v: number) => updateField('acao', v), [updateField]);
+  const handleStrikeChange = useCallback((v: number) => updateField('strike', v), [updateField]);
+  const handlePremioChange = useCallback((v: number) => updateField('premio', v), [updateField]);
+  const handleContratosChange = useCallback((v: number) => updateField('contratos', v), [updateField]);
+
   const scenarios = useMemo(() => [
     { label: 'Empresa faliu → R$ 0', onClick: () => { setFinal(0); setActiveScenario(0); } },
     { label: 'Crash → R$ 15', onClick: () => { setFinal(15); setActiveScenario(1); } },
@@ -23,8 +29,41 @@ export function PutTab() {
     { label: 'Alta forte → R$ 60', onClick: () => { setFinal(60); setActiveScenario(5); } },
   ], [setFinal]);
 
-  const resultadoLabel = mode === 'comprador' ? 'Prêmio pago' : 'Prêmio recebido';
-  const resultadoSub = mode === 'comprador' ? 'risco máximo' : 'ganho máximo';
+  const { resultadoLabel, resultadoSub } = useMemo(() =>
+    mode === 'comprador'
+      ? { resultadoLabel: 'Prêmio pago', resultadoSub: 'risco máximo' }
+      : { resultadoLabel: 'Prêmio recebido', resultadoSub: 'ganho máximo' },
+  [mode]);
+
+  const putStats = useMemo(() => [
+    {
+      label: 'Ação final',
+      value: fmt(state.final),
+    },
+    {
+      label: 'PUT vale',
+      value: fmt(result.vi),
+      sub: result.vi > 0 ? 'ITM — exercida' : 'OTM — vira pó',
+      valueColor:
+        result.vi > 0 ? 'var(--color-green)' : 'var(--muted)',
+    },
+    {
+      label: 'Resultado',
+      value: result.isProfit
+        ? `+${fmtInt(result.lucro)}`
+        : `-${fmtInt(Math.abs(result.lucro))}`,
+      valueColor: result.isProfit
+        ? 'var(--color-green)'
+        : 'var(--color-red)',
+    },
+    {
+      label: 'Retorno',
+      value: fmtPct(result.retornoPct),
+      valueColor: result.isProfit
+        ? 'var(--color-green)'
+        : 'var(--color-red)',
+    },
+  ], [result.vi, result.isProfit, result.lucro, result.retornoPct, state.final]);
 
   return (
     <>
@@ -63,31 +102,31 @@ export function PutTab() {
         </WarningBox>
       )}
 
-      <div
-        className={`${mode === 'comprador' ? 'block' : 'hidden'} bg-surface border border-blue/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-blue/10`}
-      >
-        <div className="text-xs text-text-secondary leading-relaxed">
-          Você paga o prêmio e ganha o direito de{' '}
-          <strong className="text-text">
-            vender as ações pelo preço do strike
-          </strong>
-          , mesmo que o mercado esteja pagando muito menos. É como um{' '}
-          <strong className="text-blue">seguro de carro</strong>:
-          você paga a anuidade e se o carro "bater" (ação cair), você aciona e
-          garante a venda pelo preço combinado.
+      {mode === 'comprador' && (
+        <div className="bg-surface border border-blue/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-blue/10">
+          <div className="text-xs text-text-secondary leading-relaxed">
+            Você paga o prêmio e ganha o direito de{' '}
+            <strong className="text-text">
+              vender as ações pelo preço do strike
+            </strong>
+            , mesmo que o mercado esteja pagando muito menos. É como um{' '}
+            <strong className="text-blue">seguro de carro</strong>:
+            você paga a anuidade e se o carro "bater" (ação cair), você aciona e
+            garante a venda pelo preço combinado.
+          </div>
         </div>
-      </div>
+      )}
 
-      <div
-        className={`${mode === 'vendedor' ? 'block' : 'hidden'} bg-surface border border-red/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-red/10`}
-      >
-        <div className="text-xs text-text-secondary leading-relaxed">
-          Você é a <strong className="text-text">seguradora</strong>.
-          Recebe o prêmio todo mês. Funciona bem enquanto não há "sinistro". Mas
-          se a ação derreter — ou pior, a empresa falir — você é obrigado a
-          comprar ações quase sem valor pagando o preço do strike.
+      {mode === 'vendedor' && (
+        <div className="bg-surface border border-red/30 rounded-lg p-4 max-sm:p-3 mb-3 bg-red/10">
+          <div className="text-xs text-text-secondary leading-relaxed">
+            Você é a <strong className="text-text">seguradora</strong>.
+            Recebe o prêmio todo mês. Funciona bem enquanto não há "sinistro". Mas
+            se a ação derreter — ou pior, a empresa falir — você é obrigado a
+            comprar ações quase sem valor pagando o preço do strike.
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">⚙ Parâmetros</div>
@@ -99,7 +138,7 @@ export function PutTab() {
           step={0.5}
           color="var(--color-accent)"
           displayValue={fmt(state.acao)}
-          onChange={(v) => updateField('acao', v)}
+          onChange={handleAcaoChange}
         />
         <SliderControl
           label="Strike da PUT"
@@ -109,7 +148,7 @@ export function PutTab() {
           step={0.5}
           color="var(--color-red)"
           displayValue={fmt(state.strike)}
-          onChange={(v) => updateField('strike', v)}
+          onChange={handleStrikeChange}
         />
         <SliderControl
           label="Prêmio por opção"
@@ -119,7 +158,7 @@ export function PutTab() {
           step={0.1}
           color="var(--muted)"
           displayValue={fmt(state.premio)}
-          onChange={(v) => updateField('premio', v)}
+          onChange={handlePremioChange}
         />
         <SliderControl
           label="Contratos"
@@ -129,7 +168,7 @@ export function PutTab() {
           step={1}
           color="var(--color-accent)"
           displayValue={String(state.contratos)}
-          onChange={(v) => updateField('contratos', v)}
+          onChange={handleContratosChange}
         />
         <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <div className="bg-surface rounded-lg p-3 text-center">
@@ -173,42 +212,12 @@ export function PutTab() {
           step={0.5}
           color={state.final < state.strike ? 'var(--color-red)' : 'var(--color-green)'}
           displayValue={fmt(state.final)}
-          onChange={(v) => setFinal(v)}
+          onChange={setFinal}
         />
       </div>
 
       <ResultBox isProfit={result.isProfit}>
-        <ResultGrid
-          stats={[
-            {
-              label: 'Ação final',
-              value: fmt(state.final),
-            },
-            {
-              label: 'PUT vale',
-              value: fmt(result.vi),
-              sub: result.vi > 0 ? 'ITM — exercida' : 'OTM — vira pó',
-              valueColor:
-                result.vi > 0 ? 'var(--color-green)' : 'var(--muted)',
-            },
-            {
-              label: 'Resultado',
-              value: result.isProfit
-                ? `+${fmtInt(result.lucro)}`
-                : `-${fmtInt(Math.abs(result.lucro))}`,
-              valueColor: result.isProfit
-                ? 'var(--color-green)'
-                : 'var(--color-red)',
-            },
-            {
-              label: 'Retorno',
-              value: fmtPct(result.retornoPct),
-              valueColor: result.isProfit
-                ? 'var(--color-green)'
-                : 'var(--color-red)',
-            },
-          ]}
-        />
+        <ResultGrid stats={putStats} />
         <div className="bg-[var(--overlay)] rounded-lg p-3 text-xs leading-relaxed text-text-secondary">{result.descricao}</div>
       </ResultBox>
 
