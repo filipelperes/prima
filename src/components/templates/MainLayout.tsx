@@ -1,19 +1,35 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react';
 import { AppHeader } from '@/components/molecules/AppHeader';
 import { TabBar } from '@/components/molecules/TabBar';
-import SearchDialog from '@/components/molecules/SearchDialog';
 import type { Tab } from '@/components/molecules/TabBar';
-import { IntroTab } from '@/components/organisms/IntroTab';
-import { CallTab } from '@/components/organisms/CallTab';
-import { PutTab } from '@/components/organisms/PutTab';
-import { GregasTab } from '@/components/organisms/GregasTab';
-import { PremioTab } from '@/components/organisms/PremioTab';
-import { AssimetriaTab } from '@/components/organisms/AssimetriaTab';
-import { RiscosTab } from '@/components/organisms/RiscosTab';
-import { GlossarioTab } from '@/components/organisms/GlossarioTab';
-import EstrategiasTab from '@/components/organisms/EstrategiasTab';
-import MontadorTab from '@/components/organisms/MontadorTab';
-import GlobalTab from '@/components/organisms/GlobalTab';
+
+const SearchDialog = lazy(() => import('@/components/molecules/SearchDialog'));
+
+const IntroTab = lazy(() => import('@/components/organisms/IntroTab').then(m => ({ default: m.IntroTab })));
+const CallTab = lazy(() => import('@/components/organisms/CallTab').then(m => ({ default: m.CallTab })));
+const PutTab = lazy(() => import('@/components/organisms/PutTab').then(m => ({ default: m.PutTab })));
+const GregasTab = lazy(() => import('@/components/organisms/GregasTab').then(m => ({ default: m.GregasTab })));
+const PremioTab = lazy(() => import('@/components/organisms/PremioTab').then(m => ({ default: m.PremioTab })));
+const AssimetriaTab = lazy(() => import('@/components/organisms/AssimetriaTab').then(m => ({ default: m.AssimetriaTab })));
+const RiscosTab = lazy(() => import('@/components/organisms/RiscosTab').then(m => ({ default: m.RiscosTab })));
+const GlossarioTab = lazy(() => import('@/components/organisms/GlossarioTab').then(m => ({ default: m.GlossarioTab })));
+const EstrategiasTab = lazy(() => import('@/components/organisms/EstrategiasTab'));
+const MontadorTab = lazy(() => import('@/components/organisms/MontadorTab'));
+const GlobalTab = lazy(() => import('@/components/organisms/GlobalTab'));
+
+const TAB_COMPONENTS: Record<string, LazyExoticComponent<ComponentType>> = {
+  intro: IntroTab,
+  call: CallTab,
+  put: PutTab,
+  gregas: GregasTab,
+  premio: PremioTab,
+  assimetria: AssimetriaTab,
+  riscos: RiscosTab,
+  glossario: GlossarioTab,
+  estrategias: EstrategiasTab,
+  montador: MontadorTab,
+  global: GlobalTab,
+};
 
 const TABS: Tab[] = [
   { id: 'intro', label: 'Intro', icon: '📖' },
@@ -29,13 +45,11 @@ const TABS: Tab[] = [
   { id: 'glossario', label: 'Glossário', icon: '📚' },
 ];
 
+const FALLBACK = <div className="flex justify-center py-16 text-muted text-sm">Carregando…</div>;
+
 export function MainLayout() {
   const [activeTab, setActiveTab] = useState('intro');
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const handleSwitch = useCallback((id: string) => {
-    setActiveTab(id);
-  }, []);
 
   const handleSearchNavigate = useCallback((tabId: string) => {
     setActiveTab(tabId);
@@ -43,32 +57,8 @@ export function MainLayout() {
   }, []);
 
   const renderTab = () => {
-    switch (activeTab) {
-      case 'intro':
-        return <IntroTab />;
-      case 'estrategias':
-        return <EstrategiasTab />;
-      case 'montador':
-        return <MontadorTab />;
-      case 'call':
-        return <CallTab />;
-      case 'put':
-        return <PutTab />;
-      case 'gregas':
-        return <GregasTab />;
-      case 'premio':
-        return <PremioTab />;
-      case 'assimetria':
-        return <AssimetriaTab />;
-      case 'riscos':
-        return <RiscosTab />;
-      case 'global':
-        return <GlobalTab />;
-      case 'glossario':
-        return <GlossarioTab />;
-      default:
-        return <IntroTab />;
-    }
+    const Component = TAB_COMPONENTS[activeTab] ?? IntroTab;
+    return <Suspense fallback={FALLBACK}><Component /></Suspense>;
   };
 
   return (
@@ -77,7 +67,7 @@ export function MainLayout() {
         <TabBar
           tabs={TABS}
           activeTab={activeTab}
-          onSwitch={handleSwitch}
+          onSwitch={setActiveTab}
         />
         <AppHeader
           onSearchClick={() => setSearchOpen(true)}
@@ -89,10 +79,12 @@ export function MainLayout() {
       </div>
 
       {searchOpen && (
-        <SearchDialog
-          onClose={() => setSearchOpen(false)}
-          onNavigate={handleSearchNavigate}
-        />
+        <Suspense fallback={null}>
+          <SearchDialog
+            onClose={() => setSearchOpen(false)}
+            onNavigate={handleSearchNavigate}
+          />
+        </Suspense>
       )}
     </div>
   );
