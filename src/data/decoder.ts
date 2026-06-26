@@ -16,6 +16,8 @@
  *   PETRC32W2 = Petrobras CALL, semanal 2
  */
 
+import { ASSET_NAMES } from '@/data/assetCodes';
+
 export interface DecodeResult {
   asset: string;
   type: 'CALL' | 'PUT';
@@ -52,71 +54,6 @@ const SERIES: Record<string, { type: 'CALL' | 'PUT'; month: string; num: number 
   V: { type: 'PUT', month: 'Outubro', num: 10 },
   W: { type: 'PUT', month: 'Novembro', num: 11 },
   X: { type: 'PUT', month: 'Dezembro', num: 12 },
-};
-
-const ASSET_NAMES: Record<string, string> = {
-  PETR: 'Petrobras PN',
-  VALE: 'Vale ON',
-  ITUB: 'Itaú Unibanco',
-  BBDC: 'Bradesco',
-  ABEV: 'Ambev',
-  BBAS: 'Banco do Brasil',
-  ELET: 'Eletrobras',
-  SANB: 'Santander',
-  B3SA: 'B3',
-  WEGE: 'WEG',
-  RENT: 'Localiza',
-  JBSS: 'JBS',
-  SUZB: 'Suzano',
-  CMIN: 'CSN Mineração',
-  UGPA: 'Ultrapar',
-  RDOR: 'Rede D\'Or',
-  HAPV: 'Hapvida',
-  ENGI: 'Engie',
-  EQTL: 'Equatorial',
-  CPLE: 'Copel',
-  PRIO: 'PetroRio',
-  RECV: 'PetroRecôncavo',
-  CXSE: 'Caixa Seguridade',
-  ENEV: 'Eneva',
-  LOGG: 'Log-In',
-  IRBR: 'IRB Brasil',
-  MULT: 'Multiplan',
-  NTCO: 'Natura',
-  RAIL: 'Rumo Logística',
-  BRAP: 'Bradespar',
-  BRFS: 'BRF',
-  CSAN: 'Cosan',
-  CPFE: 'CPFL Energia',
-  EGIE: 'Engie Brasil',
-  FLRY: 'Fleury',
-  GGBR: 'Gerdau',
-  GOAU: 'Gerdau Met',
-  HYPE: 'Hypera',
-  KLBN: 'Klabin',
-  LREN: 'Lojas Renner',
-  MRFG: 'Marfrig',
-  MRVE: 'MRV',
-  RADL: 'Raia Drogasil',
-  RRRP: '3R Petroleum',
-  SBSP: 'Sabesp',
-  TAEE: 'Taesa',
-  TIMB: 'Tim',
-  TOTS: 'TOTVS',
-  USIM: 'Usiminas',
-  VIVT: 'Telefônica Brasil',
-  YDUQ: 'Yduqs',
-  AZUL: 'Azul',
-  CVCB: 'CVC',
-  GOLL: 'Gol',
-  MGLU: 'Magazine Luiza',
-  VIIA: 'Via',
-  AMER: 'Americanas',
-  BOVA: 'BOVA11',
-  IVVB: 'IVVB11',
-  SMAL: 'SMAL11',
-  MATB: 'MATB11',
-  SPXI: 'SPXI11',
 };
 
 /* ─── Shared helpers ─── */

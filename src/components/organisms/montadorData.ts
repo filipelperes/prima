@@ -1,3 +1,5 @@
+import { ASSET_NAMES as ASSET_MAP } from '@/data/assetCodes';
+
 export type OptionType = 'CALL' | 'PUT';
 
 export interface MontadorExample {
@@ -8,70 +10,8 @@ export interface MontadorExample {
   readonly strike: number;
 }
 
-export const ASSET_NAMES: Record<string, string> = {
-  PETR: 'Petrobras PN',
-  VALE: 'Vale ON',
-  ITUB: 'Itaú Unibanco',
-  BBDC: 'Bradesco',
-  ABEV: 'Ambev',
-  BBAS: 'Banco do Brasil',
-  ELET: 'Eletrobras',
-  SANB: 'Santander',
-  B3SA: 'B3',
-  WEGE: 'WEG',
-  RENT: 'Localiza',
-  JBSS: 'JBS',
-  SUZB: 'Suzano',
-  CMIN: 'CSN Mineração',
-  UGPA: 'Ultrapar',
-  RDOR: "Rede D'Or",
-  HAPV: 'Hapvida',
-  ENGI: 'Engie',
-  EQTL: 'Equatorial',
-  CPLE: 'Copel',
-  PRIO: 'PetroRio',
-  RECV: 'PetroRecôncavo',
-  CXSE: 'Caixa Seguridade',
-  ENEV: 'Eneva',
-  LOGG: 'Log-In',
-  IRBR: 'IRB Brasil',
-  MULT: 'Multiplan',
-  NTCO: 'Natura',
-  RAIL: 'Rumo Logística',
-  BRAP: 'Bradespar',
-  BRFS: 'BRF',
-  CSAN: 'Cosan',
-  CPFE: 'CPFL Energia',
-  EGIE: 'Engie Brasil',
-  FLRY: 'Fleury',
-  GGBR: 'Gerdau',
-  GOAU: 'Gerdau Met',
-  HYPE: 'Hypera',
-  KLBN: 'Klabin',
-  LREN: 'Lojas Renner',
-  MRFG: 'Marfrig',
-  MRVE: 'MRV',
-  RADL: 'Raia Drogasil',
-  RRRP: '3R Petroleum',
-  SBSP: 'Sabesp',
-  TAEE: 'Taesa',
-  TIMB: 'Tim',
-  TOTS: 'TOTVS',
-  USIM: 'Usiminas',
-  VIVT: 'Telefônica Brasil',
-  YDUQ: 'Yduqs',
-  AZUL: 'Azul',
-  CVCB: 'CVC',
-  GOLL: 'Gol',
-  MGLU: 'Magazine Luiza',
-  VIIA: 'Via',
-  AMER: 'Americanas',
-  BOVA: 'BOVA11',
-  IVVB: 'IVVB11',
-  SMAL: 'SMAL11',
-  MATB: 'MATB11',
-  SPXI: 'SPXI11',
-};
+/** Re-exporta para uso nos componentes do montador */
+export const ASSET_NAMES = ASSET_MAP;
 
 export const MONTHS = [
   'Janeiro',
