@@ -29,6 +29,9 @@ export interface DecodeResult {
   week?: number;
 }
 
+const EXAMPLE_SUFFIXES = ['H21', 'M18', 'K42'] as const;
+const VALID_WEEK_VALUES = new Set([1, 2, 4, 5]);
+
 const SERIES: Record<string, { type: 'CALL' | 'PUT'; month: string; num: number }> = {
   A: { type: 'CALL', month: 'Janeiro', num: 1 },
   B: { type: 'CALL', month: 'Fevereiro', num: 2 },
@@ -58,11 +61,28 @@ const SERIES: Record<string, { type: 'CALL' | 'PUT'; month: string; num: number 
 
 /* ─── Shared helpers ─── */
 
+function isSeriesLetter(cleaned: string, index: number): boolean {
+  return index < cleaned.length && (cleaned[index] ?? '') in SERIES;
+}
+
+function parseWeeklySuffix(rest: string): { strikeStr: string; weekNum: number } | null {
+  const match = rest.match(/^(\d+)W([1245])$/);
+  if (!match) return null;
+  const weekNum = parseInt(match[2]!, 10);
+  if (!VALID_WEEK_VALUES.has(weekNum)) return null;
+  return { strikeStr: match[1]!, weekNum };
+}
+
 interface ParsedComponents {
   assetCode: string;
   seriesLetter: string;
   strikeStr: string;
   weekNum: number | null;
+}
+
+function determineAssetLen(cleaned: string): number {
+  if (cleaned.length > 5 && isSeriesLetter(cleaned, 5)) return 5;
+  return 4;
 }
 
 /**
@@ -73,58 +93,45 @@ function parseB3Code(code: string): ParsedComponents | null {
   const cleaned = code.trim().toUpperCase();
   if (cleaned.length < 6) return null;
 
-  /* Detecta se o ativo tem 4 ou 5 letras:
-   *   - Se cleaned[5] é uma letra de série válida → ativo de 5 letras
-   *   - Caso contrário, exige que cleaned[4] seja uma letra de série → ativo de 4 letras
-   */
-  let assetLen = 4;
-  if (cleaned.length > 5 && cleaned[5] in SERIES) {
-    assetLen = 5;
-  } else if (!(cleaned[4] in SERIES)) {
-    return null;
-  }
+  const assetLen = determineAssetLen(cleaned);
+  if (!isSeriesLetter(cleaned, assetLen)) return null;
 
   const assetCode = cleaned.slice(0, assetLen);
-  const seriesLetter = cleaned[assetLen];
+  const seriesLetter = cleaned[assetLen]!;
   const rest = cleaned.slice(assetLen + 1);
 
-  if (!(seriesLetter in SERIES)) return null;
   if (rest.length === 0) return null;
 
-  /* Tenta padrão semanal: dígitos + W + semana (1, 2, 4 ou 5) */
-  const weeklyMatch = rest.match(/^(\d+)W([1245])$/);
-  if (weeklyMatch) {
-    return {
-      assetCode,
-      seriesLetter,
-      strikeStr: weeklyMatch[1],
-      weekNum: parseInt(weeklyMatch[2], 10),
-    };
-  }
+  const weekly = parseWeeklySuffix(rest);
+  return weekly
+    ? { assetCode, seriesLetter, strikeStr: weekly.strikeStr, weekNum: weekly.weekNum }
+    : { assetCode, seriesLetter, strikeStr: rest, weekNum: null };
+}
 
-  /* Padrão normal (vencimento mensal) */
-  return { assetCode, seriesLetter, strikeStr: rest, weekNum: null };
+function parseStrike(strikeStr: string): number {
+  const strikeNum = parseInt(strikeStr, 10);
+  return strikeStr.length >= 4 ? strikeNum / 100 : strikeNum / 10;
+}
+
+function formatAssetName(assetCode: string): string {
+  return assetCode in ASSET_NAMES
+    ? `${assetCode} (${ASSET_NAMES[assetCode]})`
+    : assetCode;
 }
 
 /** Converte componentes parseados em um DecodeResult. */
 function buildResult(parsed: ParsedComponents, raw: string): DecodeResult | null {
   const series = SERIES[parsed.seriesLetter];
+  if (!series) return null;
   const strikeNum = parseInt(parsed.strikeStr, 10);
   if (isNaN(strikeNum) || strikeNum <= 0) return null;
 
-  const strike = parsed.strikeStr.length >= 4 ? strikeNum / 100 : strikeNum / 10;
-
-  const assetDisplay =
-    parsed.assetCode in ASSET_NAMES
-      ? `${parsed.assetCode} (${ASSET_NAMES[parsed.assetCode]})`
-      : parsed.assetCode;
-
   const result: DecodeResult = {
-    asset: assetDisplay,
+    asset: formatAssetName(parsed.assetCode),
     type: series.type,
     month: series.month,
     monthNum: series.num,
-    strike,
+    strike: parseStrike(parsed.strikeStr),
     raw,
   };
 
@@ -159,6 +166,40 @@ export function decodeB3Weekly(code: string): DecodeResult | null {
   return buildResult(parsed, code.trim().toUpperCase());
 }
 
+function searchByAssetMatch(cleaned: string): DecodeResult[] {
+  const results: DecodeResult[] = [];
+  const seen = new Set<string>();
+
+  for (const [code, name] of Object.entries(ASSET_NAMES)) {
+    if (code.includes(cleaned) || name.toUpperCase().includes(cleaned)) {
+      for (const suffix of EXAMPLE_SUFFIXES) {
+        const d = decodeB3(code + suffix);
+        if (d && !seen.has(d.raw)) {
+          seen.add(d.raw);
+          results.push(d);
+        }
+      }
+      if (results.length > 0) break;
+    }
+  }
+  return results;
+}
+
+function searchBySuffix(cleaned: string): DecodeResult[] {
+  const results: DecodeResult[] = [];
+  const seen = new Set<string>();
+
+  for (const [code] of Object.entries(ASSET_NAMES)) {
+    const d = decodeB3(code + cleaned) ?? decodeB3Weekly(code + cleaned);
+    if (d && !seen.has(d.raw)) {
+      seen.add(d.raw);
+      results.push(d);
+      if (results.length >= 5) break;
+    }
+  }
+  return results;
+}
+
 /**
  * Busca inteligente com suporte a entrada parcial.
  *
@@ -173,35 +214,13 @@ export function smartSearch(input: string): DecodeResult[] {
   const cleaned = input.trim().toUpperCase();
   if (!cleaned) return [];
 
-  /* 1 — Tentativa de decodificação direta */
   const direct = decodeB3(cleaned) ?? decodeB3Weekly(cleaned);
   if (direct) return [direct];
 
-  const results: DecodeResult[] = [];
+  const assetResults = searchByAssetMatch(cleaned);
+  if (assetResults.length > 0) return assetResults;
 
-  /* 2 — Match parcial contra código ou nome do ativo */
-  for (const [code, name] of Object.entries(ASSET_NAMES)) {
-    if (code.includes(cleaned) || name.toUpperCase().includes(cleaned)) {
-      for (const suffix of ['H21', 'M18', 'K42']) {
-        const d = decodeB3(code + suffix);
-        if (d && !results.some(r => r.raw === d.raw)) results.push(d);
-      }
-      if (results.length > 0) break; /* prioriza o primeiro match */
-    }
-  }
-
-  /* 3 — Input como sufixo (ex: "H21" → PETRH21, VALEH21, …) */
-  if (results.length === 0) {
-    for (const [code] of Object.entries(ASSET_NAMES)) {
-      const d = decodeB3(code + cleaned) ?? decodeB3Weekly(code + cleaned);
-      if (d) {
-        results.push(d);
-        if (results.length >= 5) break;
-      }
-    }
-  }
-
-  return results;
+  return searchBySuffix(cleaned);
 }
 
 export const EXAMPLES = [
