@@ -1,6 +1,36 @@
 import { useState, useCallback, memo } from 'react';
-import { decodeB3, decodeB3Weekly, smartSearch, EXAMPLES } from '@/data/decoder';
+import { decodeB3, decodeB3Weekly, smartSearch, EXAMPLES, type DecodeResult } from '@/data/decoder';
 import { Tag } from '@/components/atoms/Tag';
+
+const SuggestionButton = memo(function SuggestionButton({ suggestion, onDecode }: { suggestion: DecodeResult; onDecode: (code: string) => void }) {
+  return (
+    <button
+      onClick={() => onDecode(suggestion.raw)}
+      className="block w-full text-left bg-transparent border-none border-b border-border-custom px-1 py-2 cursor-pointer text-text font-mono text-xs transition-colors duration-150 last:border-b-0 hover:bg-accent/5 dark:hover:bg-accent/[0.07]"
+    >
+      <span className="text-accent">{suggestion.raw}</span>
+      <span className="text-muted ml-2 font-sans">
+        {suggestion.type} · {suggestion.month}
+      </span>
+    </button>
+  );
+});
+
+const ExampleButtons = memo(function ExampleButtons({ onDecode }: { onDecode: (code: string) => void }) {
+  return (
+    <div className="flex gap-1.5 flex-wrap mb-3.5">
+      {EXAMPLES.map((ex) => (
+        <button
+          key={ex.code}
+          onClick={() => onDecode(ex.code)}
+          className="bg-surface border border-border-custom rounded-md px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200 hover:bg-accent/10 dark:hover:bg-accent/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        >
+          {ex.code}
+        </button>
+      ))}
+    </div>
+  );
+});
 
 export function CodeDecoder() {
   const [input, setInput] = useState('');
@@ -19,6 +49,10 @@ export function CodeDecoder() {
     }
   }, []);
 
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    handleDecode(e.target.value);
+  }, [handleDecode]);
+
   const statusColor =
     result?.type === 'CALL'
       ? 'var(--color-green)'
@@ -32,7 +66,7 @@ export function CodeDecoder() {
         <input
           type="text"
           value={input}
-          onChange={(e) => handleDecode(e.target.value)}
+          onChange={handleInputChange}
           placeholder="Digite um código... ex: PETRH21"
           className="flex-1 bg-surface border rounded-lg px-4 py-2.5 text-text font-mono text-[15px] font-bold outline-none tracking-wider transition-colors duration-200
             placeholder:text-soft focus:border-accent dark:focus:border-accent"
@@ -40,17 +74,7 @@ export function CodeDecoder() {
         />
       </div>
 
-      <div className="flex gap-1.5 flex-wrap mb-3.5">
-        {EXAMPLES.map((ex) => (
-          <button
-            key={ex.code}
-            onClick={() => handleDecode(ex.code)}
-            className="bg-surface border border-border-custom rounded-md px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200 hover:bg-accent/10 dark:hover:bg-accent/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            {ex.code}
-          </button>
-        ))}
-      </div>
+      <ExampleButtons onDecode={handleDecode} />
 
       {result && (
         <div
@@ -81,16 +105,7 @@ export function CodeDecoder() {
             Sugestões
           </div>
           {suggestions.map((s) => (
-            <button
-              key={s.raw}
-              onClick={() => handleDecode(s.raw)}
-              className="block w-full text-left bg-transparent border-none border-b border-border-custom px-1 py-2 cursor-pointer text-text font-mono text-xs transition-colors duration-150 last:border-b-0 hover:bg-accent/5 dark:hover:bg-accent/[0.07]"
-            >
-              <span className="text-accent">{s.raw}</span>
-              <span className="text-muted ml-2 font-sans">
-                {s.type} · {s.month}
-              </span>
-            </button>
+            <SuggestionButton key={s.raw} suggestion={s} onDecode={handleDecode} />
           ))}
           <div className="text-[10px] text-muted mt-1.5 text-center">
             O número no código NÃO é necessariamente o strike real — consulte sua plataforma
