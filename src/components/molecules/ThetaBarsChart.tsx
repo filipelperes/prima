@@ -1,5 +1,5 @@
 interface ThetaBarsChartProps {
-  bars: number[];
+  bars: readonly number[];
   currentDias: number;
 }
 

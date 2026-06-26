@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { MARKETS_DATA, type MarketData } from '@/components/organisms/globalTabData';
 
@@ -16,7 +17,7 @@ export function GlobalMarketsGrid() {
   );
 }
 
-function MarketCard({ market }: { readonly market: MarketData }) {
+const MarketCard = memo(function MarketCard({ market }: { readonly market: MarketData }) {
   return (
     <div className="bg-surface rounded-[10px] p-3.5">
       <div className="text-[13px] font-bold mb-1.5 text-text">
@@ -31,4 +32,4 @@ function MarketCard({ market }: { readonly market: MarketData }) {
       </div>
     </div>
   );
-}
+});

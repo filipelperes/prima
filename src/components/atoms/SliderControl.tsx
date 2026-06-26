@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { pct } from '@/lib/formatters';
 
 interface SliderControlProps {
@@ -14,7 +14,7 @@ interface SliderControlProps {
   maxLabel?: string;
 }
 
-export function SliderControl({
+export const SliderControl = memo(function SliderControl({
   label,
   value,
   min,
@@ -57,9 +57,9 @@ export function SliderControl({
           onChange={handleChange}
           className="absolute -top-[7px] left-0 w-full h-5 cursor-pointer bg-transparent appearance-none z-[2]
             [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-runnable-track]:border-none [&::-webkit-slider-runnable-track]:h-[5px]
-            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-bg [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(0,212,255,0.3)] [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:duration-150 [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:-mt-[6px]
+            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-bg [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(0,212,255,0.3)] [&::-webkit-slider-thumb]:dark:shadow-[0_0_12px_rgba(0,212,255,0.5)] [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:duration-150 [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:-mt-[6px]
             [&::-moz-range-track]:bg-transparent [&::-moz-range-track]:border-none [&::-moz-range-track]:h-[5px]
-            [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-bg [&::-moz-range-thumb]:shadow-[0_0_8px_rgba(0,212,255,0.3)] [&::-moz-range-thumb]:cursor-pointer"
+            [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-bg [&::-moz-range-thumb]:shadow-[0_0_8px_rgba(0,212,255,0.3)] [&::-moz-range-thumb]:dark:shadow-[0_0_12px_rgba(0,212,255,0.5)] [&::-moz-range-thumb]:cursor-pointer"
         />
       </div>
       <div className="flex justify-between mt-[3px]">
@@ -68,4 +68,4 @@ export function SliderControl({
       </div>
     </div>
   );
-}
+});

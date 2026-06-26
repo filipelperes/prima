@@ -1,18 +1,19 @@
+import { memo } from 'react';
 import type { HierarchyItem } from '@/lib/types';
 
 interface HierarchyRowProps extends HierarchyItem {
   rank: number;
 }
 
-export function HierarchyRow({ name, risk, riskPct, color, desc, rank }: HierarchyRowProps) {
+export const HierarchyRow = memo(function HierarchyRow({ name, risk, riskPct, color, desc, rank }: HierarchyRowProps) {
   return (
     <div
       className="flex items-center gap-2.5 px-3 py-2.5 rounded mb-1.5"
-      style={{ background: `${color}11`, border: `1px solid ${color}22` }}
+      style={{ background: `color-mix(in srgb, ${color} 7%, transparent)`, border: `1px solid color-mix(in srgb, ${color} 13%, transparent)` }}
     >
       <div
         className="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[10px] font-black font-mono shrink-0"
-        style={{ background: `${color}22`, color }}
+        style={{ background: `color-mix(in srgb, ${color} 13%, transparent)`, color }}
       >
         {rank}
       </div>
@@ -32,4 +33,4 @@ export function HierarchyRow({ name, risk, riskPct, color, desc, rank }: Hierarc
       </div>
     </div>
   );
-}
+});

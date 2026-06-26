@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface Tab {
@@ -11,6 +12,37 @@ interface TabBarProps {
   activeTab: string;
   onSwitch: (id: string) => void;
 }
+
+interface TabButtonProps {
+  tab: Tab;
+  activeTab: string;
+  onSwitch: (id: string) => void;
+}
+
+const TabButton = memo(function TabButton({ tab, activeTab, onSwitch }: TabButtonProps) {
+  const isActive = activeTab === tab.id;
+  return (
+    <button
+      key={tab.id}
+      role="tab"
+      aria-selected={isActive}
+      onClick={() => onSwitch(tab.id)}
+      className={cn(
+        'shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-md border-none bg-transparent text-soft cursor-pointer font-sans text-[11px] font-semibold tracking-[0.3px] leading-none transition-all duration-200 whitespace-nowrap uppercase relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent',
+        'max-md:text-[10px] max-md:px-2.5 max-md:py-[5px]',
+        'max-sm:text-[9px] max-sm:px-2',
+        'lg:text-xs lg:px-3.5 lg:py-2 lg:gap-1.5',
+        isActive && 'text-accent bg-accent/10 [text-shadow:0_0_20px_rgba(0,212,255,0.15)] dark:[text-shadow:0_0_20px_rgba(0,212,255,0.35)] after:content-[""] after:absolute after:bottom-[3px] after:left-3 after:right-3 after:h-[2px] after:bg-accent after:rounded-[2px] after:shadow-[0_0_10px_rgba(0,212,255,0.5)] dark:after:shadow-[0_0_14px_rgba(0,212,255,0.7)] lg:after:left-3.5 lg:after:right-3.5 max-md:after:left-2.5 max-md:after:right-2.5 max-sm:after:left-2 max-sm:after:right-2 max-sm:after:bottom-[2px]',
+        !isActive && 'hover:text-text hover:bg-accent/5 dark:hover:bg-accent/[0.07]',
+      )}
+    >
+      <span className="text-sm leading-none transition-transform duration-200 hover:scale-110 lg:text-[15px] max-md:text-xs max-sm:text-[11px]">
+        {tab.icon}
+      </span>
+      <span>{tab.label}</span>
+    </button>
+  );
+});
 
 export function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
   return (
@@ -41,25 +73,12 @@ export function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
         max-sm:[-webkit-mask-image:none]"
     >
       {tabs.map((tab) => (
-        <button
+        <TabButton
           key={tab.id}
-          role="tab"
-          aria-selected={activeTab === tab.id}
-          onClick={() => onSwitch(tab.id)}
-          className={cn(
-            'shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-md border-none bg-transparent text-soft cursor-pointer font-sans text-[11px] font-semibold tracking-[0.3px] leading-none transition-all duration-200 whitespace-nowrap uppercase relative',
-            'max-md:text-[10px] max-md:px-2.5 max-md:py-[5px]',
-            'max-sm:text-[9px] max-sm:px-2',
-            'lg:text-xs lg:px-3.5 lg:py-2 lg:gap-1.5',
-            activeTab === tab.id && 'text-accent bg-accent/10 [text-shadow:0_0_20px_rgba(0,212,255,0.15)] after:content-[""] after:absolute after:bottom-[3px] after:left-3 after:right-3 after:h-[2px] after:bg-accent after:rounded-[2px] after:shadow-[0_0_10px_rgba(0,212,255,0.5)] lg:after:left-3.5 lg:after:right-3.5 max-md:after:left-2.5 max-md:after:right-2.5 max-sm:after:left-2 max-sm:after:right-2 max-sm:after:bottom-[2px]',
-            activeTab !== tab.id && 'hover:text-text hover:bg-white/5',
-          )}
-        >
-          <span className="text-sm leading-none transition-transform duration-200 hover:scale-110 lg:text-[15px] max-md:text-xs max-sm:text-[11px]">
-            {tab.icon}
-          </span>
-          <span>{tab.label}</span>
-        </button>
+          tab={tab}
+          activeTab={activeTab}
+          onSwitch={onSwitch}
+        />
       ))}
     </nav>
   );

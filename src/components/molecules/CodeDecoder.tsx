@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { decodeB3, decodeB3Weekly, smartSearch, EXAMPLES } from '@/data/decoder';
 import { Tag } from '@/components/atoms/Tag';
 
@@ -35,7 +35,7 @@ export function CodeDecoder() {
           onChange={(e) => handleDecode(e.target.value)}
           placeholder="Digite um código... ex: PETRH21"
           className="flex-1 bg-surface border rounded-lg px-4 py-2.5 text-text font-mono text-[15px] font-bold outline-none tracking-wider transition-colors duration-200
-            placeholder:text-soft"
+            placeholder:text-soft focus:border-accent dark:focus:border-accent"
           style={{ borderColor: result ? statusColor : 'var(--color-border-custom)' }}
         />
       </div>
@@ -45,7 +45,7 @@ export function CodeDecoder() {
           <button
             key={ex.code}
             onClick={() => handleDecode(ex.code)}
-            className="bg-surface border border-border-custom rounded-md px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200"
+            className="bg-surface border border-border-custom rounded-md px-2.5 py-1 cursor-pointer text-accent font-mono text-xs transition-all duration-200 hover:bg-accent/10 dark:hover:bg-accent/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {ex.code}
           </button>
@@ -55,7 +55,7 @@ export function CodeDecoder() {
       {result && (
         <div
           className="bg-surface rounded-xl p-4"
-          style={{ border: `1px solid ${statusColor}44` }}
+          style={{ border: `1px solid color-mix(in srgb, ${statusColor} 27%, transparent)` }}
         >
           <div className="grid grid-cols-2 gap-2.5 max-sm:grid-cols-1">
             <DecodeField label="Ativo" value={result.asset} color="var(--color-accent)" />
@@ -84,7 +84,7 @@ export function CodeDecoder() {
             <button
               key={s.raw}
               onClick={() => handleDecode(s.raw)}
-              className="block w-full text-left bg-transparent border-none border-b border-border-custom px-1 py-2 cursor-pointer text-text font-mono text-xs transition-colors duration-150 last:border-b-0"
+              className="block w-full text-left bg-transparent border-none border-b border-border-custom px-1 py-2 cursor-pointer text-text font-mono text-xs transition-colors duration-150 last:border-b-0 hover:bg-accent/5 dark:hover:bg-accent/[0.07]"
             >
               <span className="text-accent">{s.raw}</span>
               <span className="text-muted ml-2 font-sans">
@@ -107,7 +107,7 @@ export function CodeDecoder() {
   );
 }
 
-function DecodeField({
+const DecodeField = memo(function DecodeField({
   label,
   value,
   color,
@@ -129,4 +129,4 @@ function DecodeField({
       </div>
     </div>
   );
-}
+});

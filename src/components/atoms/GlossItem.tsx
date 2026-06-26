@@ -1,23 +1,41 @@
+import { memo } from 'react';
 import type { GlossaryItem } from '@/lib/types';
 
-export function GlossItem({ term, tags, def, analogy }: GlossaryItem) {
+/** Maps tag‑colour identifiers to CSS custom‑property references. */
+const TAG_COLORS: Record<string, string> = {
+  'tag-accent': 'var(--color-accent)',
+  'tag-green':  'var(--color-green)',
+  'tag-red':    'var(--color-red)',
+  'tag-blue':   'var(--color-blue)',
+  'tag-yellow': 'var(--color-yellow)',
+  'tag-purple': 'var(--color-purple)',
+};
+
+export const GlossItem = memo(function GlossItem({ term, tags, def, analogy }: GlossaryItem) {
   return (
     <div className="border-b border-border-custom py-3.5 last:border-b-0">
       <div className="text-sm font-bold mb-1.5">
         {term}
-        {tags.map((tag) => (
-          <span
-            key={tag.t}
-            className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-[5px] ml-2 align-middle"
-            style={{ background: `${tag.c}22`, color: tag.c, border: `1px solid ${tag.c}33` }}
-          >
-            {tag.t}
-          </span>
-        ))}
+        {tags.map((tag) => {
+          const c = TAG_COLORS[tag.c] ?? 'var(--color-accent)';
+          return (
+            <span
+              key={tag.t}
+              className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-[5px] ml-2 align-middle"
+              style={{
+                background: `color-mix(in srgb, ${c} 13%, transparent)`,
+                color: c,
+                border: `1px solid color-mix(in srgb, ${c} 20%, transparent)`,
+              }}
+            >
+              {tag.t}
+            </span>
+          );
+        })}
       </div>
-      <div className="text-[13px] leading-relaxed text-[#94a3b8]">{def}</div>
+      <div className="text-[13px] leading-relaxed text-text-secondary">{def}</div>
       {analogy && (
-        <div className="bg-card-custom border-l-[3px] border-accent rounded-r-md p-2.5 mt-2 text-xs leading-relaxed text-[#7dd3fc]">
+        <div className="bg-card-custom border-l-[3px] border-accent rounded-r-md p-2.5 mt-2 text-xs leading-relaxed text-accent">
           <div className="text-[9px] tracking-[1px] text-accent mb-1 font-bold font-mono">
             ANALOGIA
           </div>
@@ -26,4 +44,4 @@ export function GlossItem({ term, tags, def, analogy }: GlossaryItem) {
       )}
     </div>
   );
-}
+});
