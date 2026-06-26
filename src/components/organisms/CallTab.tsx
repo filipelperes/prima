@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Tag } from '@/components/atoms/Tag';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { ScenarioGrid } from '@/components/molecules/ScenarioGrid';
@@ -12,19 +12,27 @@ export function CallTab() {
   const { state, result, updateField, setFinal } = useCallSimulation();
   const [activeScenario, setActiveScenario] = useState<number | undefined>(undefined);
 
-  const statusColorClass =
+  const statusColorClass = useMemo(() =>
     state.acao > state.strike
       ? 'text-green'
       : state.acao < state.strike
         ? 'text-red'
-        : 'text-yellow';
+        : 'text-yellow',
+  [state.acao, state.strike]);
 
-  const statusSub =
+  const statusSub = useMemo(() =>
     state.acao > state.strike
       ? `valor intrínseco: ${fmt(state.acao - state.strike)}`
       : state.acao < state.strike
         ? 'fora do dinheiro'
-        : 'no limite';
+        : 'no limite',
+  [state.acao, state.strike]);
+
+  /* Estabiliza callbacks dos SliderControl para respeitar memo */
+  const handleAcaoChange = useCallback((v: number) => updateField('acao', v), [updateField]);
+  const handleStrikeChange = useCallback((v: number) => updateField('strike', v), [updateField]);
+  const handlePremioChange = useCallback((v: number) => updateField('premio', v), [updateField]);
+  const handleContratosChange = useCallback((v: number) => updateField('contratos', v), [updateField]);
 
   const scenarios = useMemo(() => [
     { label: 'PETR4 cai → R$ 28', onClick: () => { setFinal(28); setActiveScenario(0); } },
@@ -34,6 +42,38 @@ export function CallTab() {
     { label: 'Explode → R$ 54', onClick: () => { setFinal(54); setActiveScenario(4); } },
     { label: 'Lua 🚀 → R$ 100', onClick: () => { setFinal(100); setActiveScenario(5); } },
   ], [setFinal]);
+
+  const resultStats = useMemo(() => [
+    {
+      label: 'Ação final',
+      value: fmt(state.final),
+    },
+    {
+      label: 'Opção vale',
+      value: fmt(result.vi),
+      sub: result.vi > 0 ? 'ITM ✓' : 'OTM',
+      valueColor:
+        result.vi > 0 ? 'var(--color-green)' : 'var(--color-muted)',
+    },
+    {
+      label: 'Resultado',
+      value: result.isProfit
+        ? `+${fmtInt(result.lucro)}`
+        : `-${fmtInt(Math.abs(result.lucro))}`,
+      valueColor: result.isProfit
+        ? 'var(--color-green)'
+        : 'var(--color-red)',
+    },
+    {
+      label: 'Retorno',
+      value: result.isProfit
+        ? fmtPct(result.retornoPct)
+        : '-100%',
+      valueColor: result.isProfit
+        ? 'var(--color-green)'
+        : 'var(--color-red)',
+    },
+  ], [result.vi, result.isProfit, result.lucro, result.retornoPct, state.final]);
 
   return (
     <>
@@ -55,7 +95,7 @@ export function CallTab() {
           step={0.5}
           color="var(--color-accent)"
           displayValue={fmt(state.acao)}
-          onChange={(v) => updateField('acao', v)}
+          onChange={handleAcaoChange}
           minLabel="R$ 20"
           maxLabel="R$ 60"
         />
@@ -67,7 +107,7 @@ export function CallTab() {
           step={0.5}
           color="var(--color-yellow)"
           displayValue={fmt(state.strike)}
-          onChange={(v) => updateField('strike', v)}
+          onChange={handleStrikeChange}
           minLabel="R$ 20"
           maxLabel="R$ 65"
         />
@@ -79,7 +119,7 @@ export function CallTab() {
           step={0.1}
           color="var(--color-muted)"
           displayValue={fmt(state.premio)}
-          onChange={(v) => updateField('premio', v)}
+          onChange={handlePremioChange}
           minLabel="R$ 0,10"
           maxLabel="R$ 6,00"
         />
@@ -91,7 +131,7 @@ export function CallTab() {
           step={1}
           color="var(--color-accent)"
           displayValue={String(state.contratos)}
-          onChange={(v) => updateField('contratos', v)}
+          onChange={handleContratosChange}
           minLabel="1"
           maxLabel="50"
         />
@@ -124,44 +164,12 @@ export function CallTab() {
           step={0.5}
           color={state.final >= state.strike ? 'var(--color-green)' : 'var(--color-red)'}
           displayValue={fmt(state.final)}
-          onChange={(v) => setFinal(v)}
+          onChange={setFinal}
         />
       </div>
 
       <ResultBox isProfit={result.isProfit}>
-        <ResultGrid
-          stats={[
-            {
-              label: 'Ação final',
-              value: fmt(state.final),
-            },
-            {
-              label: 'Opção vale',
-              value: fmt(result.vi),
-              sub: result.vi > 0 ? 'ITM ✓' : 'OTM',
-              valueColor:
-                result.vi > 0 ? 'var(--color-green)' : 'var(--color-muted)',
-            },
-            {
-              label: 'Resultado',
-              value: result.isProfit
-                ? `+${fmtInt(result.lucro)}`
-                : `-${fmtInt(Math.abs(result.lucro))}`,
-              valueColor: result.isProfit
-                ? 'var(--color-green)'
-                : 'var(--color-red)',
-            },
-            {
-              label: 'Retorno',
-              value: result.isProfit
-                ? fmtPct(result.retornoPct)
-                : '-100%',
-              valueColor: result.isProfit
-                ? 'var(--color-green)'
-                : 'var(--color-red)',
-            },
-          ]}
-        />
+        <ResultGrid stats={resultStats} />
         <div className="bg-[var(--overlay)] rounded-lg p-3 text-xs leading-relaxed text-text-secondary">{result.descricao}</div>
       </ResultBox>
 
