@@ -40,6 +40,16 @@ export function fmtK(valor: number): string {
   );
 }
 
+export function fmtFlex(valor: number): string {
+  return (
+    'R$ ' +
+    valor.toLocaleString('pt-BR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    })
+  );
+}
+
 export function pct(val: number, min: number, max: number): number {
   return Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
 }

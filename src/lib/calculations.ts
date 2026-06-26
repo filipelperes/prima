@@ -12,6 +12,7 @@ import type {
   CallStatus,
   PutMode,
 } from './types';
+import { fmtFlex } from './formatters';
 
 /* ── Helpers ── */
 
@@ -39,17 +40,17 @@ export function calcCallResult(state: CallState): CallResult {
 
   let descricao: string;
   if (isProfit) {
-    descricao = `PETR4 foi de ${fmtStr(state.acao)} para ${fmtStr(state.final)}. ` +
-      `Sua CALL de strike ${fmtStr(state.strike)} virou ITM. ` +
-      `Cada opção vale ${fmtStr(vi)} no vencimento. ` +
-      `Com ${state.contratos * 100} opções você recebeu ${fmtStr(vi * state.contratos * 100)} ` +
-      `e pagou apenas ${fmtStr(totalPago)} — retorno de ${retornoPct.toFixed(1)}%.`;
+    descricao = `PETR4 foi de ${fmtFlex(state.acao)} para ${fmtFlex(state.final)}. ` +
+      `Sua CALL de strike ${fmtFlex(state.strike)} virou ITM. ` +
+      `Cada opção vale ${fmtFlex(vi)} no vencimento. ` +
+      `Com ${state.contratos * 100} opções você recebeu ${fmtFlex(vi * state.contratos * 100)} ` +
+      `e pagou apenas ${fmtFlex(totalPago)} — retorno de ${retornoPct.toFixed(1)}%.`;
   } else if (state.final === state.strike) {
-    descricao = `PETR4 fechou exatamente no strike ${fmtStr(state.strike)}. ` +
-      `Opção no zero a zero. Você perde os ${fmtStr(totalPago)} do prêmio.`;
+    descricao = `PETR4 fechou exatamente no strike ${fmtFlex(state.strike)}. ` +
+      `Opção no zero a zero. Você perde os ${fmtFlex(totalPago)} do prêmio.`;
   } else {
-    descricao = `PETR4 encerrou em ${fmtStr(state.final)}, abaixo do strike ${fmtStr(state.strike)}. ` +
-      `A CALL virou pó. Você perde os ${fmtStr(totalPago)} do prêmio. Nada além disso.`;
+    descricao = `PETR4 encerrou em ${fmtFlex(state.final)}, abaixo do strike ${fmtFlex(state.strike)}. ` +
+      `A CALL virou pó. Você perde os ${fmtFlex(totalPago)} do prêmio. Nada além disso.`;
   }
 
   return { totalPago, vi, lucro, isProfit, status, retornoPct, descricao };
@@ -77,21 +78,21 @@ export function calcPutResult(state: PutState, mode: PutMode): PutResult {
   let descricao: string;
   if (mode === 'comprador') {
     if (isProfit) {
-      descricao = `Ação despencou para ${fmtStr(state.final)}. Sua PUT de strike ${fmtStr(state.strike)} ` +
-        `está ITM. Cada opção vale ${fmtStr(vi)}. ` +
+      descricao = `Ação despencou para ${fmtFlex(state.final)}. Sua PUT de strike ${fmtFlex(state.strike)} ` +
+        `está ITM. Cada opção vale ${fmtFlex(vi)}. ` +
         `Lucro de ${retornoPct.toFixed(1)}% sobre o prêmio pago.`;
     } else {
-      descricao = `Ação ficou acima do strike ${fmtStr(state.strike)}. ` +
-        `PUT vira pó. Você perde ${fmtStr(totalPago)}.`;
+      descricao = `Ação ficou acima do strike ${fmtFlex(state.strike)}. ` +
+        `PUT vira pó. Você perde ${fmtFlex(totalPago)}.`;
     }
   } else {
     if (isProfit) {
       descricao = `Ação ficou acima do strike — PUT não foi exercida. ` +
-        `Você fica com o prêmio de ${fmtStr(totalPago)} no bolso.`;
+        `Você fica com o prêmio de ${fmtFlex(totalPago)} no bolso.`;
     } else {
-      descricao = `DESASTRE. Ação foi a ${fmtStr(state.final)}. ` +
-        `O comprador exige que você compre ${state.contratos * 100} ações a ${fmtStr(state.strike)} cada. ` +
-        `Prejuízo: ${fmtStr(Math.abs(lucro))}.`;
+      descricao = `DESASTRE. Ação foi a ${fmtFlex(state.final)}. ` +
+        `O comprador exige que você compre ${state.contratos * 100} ações a ${fmtFlex(state.strike)} cada. ` +
+        `Prejuízo: ${fmtFlex(Math.abs(lucro))}.`;
     }
   }
 
@@ -105,11 +106,11 @@ export function calcDelta(dist: number): number {
 }
 
 export function calcTheta(dias: number): number {
-  return parseFloat((0.5 * (1 / Math.max(dias, 1)) * 80).toFixed(2));
+  return Math.round((40 / Math.max(dias, 1)) * 100) / 100;
 }
 
-export function calcVega(vol: number): string {
-  return (vol / 30).toFixed(2);
+export function calcVega(vol: number): number {
+  return Math.round((vol / 30) * 100) / 100;
 }
 
 export function calcGamma(dist: number): string {
@@ -122,14 +123,12 @@ export function calcGreekValues(dias: number, vol: number, dist: number): GreekV
   return {
     delta: calcDelta(dist),
     theta: calcTheta(dias),
-    vega: parseFloat(calcVega(vol)),
+    vega: calcVega(vol),
     gamma: calcGamma(dist),
   };
 }
 
-export function getThetaBarsData(): number[] {
-  return [60, 50, 40, 30, 21, 14, 10, 7, 5, 3, 2, 1];
-}
+export const THETA_BARS = [60, 50, 40, 30, 21, 14, 10, 7, 5, 3, 2, 1] as const;
 
 /* ── Premium Breakdown ── */
 
@@ -163,17 +162,10 @@ export function calcAssimetria(state: AssimetriaState): AssimetriaResult {
   });
 
   const descricao = `Em ${state.ops} operações, ${state.ops - ac} viraram pó — ` +
-    `perdeu ${fmtStr(perdas)}. Mas ${ac} explodiram com ${state.mult}x — ` +
-    `ganhou ${fmtStr(ganhos)}. ${isProfit ? `Assimetria garantiu lucro mesmo errando ${Math.round(((state.ops - ac) / state.ops) * 100)}% das vezes.` : 'Ainda negativo. Aumente o multiplicador ou os acertos.'}`;
+    `perdeu ${fmtFlex(perdas)}. Mas ${ac} explodiram com ${state.mult}x — ` +
+    `ganhou ${fmtFlex(ganhos)}. ${isProfit ? `Assimetria garantiu lucro mesmo errando ${Math.round(((state.ops - ac) / state.ops) * 100)}% das vezes.` : 'Ainda negativo. Aumente o multiplicador ou os acertos.'}`;
 
   return { perdas, ganhos, resultado, isProfit, opsArray, descricao };
 }
 
-/* ── Private helper ── */
 
-function fmtStr(valor: number): string {
-  return 'R$ ' + valor.toLocaleString('pt-BR', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
-}
