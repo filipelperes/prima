@@ -5,9 +5,51 @@ import { UsoCard } from '@/components/atoms/UsoCard';
 import { CodeDecoder } from '@/components/molecules/CodeDecoder';
 import { ANALOGIES } from '@/data/analogies';
 
+const TABLE_COLUMNS: Array<{ key: string; label: string }> = [
+  { key: 'mercado', label: 'Mercado' },
+  { key: 'perda', label: 'Perda máx.' },
+  { key: 'obrigacao', label: 'Obrigação' },
+  { key: 'alavancagem', label: 'Alavancagem' },
+];
+
+const TABLE_ROWS: Array<{ cells: Array<{ value: string; color?: string; isBold?: boolean }> }> = [
+  {
+    cells: [
+      { value: 'Ações', isBold: true },
+      { value: '100%', color: 'var(--color-yellow)' },
+      { value: 'Nenhuma', color: 'var(--color-green)' },
+      { value: 'Nenhuma', color: 'var(--muted)' },
+    ],
+  },
+  {
+    cells: [
+      { value: 'Futuros', isBold: true },
+      { value: 'Ilimitada', color: 'var(--color-red)' },
+      { value: 'Sim ⚠️', color: 'var(--color-red)' },
+      { value: 'Alta', color: 'var(--color-red)' },
+    ],
+  },
+  {
+    cells: [
+      { value: 'Opção (compra)', isBold: true },
+      { value: 'Só o prêmio', color: 'var(--color-green)' },
+      { value: 'Nenhuma', color: 'var(--color-green)' },
+      { value: 'Altíssima', color: 'var(--color-green)' },
+    ],
+  },
+  {
+    cells: [
+      { value: 'Opção (venda)', isBold: true },
+      { value: 'Ilimitada', color: 'var(--color-red)' },
+      { value: 'Sim ⚠️', color: 'var(--color-red)' },
+      { value: 'Alta', color: 'var(--color-red)' },
+    ],
+  },
+];
+
 export function IntroTab() {
   const [analogyTab, setAnalogyTab] = useState('apartamento');
-  const current = ANALOGIES.find((a) => a.id === analogyTab) ?? ANALOGIES[0];
+  const current = ANALOGIES.find((a) => a.id === analogyTab) ?? ANALOGIES[0]!;
   return (
     <>
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
@@ -143,46 +185,8 @@ export function IntroTab() {
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
         <div className="text-[10px] tracking-[1.5px] text-muted uppercase font-mono mb-3.5">Opções vs outros mercados</div>
         <CompareTable
-          columns={[
-            { key: 'mercado', label: 'Mercado' },
-            { key: 'perda', label: 'Perda máx.' },
-            { key: 'obrigacao', label: 'Obrigação' },
-            { key: 'alavancagem', label: 'Alavancagem' },
-          ]}
-          rows={[
-            {
-              cells: [
-                { value: 'Ações', isBold: true },
-                { value: '100%', color: 'var(--color-yellow)' },
-                { value: 'Nenhuma', color: 'var(--color-green)' },
-                { value: 'Nenhuma', color: 'var(--muted)' },
-              ],
-            },
-            {
-              cells: [
-                { value: 'Futuros', isBold: true },
-                { value: 'Ilimitada', color: 'var(--color-red)' },
-                { value: 'Sim ⚠️', color: 'var(--color-red)' },
-                { value: 'Alta', color: 'var(--color-red)' },
-              ],
-            },
-            {
-              cells: [
-                { value: 'Opção (compra)', isBold: true },
-                { value: 'Só o prêmio', color: 'var(--color-green)' },
-                { value: 'Nenhuma', color: 'var(--color-green)' },
-                { value: 'Altíssima', color: 'var(--color-green)' },
-              ],
-            },
-            {
-              cells: [
-                { value: 'Opção (venda)', isBold: true },
-                { value: 'Ilimitada', color: 'var(--color-red)' },
-                { value: 'Sim ⚠️', color: 'var(--color-red)' },
-                { value: 'Alta', color: 'var(--color-red)' },
-              ],
-            },
-          ]}
+          columns={TABLE_COLUMNS}
+          rows={TABLE_ROWS}
           caption={
             <>
               No futuro, se o mercado vai contra você, você pode{' '}
