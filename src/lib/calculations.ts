@@ -64,21 +64,30 @@ export function calcCallResult(state: CallState): CallResult {
 
 /* ── PUT Simulation ── */
 
-function buildPutDescription(state: PutState, totalPago: number, vi: number, lucro: number, retornoPct: number, isProfit: boolean, mode: PutMode): string {
-  if (mode === 'comprador') {
-    return isProfit
-      ? `Ação despencou para ${fmtFlex(state.final)}. Sua PUT de strike ${fmtFlex(state.strike)} ` +
-        `está ITM. Cada opção vale ${fmtFlex(vi)}. ` +
-        `Lucro de ${retornoPct.toFixed(1)}% sobre o prêmio pago.`
-      : `Ação ficou acima do strike ${fmtFlex(state.strike)}. ` +
-        `PUT vira pó. Você perde ${fmtFlex(totalPago)}.`;
+function buildBuyerDescription(state: PutState, totalPago: number, vi: number, retornoPct: number, isProfit: boolean): string {
+  if (isProfit) {
+    return `Ação despencou para ${fmtFlex(state.final)}. Sua PUT de strike ${fmtFlex(state.strike)} ` +
+      `está ITM. Cada opção vale ${fmtFlex(vi)}. ` +
+      `Lucro de ${retornoPct.toFixed(1)}% sobre o prêmio pago.`;
   }
-  return isProfit
-    ? `Ação ficou acima do strike — PUT não foi exercida. ` +
-      `Você fica com o prêmio de ${fmtFlex(totalPago)} no bolso.`
-    : `DESASTRE. Ação foi a ${fmtFlex(state.final)}. ` +
-      `O comprador exige que você compre ${state.contratos * 100} ações a ${fmtFlex(state.strike)} cada. ` +
-      `Prejuízo: ${fmtFlex(Math.abs(lucro))}.`;
+  return `Ação ficou acima do strike ${fmtFlex(state.strike)}. ` +
+    `PUT vira pó. Você perde ${fmtFlex(totalPago)}.`;
+}
+
+function buildSellerDescription(state: PutState, totalPago: number, lucro: number, isProfit: boolean): string {
+  if (isProfit) {
+    return `Ação ficou acima do strike — PUT não foi exercida. ` +
+      `Você fica com o prêmio de ${fmtFlex(totalPago)} no bolso.`;
+  }
+  return `DESASTRE. Ação foi a ${fmtFlex(state.final)}. ` +
+    `O comprador exige que você compre ${state.contratos * 100} ações a ${fmtFlex(state.strike)} cada. ` +
+    `Prejuízo: ${fmtFlex(Math.abs(lucro))}.`;
+}
+
+function buildPutDescription(state: PutState, totalPago: number, vi: number, lucro: number, retornoPct: number, isProfit: boolean, mode: PutMode): string {
+  return mode === 'comprador'
+    ? buildBuyerDescription(state, totalPago, vi, retornoPct, isProfit)
+    : buildSellerDescription(state, totalPago, lucro, isProfit);
 }
 
 export function calcPutResult(state: PutState, mode: PutMode): PutResult {
