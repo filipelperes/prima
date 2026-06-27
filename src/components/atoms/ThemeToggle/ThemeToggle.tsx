@@ -10,7 +10,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className="inline-flex items-center justify-center rounded-lg w-[38px] h-[38px] text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent max-md:w-[34px] max-md:h-[34px] max-sm:w-8 max-sm:h-8"
+      className="inline-flex items-center justify-center rounded-lg w-[38px] h-[38px] text-sm font-medium transition-colors duration-200 hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent max-md:w-[34px] max-md:h-[34px] max-sm:w-8 max-sm:h-8"
     >
       {/*
         Usamos a Tailwind `dark:` variant para mostrar/ocultar
