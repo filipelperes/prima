@@ -68,9 +68,9 @@ function isSeriesLetter(cleaned: string, index: number): boolean {
 function parseWeeklySuffix(rest: string): { strikeStr: string; weekNum: number } | null {
   const match = rest.match(/^(\d+)W([1245])$/);
   if (!match) return null;
-  const weekNum = parseInt(match[2]!, 10);
+  const weekNum = parseInt(match[2] ?? '', 10);
   if (!VALID_WEEK_VALUES.has(weekNum)) return null;
-  return { strikeStr: match[1]!, weekNum };
+  return { strikeStr: match[1] ?? '', weekNum };
 }
 
 interface ParsedComponents {
@@ -97,7 +97,7 @@ function parseB3Code(code: string): ParsedComponents | null {
   if (!isSeriesLetter(cleaned, assetLen)) return null;
 
   const assetCode = cleaned.slice(0, assetLen);
-  const seriesLetter = cleaned[assetLen]!;
+  const seriesLetter = cleaned[assetLen] ?? '';
   const rest = cleaned.slice(assetLen + 1);
 
   if (rest.length === 0) return null;
@@ -119,13 +119,9 @@ function formatAssetName(assetCode: string): string {
     : assetCode;
 }
 
-/** Converte componentes parseados em um DecodeResult. */
-function buildResult(parsed: ParsedComponents, raw: string): DecodeResult | null {
-  const series = SERIES[parsed.seriesLetter];
-  if (!series) return null;
-  const strikeNum = parseInt(parsed.strikeStr, 10);
-  if (isNaN(strikeNum) || strikeNum <= 0) return null;
+type SeriesEntry = { type: 'CALL' | 'PUT'; month: string; num: number };
 
+function createDecodeResult(parsed: ParsedComponents, raw: string, series: SeriesEntry): DecodeResult {
   const result: DecodeResult = {
     asset: formatAssetName(parsed.assetCode),
     type: series.type,
@@ -134,12 +130,19 @@ function buildResult(parsed: ParsedComponents, raw: string): DecodeResult | null
     strike: parseStrike(parsed.strikeStr),
     raw,
   };
-
   if (parsed.weekNum !== null) {
     result.week = parsed.weekNum;
   }
-
   return result;
+}
+
+/** Converte componentes parseados em um DecodeResult. */
+function buildResult(parsed: ParsedComponents, raw: string): DecodeResult | null {
+  const series = SERIES[parsed.seriesLetter];
+  if (!series) return null;
+  const strikeNum = parseInt(parsed.strikeStr, 10);
+  if (isNaN(strikeNum) || strikeNum <= 0) return null;
+  return createDecodeResult(parsed, raw, series);
 }
 
 /* ─── Public API ─── */
@@ -166,23 +169,27 @@ export function decodeB3Weekly(code: string): DecodeResult | null {
   return buildResult(parsed, code.trim().toUpperCase());
 }
 
-function searchByAssetMatch(cleaned: string): DecodeResult[] {
+function searchAssetSuffixes(code: string): DecodeResult[] {
   const results: DecodeResult[] = [];
   const seen = new Set<string>();
-
-  for (const [code, name] of Object.entries(ASSET_NAMES)) {
-    if (code.includes(cleaned) || name.toUpperCase().includes(cleaned)) {
-      for (const suffix of EXAMPLE_SUFFIXES) {
-        const d = decodeB3(code + suffix);
-        if (d && !seen.has(d.raw)) {
-          seen.add(d.raw);
-          results.push(d);
-        }
-      }
-      if (results.length > 0) break;
+  for (const suffix of EXAMPLE_SUFFIXES) {
+    const d = decodeB3(code + suffix);
+    if (d && !seen.has(d.raw)) {
+      seen.add(d.raw);
+      results.push(d);
     }
   }
   return results;
+}
+
+function searchByAssetMatch(cleaned: string): DecodeResult[] {
+  for (const [code, name] of Object.entries(ASSET_NAMES)) {
+    if (code.includes(cleaned) || name.toUpperCase().includes(cleaned)) {
+      const results = searchAssetSuffixes(code);
+      if (results.length > 0) return results;
+    }
+  }
+  return [];
 }
 
 function searchBySuffix(cleaned: string): DecodeResult[] {
