@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { cn } from '@/lib/utils';
+import { useSearchKeyboard } from '@/hooks/useSearchKeyboard';
 import { GLOSSARY } from '@/data/glossary';
 import { ANALOGIES } from '@/data/analogies';
 
@@ -95,9 +96,7 @@ function highlightMatch(text: string, query: string): React.ReactNode {
 export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: SearchDialogProps) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
 
   /* Compute search results from pre-computed index */
   const results = useMemo(() => {
@@ -116,6 +115,14 @@ export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: 
       }));
   }, [debouncedQuery]);
 
+  /* Keyboard navigation via extracted hook */
+  const {
+    selectedIndex,
+    setSelectedIndex,
+    resultsRef,
+    handleMouseEnter,
+  } = useSearchKeyboard(results, onClose, onNavigate);
+
   /* Debounce */
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -123,55 +130,12 @@ export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: 
       setSelectedIndex(-1);
     }, 200);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, setSelectedIndex]);
 
   /* Auto-focus */
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  function scrollResultIntoView(index: number) {
-    requestAnimationFrame(() => {
-      const container = resultsRef.current;
-      if (!container) return;
-      const buttons = container.querySelectorAll<HTMLButtonElement>('button');
-      buttons[index]?.scrollIntoView({ block: 'nearest' });
-    });
-  }
-
-  /* Keyboard handler — uses useCallback with all deps, attached via useEffect */
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-      return;
-    }
-    if (results.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedIndex((prev) => {
-        const next = prev < results.length - 1 ? prev + 1 : 0;
-        scrollResultIntoView(next);
-        return next;
-      });
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedIndex((prev) => {
-        const next = prev > 0 ? prev - 1 : results.length - 1;
-        scrollResultIntoView(next);
-        return next;
-      });
-    } else if (e.key === 'Enter' && selectedIndex >= 0) {
-      e.preventDefault();
-      const result = results[selectedIndex];
-      if (result) onNavigate(result.tabId, result.label);
-    }
-  }, [onClose, onNavigate, results, selectedIndex]);
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
 
   const handleSelect = (result: SearchResult) => {
     onNavigate(result.tabId, result.label);
@@ -179,10 +143,6 @@ export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: 
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) onClose();
-  };
-
-  const handleMouseEnter = (index: number) => {
-    setSelectedIndex(index);
   };
 
   return (
@@ -195,7 +155,7 @@ export const SearchDialog = memo(function SearchDialog({ onClose, onNavigate }: 
       >
         {/* Header row */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border-custom max-sm:px-2.5 max-sm:py-2.5">
-          <div className="flex-1 flex items-center gap-2.5 bg-surface border border-border-custom rounded-lg px-3 transition-colors duration-200 focus-within:border-accent dark:focus-within:border-accent max-sm:px-2">
+          <div className="flex-1 flex items-center gap-2.5 bg-surface border border-border-custom rounded-lg px-3 focus-within:border-accent dark:focus-within:border-accent max-sm:px-2">
             <span className="text-base shrink-0">🔍</span>
             <input
               ref={inputRef}
