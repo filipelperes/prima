@@ -21,11 +21,10 @@ export const GlossItem = memo(function GlossItem({ term, tags, def, analogy }: G
           return (
             <span
               key={tag.t}
-              className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-[5px] ml-2 align-middle"
+              className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-[5px] ml-2 align-middle bg-mix-13 border-mix-20"
               style={{
-                background: `color-mix(in srgb, ${c} 13%, transparent)`,
                 color: c,
-                border: `1px solid color-mix(in srgb, ${c} 20%, transparent)`,
+                '--mix-c': c,
               }}
             >
               {tag.t}

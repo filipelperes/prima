@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 interface WarningBoxProps {
@@ -6,7 +6,7 @@ interface WarningBoxProps {
   children: ReactNode;
 }
 
-export function WarningBox({ title, children }: WarningBoxProps) {
+export const WarningBox = memo(function WarningBox({ title, children }: WarningBoxProps) {
   return (
     <Alert variant="destructive" className="bg-red/10 border-red/40 dark:bg-red/[0.07] dark:border-red/30 rounded-lg p-3.5 mb-3">
       {title && (
@@ -19,4 +19,4 @@ export function WarningBox({ title, children }: WarningBoxProps) {
       </AlertDescription>
     </Alert>
   );
-}
+});

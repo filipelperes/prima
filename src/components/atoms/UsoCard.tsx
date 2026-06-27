@@ -12,6 +12,16 @@ export function UsoCard({ icon, name, desc, details }: UsoCardProps) {
   const [open, setOpen] = useState(false);
   const toggle = useCallback(() => setOpen((v) => !v), []);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    },
+    [toggle],
+  );
+
   return (
     <div
       className={cn(
@@ -20,7 +30,7 @@ export function UsoCard({ icon, name, desc, details }: UsoCardProps) {
         details && 'cursor-pointer hover:border-accent/20 dark:hover:border-accent/15',
       )}
       onClick={details ? toggle : undefined}
-      onKeyDown={details ? (e) => { if (e.key === 'Enter' || e.key === ' ') toggle(); } : undefined}
+      onKeyDown={details ? handleKeyDown : undefined}
       role={details ? 'button' : undefined}
       tabIndex={details ? 0 : undefined}
     >

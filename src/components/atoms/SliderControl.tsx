@@ -45,8 +45,8 @@ export const SliderControl = memo(function SliderControl({
       </div>
       <div className="relative h-[5px] bg-border-custom rounded-[3px] cursor-pointer">
         <div
-          className="absolute left-0 top-0 h-full rounded-[3px] transition-[width] duration-[0.08s]"
-          style={{ width: `${width}%`, background: color }}
+          className="absolute left-0 top-0 h-full rounded-[3px] origin-left transition-transform duration-[0.08s]"
+          style={{ transform: `scaleX(${width / 100})`, background: color }}
         />
         <input
           type="range"

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface ProgressRowProps {
   label: string;
   value: number;
@@ -6,7 +8,7 @@ interface ProgressRowProps {
   displayValue?: string;
 }
 
-export function ProgressRow({
+export const ProgressRow = memo(function ProgressRow({
   label,
   value,
   maxValue = 20,
@@ -30,4 +32,4 @@ export function ProgressRow({
       </span>
     </div>
   );
-}
+});
