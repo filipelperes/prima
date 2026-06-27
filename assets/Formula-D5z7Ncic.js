@@ -1,0 +1,1 @@
+import{i as e}from"./vendor-BIvTrb41.js";var t=e();function n({children:e}){return(0,t.jsx)(`div`,{className:`bg-surface border border-border-custom rounded-md px-3.5 py-3 font-mono text-xs leading-relaxed my-2.5`,children:e})}export{n as t};
