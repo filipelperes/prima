@@ -153,6 +153,27 @@
     --accent: #00d4ff;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Color-mix utility classes for dynamic theme-aware colors.
+   Use these instead of inline `color-mix()` to let the
+   browser resolve the computation in the CSS engine rather
+   than per-element inline styles.
+
+   Usage:
+     <div className="bg-mix" style={{ '--mix-c': 'var(--color-green)' }}>
+     <div className="border-mix-20" style={{ '--mix-c': 'var(--color-red)' }}>
+   ═══════════════════════════════════════════════════════════ */
+.bg-mix      { background: color-mix(in srgb, var(--mix-c, var(--color-accent)) 7%, transparent); }
+.bg-mix-10   { background: color-mix(in srgb, var(--mix-c, var(--color-accent)) 10%, transparent); }
+.bg-mix-13   { background: color-mix(in srgb, var(--mix-c, var(--color-accent)) 13%, transparent); }
+.bg-mix-15   { background: color-mix(in srgb, var(--mix-c, var(--color-accent)) 15%, transparent); }
+.bg-mix-20   { background: color-mix(in srgb, var(--mix-c, var(--color-accent)) 20%, transparent); }
+
+.border-mix-13  { border-color: color-mix(in srgb, var(--mix-c, var(--color-accent)) 13%, transparent); }
+.border-mix-20  { border-color: color-mix(in srgb, var(--mix-c, var(--color-accent)) 20%, transparent); }
+.border-mix-27  { border-color: color-mix(in srgb, var(--mix-c, var(--color-accent)) 27%, transparent); }
+.border-mix-30  { border-color: color-mix(in srgb, var(--mix-c, var(--color-accent)) 30%, transparent); }
+
 @layer base {
     @media (prefers-reduced-motion: no-preference) {
         html {
