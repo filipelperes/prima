@@ -182,8 +182,7 @@ export function CallTab() {
         <OtmBlock
           label="ITM — In The Money ✓"
           labelColor="var(--color-green)"
-          bgColor="color-mix(in srgb, var(--color-green) 7%, transparent)"
-          borderColor="color-mix(in srgb, var(--color-green) 20%, transparent)"
+          mixColor="var(--color-green)"
         >
           Strike{' '}
           <strong className="text-green">
@@ -191,7 +190,7 @@ export function CallTab() {
           </strong>{' '}
           (abaixo da ação). Valor intrínseco ={' '}
           <strong className="text-green">
-            R$ {Math.max(0, state.acao - (state.acao - 5)).toFixed(1)}
+            R$ 5.0
           </strong>
           . Já vale algo hoje. Contrato mais caro, mas qualquer alta vira lucro
           imediato.
@@ -199,8 +198,7 @@ export function CallTab() {
         <OtmBlock
           label="ATM — At The Money ⚡"
           labelColor="var(--color-yellow)"
-          bgColor="color-mix(in srgb, var(--color-yellow) 7%, transparent)"
-          borderColor="color-mix(in srgb, var(--color-yellow) 20%, transparent)"
+          mixColor="var(--color-yellow)"
         >
           Strike{' '}
           <strong className="text-yellow">
@@ -212,8 +210,7 @@ export function CallTab() {
         <OtmBlock
           label="OTM — Out of The Money ✨"
           labelColor="var(--color-red)"
-          bgColor="color-mix(in srgb, var(--color-red) 7%, transparent)"
-          borderColor="color-mix(in srgb, var(--color-red) 20%, transparent)"
+          mixColor="var(--color-red)"
         >
           Strike{' '}
           <strong className="text-red">

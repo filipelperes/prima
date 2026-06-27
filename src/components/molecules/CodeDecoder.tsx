@@ -78,8 +78,8 @@ export function CodeDecoder() {
 
       {result && (
         <div
-          className="bg-surface rounded-xl p-4"
-          style={{ border: `1px solid color-mix(in srgb, ${statusColor} 27%, transparent)` }}
+          className="bg-surface rounded-xl p-4 border-mix-27"
+          style={{ '--mix-c': statusColor }}
         >
           <div className="grid grid-cols-2 gap-2.5 max-sm:grid-cols-1">
             <DecodeField label="Ativo" value={result.asset} color="var(--color-accent)" />
