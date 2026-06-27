@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { memo, useState, useCallback, type MouseEvent } from 'react';
+import { cn } from '@/lib/utils';
 import { Formula } from '@/components/atoms/Formula';
 import { CompareTable } from '@/components/molecules/CompareTable';
 import { UsoCard } from '@/components/atoms/UsoCard';
 import { CodeDecoder } from '@/components/molecules/CodeDecoder';
 import { ANALOGIES } from '@/data/analogies';
+import type { Analogy } from '@/data/analogies';
 
 const TABLE_COLUMNS: Array<{ key: string; label: string }> = [
   { key: 'mercado', label: 'Mercado' },
@@ -47,9 +49,37 @@ const TABLE_ROWS: Array<{ cells: Array<{ value: string; color?: string; isBold?:
   },
 ];
 
+const AnalogyButton = memo(function AnalogyButton({
+  analogy,
+  isActive,
+}: {
+  analogy: Analogy;
+  isActive: boolean;
+}) {
+  return (
+    <button
+      data-analogy-id={analogy.id}
+      className={cn(
+        'flex-1 min-w-[80px] px-2.5 py-2 rounded-lg cursor-pointer text-[11px] font-bold font-sans transition-all duration-200 text-center border',
+        isActive
+          ? 'bg-accent/15 border-accent/30 text-accent'
+          : 'bg-surface border-border-custom text-muted hover:bg-accent/5 dark:hover:bg-accent/[0.07]',
+      )}
+    >
+      {analogy.icon} {analogy.title}
+    </button>
+  );
+});
+
 export function IntroTab() {
   const [analogyTab, setAnalogyTab] = useState('apartamento');
   const current = ANALOGIES.find((a) => a.id === analogyTab) ?? ANALOGIES[0]!;
+  const handleAnalogyClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    const btn = (e.target as Element).closest('[data-analogy-id]');
+    if (!btn) return;
+    setAnalogyTab(btn.getAttribute('data-analogy-id')!);
+  }, []);
+
   return (
     <>
       <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
@@ -93,19 +123,13 @@ export function IntroTab() {
           Cada analogia mostra o conceito financeiro (esquerda) lado a lado com
           o mundo real (direita). Clique para trocar:
         </p>
-        <div className="flex gap-1 mb-3 flex-wrap">
+        <div className="flex gap-1 mb-3 flex-wrap" onClick={handleAnalogyClick}>
           {ANALOGIES.map((a) => (
-            <button
+            <AnalogyButton
               key={a.id}
-              onClick={() => setAnalogyTab(a.id)}
-              className={`flex-1 min-w-[80px] px-2.5 py-2 rounded-lg cursor-pointer text-[11px] font-bold font-sans transition-all duration-200 text-center border ${
-                analogyTab === a.id
-                  ? 'bg-accent/15 border-accent/30 text-accent'
-                  : 'bg-surface border-border-custom text-muted hover:bg-accent/5 dark:hover:bg-accent/[0.07]'
-              }`}
-            >
-              {a.icon} {a.title}
-            </button>
+              analogy={a}
+              isActive={analogyTab === a.id}
+            />
           ))}
         </div>
         <div className="bg-surface rounded-lg px-3 py-2 mb-3 text-xs text-accent font-mono border border-border-custom">
