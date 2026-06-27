@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 export interface Tab {
   id: string;
@@ -17,16 +18,19 @@ interface TabButtonProps {
   tab: Tab;
   activeTab: string;
   onSwitch: (id: string) => void;
+  isDragging: boolean;
 }
 
-const TabButton = memo(function TabButton({ tab, activeTab, onSwitch }: TabButtonProps) {
+const TabButton = memo(function TabButton({ tab, activeTab, onSwitch, isDragging }: TabButtonProps) {
   const isActive = activeTab === tab.id;
   return (
     <button
       key={tab.id}
       role="tab"
       aria-selected={isActive}
-      onClick={() => onSwitch(tab.id)}
+      onClick={() => {
+        if (!isDragging) onSwitch(tab.id);
+      }}
       className={cn(
         'shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-md border-none bg-transparent text-soft cursor-pointer font-sans text-[11px] font-semibold tracking-[0.3px] leading-none transition-all duration-200 whitespace-nowrap uppercase relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent',
         'max-md:text-[10px] max-md:px-2.5 max-md:py-[5px]',
@@ -45,32 +49,43 @@ const TabButton = memo(function TabButton({ tab, activeTab, onSwitch }: TabButto
 });
 
 export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
+  const { ref, isDragging, handlers } = useDragScroll();
+
   return (
     <nav
+      ref={ref}
       role="tablist"
-      className="sticky top-3 z-[100] flex gap-0.5 px-1.5 pb-2.5 pt-1.5 overflow-x-auto overflow-y-hidden rounded-xl border border-border-custom
-        bg-surface/85 backdrop-blur-lg
-        [mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]
-        [-webkit-mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]
-        [scrollbar-color:var(--color-border-custom)_transparent]
-        hover:scrollbar-color-[var(--color-soft)_transparent]
-        [&::-webkit-scrollbar]:h-2.5
-        [&::-webkit-scrollbar-track]:bg-transparent
-        [&::-webkit-scrollbar-track]:mx-1.5
-        [&::-webkit-scrollbar-thumb]:bg-border-custom
-        [&::-webkit-scrollbar-thumb]:rounded-[5px]
-        [&::-webkit-scrollbar-thumb]:border-2
-        [&::-webkit-scrollbar-thumb]:border-solid
-        [&::-webkit-scrollbar-thumb]:border-transparent
-        [&::-webkit-scrollbar-thumb]:bg-clip-content
-        [&::-webkit-scrollbar-thumb]:hover:bg-soft
-        [&::-webkit-scrollbar-thumb]:hover:bg-clip-content
-        max-md:[scrollbar-width:none]
-        max-md:[&::-webkit-scrollbar]:h-0
-        max-sm:mx-2.5
-        max-sm:px-2.5
-        max-sm:[mask-image:none]
-        max-sm:[-webkit-mask-image:none]"
+      {...handlers}
+      className={cn(
+        'sticky top-3 z-[100] flex gap-0.5 px-1.5 pb-2.5 pt-1.5 overflow-x-auto overflow-y-hidden rounded-xl border border-border-custom',
+        'bg-surface/85 backdrop-blur-lg',
+        'select-none',
+        isDragging
+          ? 'cursor-grabbing [&_button]:pointer-events-none'
+          : 'cursor-grab',
+        '[mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]',
+        '[-webkit-mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]',
+        '[scrollbar-color:var(--color-border-custom)_transparent]',
+        'hover:scrollbar-color-[var(--color-soft)_transparent]',
+        '[&::-webkit-scrollbar]:h-2.5',
+        '[&::-webkit-scrollbar-track]:bg-transparent',
+        '[&::-webkit-scrollbar-track]:mx-1.5',
+        '[&::-webkit-scrollbar-thumb]:bg-border-custom',
+        '[&::-webkit-scrollbar-thumb]:rounded-[5px]',
+        '[&::-webkit-scrollbar-thumb]:border-2',
+        '[&::-webkit-scrollbar-thumb]:border-solid',
+        '[&::-webkit-scrollbar-thumb]:border-transparent',
+        '[&::-webkit-scrollbar-thumb]:bg-clip-content',
+        '[&::-webkit-scrollbar-thumb]:hover:bg-soft',
+        '[&::-webkit-scrollbar-thumb]:hover:bg-clip-content',
+        'max-md:[scrollbar-width:none]',
+        'max-md:[&::-webkit-scrollbar]:h-0',
+        'max-sm:mx-2.5',
+        'max-sm:px-2.5',
+        'max-sm:[mask-image:none]',
+        'max-sm:[-webkit-mask-image:none]',
+      )}
+      style={{ touchAction: 'pan-y' } as React.CSSProperties}
     >
       {tabs.map((tab) => (
         <TabButton
@@ -78,6 +93,7 @@ export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBar
           tab={tab}
           activeTab={activeTab}
           onSwitch={onSwitch}
+          isDragging={isDragging}
         />
       ))}
     </nav>
