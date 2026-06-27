@@ -56,10 +56,7 @@ export function MainLayout() {
     setSearchOpen(false);
   }, []);
 
-  const renderTab = () => {
-    const Component = TAB_COMPONENTS[activeTab] ?? IntroTab;
-    return <Suspense fallback={FALLBACK}><Component /></Suspense>;
-  };
+  const Component = TAB_COMPONENTS[activeTab] ?? IntroTab;
 
   return (
     <div className="bg-bg min-h-screen">
@@ -72,7 +69,11 @@ export function MainLayout() {
         <AppHeader
           onSearchClick={() => setSearchOpen(true)}
         />
-        <div className="block max-md:px-3 max-md:pb-3 max-sm:px-2.5 max-sm:pb-2.5">{renderTab()}</div>
+        <div className="block max-md:px-3 max-md:pb-3 max-sm:px-2.5 max-sm:pb-2.5">
+          <Suspense fallback={FALLBACK}>
+            <Component key={activeTab} />
+          </Suspense>
+        </div>
         <footer className="text-center py-5 text-[10px] text-soft border-t border-border-custom mt-3 max-md:px-3.5 max-md:py-4 max-sm:px-2.5 max-sm:py-3.5 max-sm:text-[9px]">
           <strong className="text-accent">Prima</strong> — Guia educacional · Não é recomendação de investimento · B3 · Mercado de Opções
         </footer>
