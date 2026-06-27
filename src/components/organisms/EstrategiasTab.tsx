@@ -1,7 +1,9 @@
+import { memo } from 'react';
 import { UsoCard } from '@/components/atoms/UsoCard';
 import { WarningBox } from '@/components/atoms/WarningBox';
+import { StrategyCompareTable } from '@/components/molecules/StrategyCompareTable';
 
-export function EstrategiasTab() {
+export const EstrategiasTab = memo(function EstrategiasTab() {
   return (
     <>
       <WarningBox title="⚠️ NAKED CALL — Risco Ilimitado">
@@ -168,52 +170,8 @@ export function EstrategiasTab() {
         <div className="text-[12px] text-text-secondary leading-[1.6] mb-2.5">
           Resumo das quatro estratégias abordadas:
         </div>
-        <div className="rounded-[10px] overflow-hidden border border-border-custom">
-          {/* Header */}
-          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] bg-surface border-b border-border-custom">
-            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
-              ESTRATÉGIA
-            </div>
-            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
-              RISCO
-            </div>
-            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
-              THETA
-            </div>
-            <div className="p-[8px_10px] font-bold text-[10px] text-muted tracking-[0.5px] font-mono">
-              IDEAL PARA
-            </div>
-          </div>
-          {/* Linha 1 */}
-          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-card-custom">
-            <div className="p-[8px_10px] text-[11px] text-text">Covered Call</div>
-            <div className="p-[8px_10px] text-[11px] text-green">Baixo</div>
-            <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
-            <div className="p-[8px_10px] text-[11px] text-text-secondary">Renda mensal</div>
-          </div>
-          {/* Linha 2 */}
-          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-surface">
-            <div className="p-[8px_10px] text-[11px] text-text">Protective Put</div>
-            <div className="p-[8px_10px] text-[11px] text-yellow">Prêmio pago</div>
-            <div className="p-[8px_10px] text-[11px] text-red">Contra</div>
-            <div className="p-[8px_10px] text-[11px] text-text-secondary">Proteger carteira</div>
-          </div>
-          {/* Linha 3 */}
-          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] border-b border-border-custom bg-card-custom">
-            <div className="p-[8px_10px] text-[11px] text-text">Collar</div>
-            <div className="p-[8px_10px] text-[11px] text-green">Limitado</div>
-            <div className="p-[8px_10px] text-[11px] text-text-secondary">Neutro</div>
-            <div className="p-[8px_10px] text-[11px] text-text-secondary">Proteção zero-custo</div>
-          </div>
-          {/* Linha 4 */}
-          <div className="grid grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] bg-surface">
-            <div className="p-[8px_10px] text-[11px] text-text">Cash Secured Put</div>
-            <div className="p-[8px_10px] text-[11px] text-yellow">Strike</div>
-            <div className="p-[8px_10px] text-[11px] text-green">A favor</div>
-            <div className="p-[8px_10px] text-[11px] text-text-secondary">Comprar com desconto</div>
-          </div>
-        </div>
+        <StrategyCompareTable />
       </div>
     </>
   );
-}
+});

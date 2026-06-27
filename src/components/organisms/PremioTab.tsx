@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { SliderControl } from '@/components/atoms/SliderControl';
 import { Formula } from '@/components/atoms/Formula';
 import { ProgressRow } from '@/components/atoms/ProgressRow';
@@ -6,7 +6,7 @@ import { PremioDiagram } from '@/components/molecules/PremioDiagram';
 import { usePremiumSimulation } from '@/hooks/usePremiumSimulation';
 import { fmt } from '@/lib/formatters';
 
-export function PremioTab() {
+export const PremioTab = memo(function PremioTab() {
   const { state, breakdown, updateField } = usePremiumSimulation();
 
   /* Estabiliza callbacks dos SliderControl para respeitar memo */
@@ -14,12 +14,15 @@ export function PremioTab() {
   const handleVolChange = useCallback((v: number) => updateField('vol', v), [updateField]);
   const handleDistChange = useCallback((v: number) => updateField('dist', v), [updateField]);
 
-  const distText =
-    state.dist > 0
-      ? `+${fmt(state.dist)} ITM`
-      : state.dist < 0
-        ? `${fmt(Math.abs(state.dist))} OTM`
-        : 'ATM';
+  const distText = useMemo(
+    () =>
+      state.dist > 0
+        ? `+${fmt(state.dist)} ITM`
+        : state.dist < 0
+          ? `${fmt(Math.abs(state.dist))} OTM`
+          : 'ATM',
+    [state.dist],
+  );
 
   return (
     <>
@@ -189,4 +192,4 @@ export function PremioTab() {
       </div>
     </>
   );
-}
+});

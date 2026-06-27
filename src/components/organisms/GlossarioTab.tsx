@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { GlossItem } from '@/components/atoms/GlossItem';
 import { GLOSSARY } from '@/data/glossary';
 
-export function GlossarioTab() {
+export const GlossarioTab = memo(function GlossarioTab() {
   return (
     <div className="bg-card-custom border border-border-custom rounded-xl p-4 max-sm:p-3 mb-3">
       <div id="glossario-list">
@@ -11,4 +12,4 @@ export function GlossarioTab() {
       </div>
     </div>
   );
-}
+});

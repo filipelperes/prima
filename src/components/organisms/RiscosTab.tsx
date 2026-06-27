@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { WarningBox } from '@/components/atoms/WarningBox';
 import { Formula } from '@/components/atoms/Formula';
 import { UsoCard } from '@/components/atoms/UsoCard';
 import { HierarchyRow } from '@/components/atoms/HierarchyRow';
 import { HIERARCHY } from '@/data/hierarchy';
 
-export function RiscosTab() {
+export const RiscosTab = memo(function RiscosTab() {
   return (
     <>
       <WarningBox title="⚠️ NAKED CALL — O mais perigoso do mercado">
@@ -143,4 +144,4 @@ export function RiscosTab() {
       </div>
     </>
   );
-}
+});
