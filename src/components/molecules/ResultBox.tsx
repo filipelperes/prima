@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ResultBoxProps {
@@ -6,7 +6,7 @@ interface ResultBoxProps {
   children: ReactNode;
 }
 
-export function ResultBox({ isProfit, children }: ResultBoxProps) {
+export const ResultBox = memo(function ResultBox({ isProfit, children }: ResultBoxProps) {
   return (
     <div
       className={cn(
@@ -17,4 +17,4 @@ export function ResultBox({ isProfit, children }: ResultBoxProps) {
       {children}
     </div>
   );
-}
+});

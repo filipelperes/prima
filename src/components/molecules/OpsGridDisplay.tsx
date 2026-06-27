@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface OpData {
@@ -17,12 +18,12 @@ function absoluteDisplay(val: number): string {
   return String(abs);
 }
 
-export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
+export const OpsGridDisplay = memo(function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
   return (
     <div className="flex flex-wrap gap-1.5 my-3">
       {ops.map((op, i) => (
         <div
-          key={`${op.win}-${op.profit}-${i}`}
+          key={`${i}`}
           className={cn(
             'w-[52px] h-[52px] rounded-[10px] flex flex-col items-center justify-center text-lg border-2 border-transparent',
             op.win ? 'bg-green/[0.07] border-green/[0.27]' : 'bg-red/[0.04] border-red/[0.19]',
@@ -38,4 +39,4 @@ export function OpsGridDisplay({ ops }: OpsGridDisplayProps) {
       ))}
     </div>
   );
-}
+});

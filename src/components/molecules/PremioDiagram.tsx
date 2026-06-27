@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface PremioBlockData {
   label: string;
   name: string;
@@ -23,7 +25,7 @@ const blocks: PremioBlockData[] = [
   },
 ];
 
-export function PremioDiagram() {
+export const PremioDiagram = memo(function PremioDiagram() {
   return (
     <div className="border border-border-custom rounded-lg overflow-hidden mb-3">
       {blocks.map((b, i) => (
@@ -61,4 +63,4 @@ export function PremioDiagram() {
       </div>
     </div>
   );
-}
+});

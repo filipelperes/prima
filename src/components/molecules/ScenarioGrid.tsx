@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ScenarioButton } from '@/components/atoms/ScenarioButton';
 
 interface Scenario {
@@ -10,7 +11,7 @@ interface ScenarioGridProps {
   activeIndex?: number;
 }
 
-export function ScenarioGrid({ scenarios, activeIndex }: ScenarioGridProps) {
+export const ScenarioGrid = memo(function ScenarioGrid({ scenarios, activeIndex }: ScenarioGridProps) {
   return (
     <div className="grid grid-cols-2 gap-1.5 mb-3 max-sm:grid-cols-1">
       {scenarios.map((s, i) => (
@@ -18,4 +19,4 @@ export function ScenarioGrid({ scenarios, activeIndex }: ScenarioGridProps) {
       ))}
     </div>
   );
-}
+});

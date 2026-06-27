@@ -44,7 +44,7 @@ const TabButton = memo(function TabButton({ tab, activeTab, onSwitch }: TabButto
   );
 });
 
-export function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
+export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
   return (
     <nav
       role="tablist"
@@ -82,4 +82,4 @@ export function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
       ))}
     </nav>
   );
-}
+});

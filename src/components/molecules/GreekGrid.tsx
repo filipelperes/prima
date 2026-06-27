@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 
 interface GreekCardData {
   name: string;
@@ -12,11 +12,11 @@ interface GreekGridProps {
   cards: GreekCardData[];
 }
 
-export function GreekGrid({ cards }: GreekGridProps) {
+export const GreekGrid = memo(function GreekGrid({ cards }: GreekGridProps) {
   return (
     <div className="grid grid-cols-2 gap-2.5 mb-3 max-sm:grid-cols-1">
-      {cards.map((card, i) => (
-        <div key={`${card.name}-${i}`} className="bg-card-custom border border-border-custom rounded-lg p-3.5 max-sm:p-3">
+      {cards.map((card) => (
+        <div key={card.name} className="bg-card-custom border border-border-custom rounded-lg p-3.5 max-sm:p-3">
           <div className="text-[15px] font-black mb-[3px]" style={{ color: card.nameColor }}>
             {card.name}
           </div>
@@ -27,4 +27,4 @@ export function GreekGrid({ cards }: GreekGridProps) {
       ))}
     </div>
   );
-}
+});

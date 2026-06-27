@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { Search } from 'lucide-react';
 
@@ -5,7 +6,7 @@ interface AppHeaderProps {
   onSearchClick?: () => void;
 }
 
-export function AppHeader({ onSearchClick }: AppHeaderProps) {
+export const AppHeader = memo(function AppHeader({ onSearchClick }: AppHeaderProps) {
   return (
     <div className="flex items-start justify-between gap-3 p-4 mt-6 mb-3 bg-surface/75 backdrop-blur-lg will-change-[backdrop-filter] border border-border-custom rounded-xl max-md:p-3 max-sm:mx-2.5 max-sm:p-2.5 max-sm:gap-2">
       <div className="flex-1 min-w-0">
@@ -34,4 +35,4 @@ export function AppHeader({ onSearchClick }: AppHeaderProps) {
       </div>
     </div>
   );
-}
+});

@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import type { Inimigo } from '@/lib/types';
 
 interface InimigosProgressProps {
   inimigos: Inimigo[];
 }
 
-export function InimigosProgress({ inimigos }: InimigosProgressProps) {
+export const InimigosProgress = memo(function InimigosProgress({ inimigos }: InimigosProgressProps) {
   return (
     <>
       {inimigos.map((item) => (
@@ -33,4 +34,4 @@ export function InimigosProgress({ inimigos }: InimigosProgressProps) {
       ))}
     </>
   );
-}
+});

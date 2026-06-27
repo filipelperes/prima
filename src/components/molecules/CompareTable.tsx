@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 
 interface Column {
   key: string;
@@ -19,7 +19,7 @@ interface CompareTableProps {
   caption?: ReactNode;
 }
 
-export function CompareTable({ columns, rows, caption }: CompareTableProps) {
+export const CompareTable = memo(function CompareTable({ columns, rows, caption }: CompareTableProps) {
   return (
     <>
       <table className="w-full border-collapse text-xs max-sm:text-[10px]">
@@ -58,4 +58,4 @@ export function CompareTable({ columns, rows, caption }: CompareTableProps) {
       )}
     </>
   );
-}
+});
