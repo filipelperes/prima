@@ -1,5 +1,13 @@
 import { useCallback, useRef, useState } from 'react';
 
+/* ───────── Constants ───────── */
+
+/**
+ * Distância mínima em pixels que o ponteiro precisa se mover
+ * para considerar que houve um arrasto (e não apenas um clique).
+ */
+const MOVE_THRESHOLD = 5;
+
 /* ───────── Types ───────── */
 
 interface DragScrollState {
@@ -10,12 +18,12 @@ interface DragScrollState {
 
 interface UseDragScrollReturn {
   ref: React.RefObject<HTMLDivElement | null>;
+  /** Se o usuário está com o botão pressionado (usado para feedback visual) */
   isDragging: boolean;
+  /** Se houve movimento efetivo de arrasto (usado para distinguir clique vs arrasto) */
+  didDrag: boolean;
   handlers: {
     onPointerDown: (e: React.PointerEvent) => void;
-    onPointerMove: (e: React.PointerEvent) => void;
-    onPointerUp: () => void;
-    onPointerCancel: () => void;
   };
 }
 
@@ -25,8 +33,9 @@ interface UseDragScrollReturn {
  * Hook que habilita drag-to-scroll horizontal em qualquer container
  * com overflow horizontal (overflow-x-auto / overflow-x-scroll).
  *
- * Funciona tanto em desktop (mouse) quanto mobile (touch) via
- * Pointer Events API, que unifica os dois inputs.
+ * Diferentemente de implementações com setPointerCapture, esta versão
+ * escuta pointermove/pointerup no window para evitar que o clique
+ * (click event) seja redirecionado ao container ao invés do botão filho.
  *
  * Uso:
  * ```tsx
@@ -46,14 +55,18 @@ interface UseDragScrollReturn {
 export function useDragScroll(): UseDragScrollReturn {
   const ref = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [didDrag, setDidDrag] = useState(false);
+
   const dragState = useRef<DragScrollState>({
     isDown: false,
     startX: 0,
     startScrollLeft: 0,
   });
+  const hasMovedRef = useRef(false);
+  const pointerIdRef = useRef<number | null>(null);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    // Apenas botão primário (左)
+    // Apenas botão primário
     if (e.button !== 0) return;
 
     const el = ref.current;
@@ -63,41 +76,56 @@ export function useDragScroll(): UseDragScrollReturn {
     s.isDown = true;
     s.startX = e.clientX;
     s.startScrollLeft = el.scrollLeft;
+    hasMovedRef.current = false;
 
-    el.setPointerCapture(e.pointerId);
     setIsDragging(true);
-  }, []);
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    const s = dragState.current;
-    if (!s.isDown) return;
+    const pid = e.pointerId;
+    pointerIdRef.current = pid;
 
-    const el = ref.current;
-    if (!el) return;
+    const onPointerMove = (ev: PointerEvent) => {
+      if (ev.pointerId !== pid) return;
+      const st = dragState.current;
+      if (!st.isDown) return;
 
-    e.preventDefault();
-    const delta = e.clientX - s.startX;
-    el.scrollLeft = s.startScrollLeft - delta;
-  }, []);
+      ev.preventDefault();
+      const delta = ev.clientX - st.startX;
 
-  const onPointerUp = useCallback(() => {
-    dragState.current.isDown = false;
-    setIsDragging(false);
-  }, []);
+      if (Math.abs(delta) > MOVE_THRESHOLD) {
+        hasMovedRef.current = true;
+      }
 
-  const onPointerCancel = useCallback(() => {
-    dragState.current.isDown = false;
-    setIsDragging(false);
+      ref.current!.scrollLeft = st.startScrollLeft - delta;
+    };
+
+    const onPointerUp = () => {
+      dragState.current.isDown = false;
+      setDidDrag(hasMovedRef.current);
+      setIsDragging(false);
+      pointerIdRef.current = null;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+
+    const onPointerCancel = () => {
+      dragState.current.isDown = false;
+      setIsDragging(false);
+      pointerIdRef.current = null;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+
+    window.addEventListener('pointermove', onPointerMove, { passive: false });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerCancel);
   }, []);
 
   return {
     ref,
     isDragging,
+    didDrag,
     handlers: {
       onPointerDown,
-      onPointerMove,
-      onPointerUp,
-      onPointerCancel,
     },
   };
 }

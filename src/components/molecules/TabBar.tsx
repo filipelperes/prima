@@ -18,10 +18,10 @@ interface TabButtonProps {
   tab: Tab;
   activeTab: string;
   onSwitch: (id: string) => void;
-  isDragging: boolean;
+  blocked: boolean;
 }
 
-const TabButton = memo(function TabButton({ tab, activeTab, onSwitch, isDragging }: TabButtonProps) {
+const TabButton = memo(function TabButton({ tab, activeTab, onSwitch, blocked }: TabButtonProps) {
   const isActive = activeTab === tab.id;
   return (
     <button
@@ -29,7 +29,7 @@ const TabButton = memo(function TabButton({ tab, activeTab, onSwitch, isDragging
       role="tab"
       aria-selected={isActive}
       onClick={() => {
-        if (!isDragging) onSwitch(tab.id);
+        if (!blocked) onSwitch(tab.id);
       }}
       className={cn(
         'shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-md border-none bg-transparent text-soft cursor-pointer font-sans text-[11px] font-semibold tracking-[0.3px] leading-none transition-all duration-200 whitespace-nowrap uppercase relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent',
@@ -49,7 +49,7 @@ const TabButton = memo(function TabButton({ tab, activeTab, onSwitch, isDragging
 });
 
 export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBarProps) {
-  const { ref, isDragging, handlers } = useDragScroll();
+  const { ref, isDragging, didDrag, handlers } = useDragScroll();
 
   return (
     <nav
@@ -60,9 +60,7 @@ export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBar
         'sticky top-3 z-[100] flex gap-0.5 px-1.5 pb-2.5 pt-1.5 overflow-x-auto overflow-y-hidden rounded-xl border border-border-custom',
         'bg-surface/85 backdrop-blur-lg',
         'select-none',
-        isDragging
-          ? 'cursor-grabbing [&_button]:pointer-events-none'
-          : 'cursor-grab',
+        isDragging ? 'cursor-grabbing' : 'cursor-grab',
         '[mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]',
         '[-webkit-mask-image:linear-gradient(to_right,transparent_0,#000_4px,#000_calc(100%-4px),transparent_100%)]',
         '[scrollbar-color:var(--color-border-custom)_transparent]',
@@ -93,7 +91,7 @@ export const TabBar = memo(function TabBar({ tabs, activeTab, onSwitch }: TabBar
           tab={tab}
           activeTab={activeTab}
           onSwitch={onSwitch}
-          isDragging={isDragging}
+          blocked={didDrag}
         />
       ))}
     </nav>
